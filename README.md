@@ -4,8 +4,8 @@ CSCI 5117, Fall 2026, [assignment description](https://canvas.umn.edu/courses/57
 
 ## App Info:
 
-* Team Name: TODO
-* App Name: TODO
+* Team Name: Monkey the Five Leaf Clover
+* App Name: Quilt
 * App Link: <https://TODO.com/>
 
 ### Students
@@ -45,6 +45,8 @@ In this space please either provide images (around 4) showing your prototypes, O
 **[Add images/photos that show your paper prototype (around 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository) along with a very brief caption:**
 
 ![](https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif)
+
+<img width="4096" height="4096" alt="New_board2_Copy" src="https://github.com/user-attachments/assets/27c5a2ca-d59b-4213-b0c6-89a87c86248a" />
 
 
 ## External Dependencies

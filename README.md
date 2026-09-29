@@ -47,7 +47,8 @@ In this space please either provide images (around 4) showing your prototypes, O
 ![](https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif)
 
 <img width="4096" height="4096" alt="New_board2_Copy" src="https://github.com/user-attachments/assets/27c5a2ca-d59b-4213-b0c6-89a87c86248a" />
-Pages
+
+**Pages**
 * Login
 * Sign Up 1
 * Sign Up 2

@@ -47,6 +47,21 @@ In this space please either provide images (around 4) showing your prototypes, O
 ![](https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif)
 
 <img width="4096" height="4096" alt="New_board2_Copy" src="https://github.com/user-attachments/assets/27c5a2ca-d59b-4213-b0c6-89a87c86248a" />
+Pages
+* Login
+* Sign Up 1
+* Sign Up 2
+* Landing (non-account user)
+* Landing (account user)
+  * Landing 2 (popular categories)
+* Search
+* View node
+* Connect node (pop-up)
+* Create node
+* Edit node
+* Notifications
+* Profile (saved / created nodes)
+* Settings
 
 
 ## External Dependencies

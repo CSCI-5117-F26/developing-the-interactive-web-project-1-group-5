@@ -1,23 +1,38 @@
+.pure-form {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+
+  justify-content: center;
+}
+
 #landing-tabs input[type="radio"] {
   position: absolute;
   opacity: 0;
 }
 
 .label {
-  background: #e5e5e5;
+  background: #0bc0e0;
   cursor: pointer;
   padding: 12px 0;
   text-align: center;
 }
-
-.label:hover {
-  background: #ccc;
+#tab-one:checked ~ .pure-g label[for="tab-one"],
+#tab-two:checked ~ .pure-g label[for="tab-two"],
+#tab-three:checked ~ .pure-g label[for="tab-three"],
+#tab-four:checked ~ .pure-g label[for="tab-four"] {
+  background: #e00b12;
 }
 
+.panel {
+  display: none;
+  width: 100%;
+}
 
 #tab-one:checked ~ #panel-one,
 #tab-two:checked ~ #panel-two,
 #tab-three:checked ~ #panel-three,
 #tab-four:checked ~ #panel-four {
-  display: block;
+  display: flex;
+  background: #e00b12;
 }

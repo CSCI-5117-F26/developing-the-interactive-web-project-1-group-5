@@ -5,31 +5,43 @@
     <form action="/" method="post" class="pure-form">
         <input type="text" id="search_query" name="search_query">
         <button type="submit" class="pure-button pure-button-primary">Search</button>
-
-        <button type="button" class="pure-button">Randomize!</button>
-
+        <button type="button" class="pure-button" id="randomize-button">Randomize!</button>
     </form>
 
+    <div class="all-tab-stuff" id="landing-tabs">
+        <input type="radio" name="tabs" id="tab-one" checked>
+        <input type="radio" name="tabs" id="tab-two">
+        <input type="radio" name="tabs" id="tab-three">
+        <input type="radio" name="tabs" id="tab-four">
 
-    <div class="pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item">
-                <a href="" class="pure-menu-link">Recently Viewed</a>
-            </li>
-            <li class="pure-menu-item">
-                <a href="" class="pure-menu-link">New Connections</a>
-            </li>
+        <div class="pure-g">
+            <label class="pure-u-1-4 label" for="tab-one">Popular Categories</label>
+            <label class="pure-u-1-4 label" for="tab-two">Popular Nodes</label>
+            <label class="pure-u-1-4 label" for="tab-three">Recently Viewed</label>
+            <label class="pure-u-1-4 label" for="tab-four">New Connections</label>
+        </div>
+        <div class="pure-g" id="panel-one">
+            <div></div>
+        </div>
 
-            <li class="pure-menu-item">
-                <a href="" class="pure-menu-link">Popular Categories</a>
-            </li>
-            <li class="pure-menu-item">
-                <a href="" class="pure-menu-link">Popular Nodes</a>
-            </li>
+        <div class="pure-g" id="panel-two">
+            <div></div>
+        </div>
 
-        </ul>
+        <div class="pure-g" id="panel-three">
+            <div></div>
+        </div>
+        <div class="pure-g" id="panel-four">
+            <div></div>
+        </div>
+
     </div>
 
 </body>
 
 </html>
+
+
+<!-- https://wpshout.com/snippets/accessible-pure-css-tabs/ 
+followed this tutorial 
+-->

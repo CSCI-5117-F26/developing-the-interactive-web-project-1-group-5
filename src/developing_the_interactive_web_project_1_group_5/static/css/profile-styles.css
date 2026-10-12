@@ -38,3 +38,35 @@ h1 {
 .pure-menu-item {
     text-align: center;
 }
+
+
+
+
+.profile-tabs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.radiotab {
+  position: absolute;
+  opacity: 0;
+}
+
+.tab-label {
+  width: 100%;
+  background: #e5e5e5;
+  cursor: pointer;
+}
+
+.tab-label:active {
+  background: #ccc;  
+}
+
+.panel {
+  display: none;
+  width: 100%;
+}
+
+input:checked + .tab-label + .panel {
+  display: block;
+}

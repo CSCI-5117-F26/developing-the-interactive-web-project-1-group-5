@@ -82,7 +82,7 @@ def create_node():
 
 @app.route("/profile")
 def view_profile():
-    user = {"name": "Chungus", "bio": "skibidibopmmm dada. longer bio longer bio longer bio longer bio longer bio"}
+    user = {"name": "Chungus", "bio": "skibidibopmmm dada. longer bio longer bio longer bio longer bio longer bio longer bio longer bio longer bio longer bio"}
     return render_template("profile.html", user=user)
 
 @app.route("/settings")

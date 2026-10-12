@@ -1,6 +1,6 @@
 .pure-button {
-    padding: 1rem; 
-    background-color: rgb(23, 23, 191);
+  padding: 1rem;
+  background-color: rgb(23, 23, 191);
 }
 
 .pure-form {
@@ -40,4 +40,8 @@
 #tab-four:checked ~ #panel-four {
   display: flex;
   background: #e00b12;
+}
+
+#display-node {
+  border: 2px solid yellow;
 }

@@ -1,0 +1,23 @@
+#landing-tabs input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.label {
+  background: #e5e5e5;
+  cursor: pointer;
+  padding: 12px 0;
+  text-align: center;
+}
+
+.label:hover {
+  background: #ccc;
+}
+
+
+#tab-one:checked ~ #panel-one,
+#tab-two:checked ~ #panel-two,
+#tab-three:checked ~ #panel-three,
+#tab-four:checked ~ #panel-four {
+  display: block;
+}

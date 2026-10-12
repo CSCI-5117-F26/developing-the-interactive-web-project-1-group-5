@@ -18,3 +18,13 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+
+// connect node modal, here we need to keep track of the selected node types so we can add to list later
+function selectConnection(button){
+    if (button.classList.contains("selected-node")){
+        button.classList.remove("selected-node");
+    }
+    else{
+        button.classList.add("selected-node");
+    }
+}

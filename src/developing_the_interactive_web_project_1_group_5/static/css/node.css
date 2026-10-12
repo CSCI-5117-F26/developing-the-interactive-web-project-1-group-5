@@ -44,7 +44,7 @@ body, a {
 .modal {
     display: none; 
     position: fixed;
-    z-index: 999;
+    z-index: 1;
     padding-top: 100px; 
     left: 0;
     top: 0;
@@ -75,4 +75,60 @@ body, a {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Modal tab system, using landing page method */
+#connection-tabs input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.label {
+  background: #adadad;
+  cursor: pointer;
+  padding: 12px 0;
+  text-align: center;
+}
+#tab-one:checked ~ .pure-g label[for="tab-one"],
+#tab-two:checked ~ .pure-g label[for="tab-two"],
+#tab-three:checked ~ .pure-g label[for="tab-three"]{
+  background: #eaeaea;
+}
+
+.panel {
+  display: none;
+  width: 100%;
+}
+
+#tab-one:checked ~ #panel-one,
+#tab-two:checked ~ #panel-two,
+#tab-three:checked ~ #panel-three {
+  display: flex;
+  background: #eaeaea;
+}
+
+#tab-one:not(:checked) ~ #panel-one,
+#tab-two:not(:checked) ~ #panel-two,
+#tab-three:not(:checked) ~ #panel-three {
+  display: none;
+}
+
+.scroll-box{
+    overflow: auto;
+    height: 280px;
+}
+
+.selected-node{
+    border: 3px green;
+    border-style: solid;
+}
+
+.add-connection-footer{
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    background-color:white;
+    padding: 0.5em 0.5em;
+    text-align: right;
 }

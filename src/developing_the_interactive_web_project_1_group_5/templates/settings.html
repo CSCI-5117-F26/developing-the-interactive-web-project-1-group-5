@@ -3,7 +3,26 @@
 {% block body %}
 
 <div class="pure-g">
-    <h1>heya</h1>
+    <h1>Edit Profile Settings</h1>
+
+    <form class="pure-form pure-form-stacked" method="POST">
+        <fieldset>
+            <label for="name">Edit Name</label>
+            <input id="name" name="name" type="text">
+
+            <label for="bio">Edit Bio</label>
+            <textarea id="bio" name="bio" rows="4"></textarea>
+
+            <label for="picture">Edit Profile Picture</label>
+            <p>Uhhh I have no idea how to do this one so I'm leaving it blank!!</p>
+
+
+            <button type="submit" class="pure-button">Save</button>
+            <!-- just something that'll redirect them to profile.html if a user changes their mind -->
+            <a class="pure-button" href="{{ url_for('view_profile') }}">Cancel</a>
+        </fieldset>
+    </form>
+
 </div>
 
 {% endblock %}

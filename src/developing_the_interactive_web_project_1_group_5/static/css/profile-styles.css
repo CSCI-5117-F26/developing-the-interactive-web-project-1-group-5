@@ -1,0 +1,40 @@
+/* temp: outlines so I don't lose my mind */
+/* .pure-u-3-4 {
+    outline: 2px solid black;
+} */
+
+h1 {
+    color:blueviolet;
+}
+
+.profile-sidebar {
+    border-right: 3px solid black; 
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+.pfp {
+    width: 150px;
+    height: 150px;
+    max-width: 100%;
+    border: 3px solid black;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 1em auto;
+}
+
+.sidebar-box {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.pure-menu-list {
+    display: flex;
+    width: 100%;
+}
+
+.pure-menu-item {
+    text-align: center;
+}

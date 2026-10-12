@@ -82,7 +82,7 @@ def create_node():
 
 @app.route("/profile")
 def view_profile():
-    user = {"name": "Chungus", "bio": "skibidibopmmm dada. longer bio longer bio longer bio longer bio longer bio longer bio longer bio longer bio longer bio"}
+    user = {"name": "John Chungus", "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-"}
     bogus_nodes_yours = ["Chungus node", "bogus node2", "node node"]
     bogus_nodes_saved = ["saved node", "hihihihihihi", "YIPPPEEEEEE", "node4  kg. g jg. glu gy lug ulyflf f y"]
     return render_template("profile.html", user=user, saved=bogus_nodes_saved, yours=bogus_nodes_yours)

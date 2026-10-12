@@ -40,7 +40,7 @@ def login_required(f):
 @app.route("/") 
 def landing(): 
     if 'user' in session: 
-        return "<p>It works</p>"
+        return render_template("parent.html")
     else:
         return "<p>User not logged in</p>"
 

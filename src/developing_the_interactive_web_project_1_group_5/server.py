@@ -89,7 +89,7 @@ def view_profile():
 
 @app.route("/settings")
 def view_settings():
-    user = {"name": "Chungus", "bio": "skibidibopmmm dada"}
+    user = {"name": "John Chungus", "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-"}
     return render_template("settings.html", user=user)
 
 

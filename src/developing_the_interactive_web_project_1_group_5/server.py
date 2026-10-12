@@ -36,16 +36,17 @@ def check_signin():
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if 'profile' not in session:
+        if 'user' not in session:
             return redirect('/login')
         return f(*args, **kwargs)
     return decorated
 
 @app.route("/") 
 def landing(): 
-    return render_template("parent.html", loggedin=check_signin())
+    return render_template("parent.html", loggedin=check_signin())  # I will find more efficient way of checking logged in...
 
 @app.route("/search")
+@login_required
 def search():
     return
 
@@ -120,6 +121,7 @@ def view_node(node_id):
     )
 
 @app.route("/edit-node/<int:node_id>")
+@login_required
 def edit_node(node_id):
     # TODO: Replace temporary params with node info from database, fetching using id
     return render_template(
@@ -149,11 +151,13 @@ def edit_node(node_id):
     )
 
 @app.route("/create-node")
+@login_required
 def create_node():
     return render_template("node_create.html", connections = [], loggedin=check_signin())
     
 
 @app.route("/profile")
+@login_required
 def view_profile():
     user = {"name": "John Chungus", "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-"}
     bogus_nodes_yours = ["Chungus node", "bogus node2", "node node"]
@@ -161,11 +165,13 @@ def view_profile():
     return render_template("profile.html", user=user, saved=bogus_nodes_saved, yours=bogus_nodes_yours, loggedin=check_signin())
 
 @app.route("/settings")
+@login_required
 def view_settings():
     user = {"name": "John Chungus", "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-"}
     return render_template("settings.html", user=user, loggedin=check_signin())
 
 
 @app.route("/edit-profile/<int:user_id>")
+@login_required
 def edit_profile(user_id):
     return

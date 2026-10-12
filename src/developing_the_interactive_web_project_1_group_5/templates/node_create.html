@@ -13,14 +13,16 @@
 
 
         <label for="node_title"><h1>Title</h1></label>
-        <input type="text" id="node_title" name="node_title" placeholder="Title" required>
+        <!-- Do we want input invalidation? Feels like there's a lot more options here -->
+        <input type="text" id="node_title" name="node_title" placeholder="Title" minLength="1" maxLength="60" required="">
 
         <!-- TODO: Ability to insert account -->
         <p><strong>Owner: You</strong></p>
         <label for="node_description"><strong>Description:</strong></label>
+        <!-- Maybe: add a char counter -->
         <textarea id="node_description"
                   name="node_description"
-                  rows="5" style="width:100%;"></textarea>
+                  rows="5" maxLength="600" style="width:100%;"></textarea>
 
         <button type="submit" class="pure-button pure-button-primary">
             Create Node

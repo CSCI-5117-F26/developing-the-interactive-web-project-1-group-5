@@ -38,7 +38,7 @@
                     <div class="pure-u-1-2 pure-u-md-1-4">
                         <div class="node-box">
                             <button class="pure-button connection-img" onclick="window.location.href='{{connection.link}}';">
-                                <img class="pure-img" src="{{connection.img_url}}">
+                                <img class="pure-img connection-img" src="{{connection.img_url}}">
                             </button>
                             <p>{{connection.node_title}}</p>
                         </div>
@@ -47,7 +47,7 @@
 
                     <div class="pure-u-1-2 pure-u-md-1-4">
                         <div class="node-box">
-                            <button class="pure-button connection-img" id="addNode" style="font-size: 150%;">
+                            <button class="pure-button connection-img flip-color" id="addNode" style="font-size: 150%;">
                                 <i class="fa-solid fa-circle-plus"></i> Add
                             </button>
                         </div> 
@@ -59,7 +59,7 @@
 
         <div id="connectNodeModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" style="text-align:right;">&times;</span>
             <!-- Borrow landing tabs -->
             <div class="connection-tabs" id="connection-tabs">
                     <input type="radio" name="tabs" id="tab-one" checked>
@@ -79,7 +79,7 @@
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this)'>
-                                        <img class="pure-img" src="{{connection.img_url}}">
+                                        <img class="pure-img connection-img" src="{{connection.img_url}}">
                                     </button>
                                     <p class="center-text">{{connection.node_title}}</p>
                                 </div>
@@ -94,7 +94,7 @@
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this)'>
-                                        <img class="pure-img" src="{{connection.img_url}}">
+                                        <img class="pure-img connection-img" src="{{connection.img_url}}">
                                     </button>
                                     <p class="center-text">{{connection.node_title}}</p>
                                 </div>
@@ -109,7 +109,7 @@
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this)'>
-                                        <img class="pure-img" src="{{connection.img_url}}">
+                                        <img class="pure-img connection-img" src="{{connection.img_url}}">
                                     </button>
                                     <p class="center-text">{{connection.node_title}}</p>
                                 </div>
@@ -117,7 +117,7 @@
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this)'>
-                                        <img class="pure-img" src="{{connection.img_url}}">
+                                        <img class="pure-img connection-img" src="{{connection.img_url}}">
                                     </button>
                                     <p class="center-text">{{connection.node_title}}</p>
                                 </div>
@@ -129,7 +129,7 @@
         <!-- TODO: add footer with button to add connection -->
          <div class="pure-g">
             <div class="pure-u-1 add-connection-footer">
-                <button class="pure-button">Clear</button>
+                <button class="pure-button secondary-button">Clear</button>
                 <button class="pure-button pure-button-primary">Add</button>
             </div>
          </div>

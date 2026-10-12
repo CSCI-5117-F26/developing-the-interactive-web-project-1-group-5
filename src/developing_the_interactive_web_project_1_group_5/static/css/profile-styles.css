@@ -91,3 +91,36 @@ h1 {
 .radiotab:checked + .tab-label + .panel {
     display: block;
 }
+
+.profile-node-container {
+    padding: 1rem;
+}
+
+.profile-node-flex {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.card {
+    width: 300px;
+    min-height: 375px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    padding-top: 25px;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.profile-node-img {
+    width: 275px;
+    height: 275px;
+    border: 2px solid black;
+    border-radius: 5px;
+}

@@ -23,30 +23,49 @@
 
         <div class="profile-tabs">
             <input class="radiotab" type="radio" name="prof-tabs" id="profile-saved" checked>
-            <label class="tab-label" for="profile-saved">Saved</label>
+            <label class="tab-label" for="profile-saved">Saved Nodes</label>
             <div class="panel">
-                yadda yadda yadda
+                {% if saved %}
+                <div class="profile-node-flex">
+                    {% for node in yours %}
+                    <div class="profile-node-container">
+                        <div class="card">
+                            <div class="profile-node-img">
+                                placeholder for image
+                            </div>
+                            <!-- make text clickable to access specific node?? Can't tell if we should do this or make the card itself clickable -->
+                            <a href=""><h1>{{ node }}</h1></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>You've got no nodes. Make one here [add a button or somethn to create node]</p>
+                {% endif %}
             </div>
 
-            <input class="radiotab" type="radio" name="prof-tabs" id="profile-yours" checked>
-            <label class="tab-label" for="profile-yours">Yours</label>
+            <input class="radiotab" type="radio" name="prof-tabs" id="profile-yours">
+            <label class="tab-label" for="profile-yours">Your Nodes</label>
             <div class="panel">
-                yoohoo yoohoo yohoo
+                {% if saved %}
+                <div class="profile-node-flex">
+                    {% for node in saved %}
+                    <div class="profile-node-container">
+                        <div class="card">
+                            <div class="profile-node-img">
+                                placeholder for image
+                            </div>
+                            <!-- make text clickable to access specific node?? Can't tell if we should do this or make the card itself clickable -->
+                            <a href=""><h1>{{ node }}</h1></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>You've got no nodes. Make one here [add a button or somethn to create node]</p>
+                {% endif %}
             </div>
         </div>
-
-
-        <!-- <div class="pure-menu pure-menu-horizontal profile-tabs">
-            <ul class="pure-menu-list">
-                <li class="pure-menu-item {% if tab == 'saved' %}pure-menu-selected{% endif %}">
-                    <a class="pure-menu-link">Saved</a>
-                </li>
-                <li class="pure-menu-item {% if tab == 'yours' %}pure-menu-selected{% endif %}">
-                    <a class="pure-menu-link">Yours</a>
-                </li>
-
-            </ul>
-        </div> -->
 
     </div>
 </div>

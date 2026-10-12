@@ -39,6 +39,7 @@ def login_required(f):
 @login_required
 @app.route("/") 
 def landing(): 
+    return render_template("landing.html")
     if 'user' in session: 
         return "<p>It works</p>"
     else:

@@ -104,9 +104,19 @@ def edit_node(node_id):
 def create_node():
     return render_template("node_create.html", connections = [])
 
-@app.route("/profile/<int:user_id>")
-def view_profile(user_id):
-    return
+
+@app.route("/profile")
+def view_profile():
+    user = {"name": "John Chungus", "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-"}
+    bogus_nodes_yours = ["Chungus node", "bogus node2", "node node"]
+    bogus_nodes_saved = ["saved node", "hihihihihihi", "YIPPPEEEEEE", "node4  kg. g jg. glu gy lug ulyflf f y"]
+    return render_template("profile.html", user=user, saved=bogus_nodes_saved, yours=bogus_nodes_yours)
+
+@app.route("/settings")
+def view_settings():
+    user = {"name": "John Chungus", "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-"}
+    return render_template("settings.html", user=user)
+
 
 @app.route("/edit-profile/<int:user_id>")
 def edit_profile(user_id):

@@ -1,5 +1,5 @@
 /* Referenced from https://www.w3schools.com/howto/howto_css_modals.asp example 1 */
-var modal = document.getElementById("createNodeModal");
+var modal = document.getElementById("connectNodeModal");
 
 var btn = document.getElementById("addNode");
 

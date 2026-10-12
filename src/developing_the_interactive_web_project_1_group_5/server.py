@@ -41,7 +41,7 @@ def login_required(f):
 def landing(): 
     return render_template("landing.html")
     if 'user' in session: 
-        return "<p>It works</p>"
+        return render_template("parent.html", loggedin=True)
     else:
         return "<p>User not logged in</p>"
 

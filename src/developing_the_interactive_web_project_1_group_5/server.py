@@ -102,7 +102,7 @@ def edit_node(node_id):
 
 @app.route("/create-node")
 def create_node():
-    return 
+    return render_template("node_create.html", connections = [])
 
 @app.route("/profile/<int:user_id>")
 def view_profile(user_id):

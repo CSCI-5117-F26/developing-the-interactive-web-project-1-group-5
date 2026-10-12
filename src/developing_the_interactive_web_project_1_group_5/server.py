@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, g, session 
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
+from urllib.parse import quote_plus, urlencode
 
 import os
 
@@ -28,6 +29,10 @@ oauth.register(
 
 database.setup()
 
+def check_signin():
+    if 'user' in session: 
+        return True
+
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -36,14 +41,9 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated
 
-@login_required
 @app.route("/") 
 def landing(): 
-    return render_template("landing.html")
-    if 'user' in session: 
-        return render_template("parent.html", loggedin=True)
-    else:
-        return "<p>User not logged in</p>"
+    return render_template("parent.html", loggedin=check_signin())
 
 @app.route("/search")
 def search():
@@ -61,11 +61,33 @@ def callback():
 
 @app.route("/login")
 def login():
-    """
-    Redirects the user to the Auth0 Universal Login
-    """
     return oauth.auth0.authorize_redirect(
         redirect_uri=url_for("callback", _external=True)
+    )
+
+@app.route("/signup")
+def signup():
+    return oauth.auth0.authorize_redirect(
+        redirect_uri=url_for("callback", _external=True),
+        screen_hint="signup"
+    )
+
+@app.route("/logout")
+def logout():
+    """
+    Logs the user out of the session and from the Auth0 tenant
+    """
+    session.clear()
+    return redirect(
+        "https://" + domain
+        + "/v2/logout?"
+        + urlencode(
+            {
+                "returnTo": url_for("landing", _external=True),
+                "client_id": client_id,
+            },
+            quote_via=quote_plus,
+        )
     )
 
 @app.route("/node/<int:node_id>")
@@ -94,6 +116,7 @@ def view_node(node_id):
                 "link": "/node/1"
             }
         ]
+        ,loggedin=check_signin()
     )
 
 @app.route("/edit-node/<int:node_id>")
@@ -122,24 +145,25 @@ def edit_node(node_id):
                 "link": "/node/1"
             }
         ]
+        ,loggedin=check_signin()
     )
 
 @app.route("/create-node")
 def create_node():
-    return render_template("node_create.html", connections = [])
-
+    return render_template("node_create.html", connections = [], loggedin=check_signin())
+    
 
 @app.route("/profile")
 def view_profile():
     user = {"name": "John Chungus", "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-"}
     bogus_nodes_yours = ["Chungus node", "bogus node2", "node node"]
     bogus_nodes_saved = ["saved node", "hihihihihihi", "YIPPPEEEEEE", "node4  kg. g jg. glu gy lug ulyflf f y"]
-    return render_template("profile.html", user=user, saved=bogus_nodes_saved, yours=bogus_nodes_yours)
+    return render_template("profile.html", user=user, saved=bogus_nodes_saved, yours=bogus_nodes_yours, loggedin=check_signin())
 
 @app.route("/settings")
 def view_settings():
     user = {"name": "John Chungus", "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-"}
-    return render_template("settings.html", user=user)
+    return render_template("settings.html", user=user, loggedin=check_signin())
 
 
 @app.route("/edit-profile/<int:user_id>")

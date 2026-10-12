@@ -16,12 +16,19 @@
     border-radius: 1.5rem;
 }
 
+.pure-button:hover {
+    text-decoration: none;
+    background-image: none;
+    color: var(--secondary-color);
+}
+
 #login-button {
     background-color: inherit;
     color: var(--primary-color);
 }
 
 nav {
+    padding: 1rem;
     background-color: var(--secondary-color);
 }
 
@@ -66,7 +73,7 @@ nav {
 }
 
 #nav-links i {
-    font-size: 2rem;
-    -webkit-text-stroke: 1px var(--primary-color);
+    font-size: 2.5rem;
+    -webkit-text-stroke: 0.5px var(--primary-color);
     color: var(--primary-color);
 }

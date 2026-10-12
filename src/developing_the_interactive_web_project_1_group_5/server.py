@@ -79,9 +79,17 @@ def edit_node(node_id):
 def create_node():
     return
 
-@app.route("/profile/<int:user_id>")
-def view_profile(user_id):
-    return
+
+@app.route("/profile")
+def view_profile():
+    user = {"name": "Chungus", "bio": "skibidibopmmm dada"}
+    return render_template("profile.html", user=user)
+
+@app.route("/settings")
+def view_settings():
+    user = {"name": "Chungus", "bio": "skibidibopmmm dada"}
+    return render_template("settings.html", user=user)
+
 
 @app.route("/edit-profile/<int:user_id>")
 def edit_profile(user_id):

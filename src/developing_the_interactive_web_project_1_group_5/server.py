@@ -69,7 +69,31 @@ def login():
 
 @app.route("/node/<int:node_id>")
 def view_node(node_id):
-    return
+    # TODO: Replace temporary params with node info from database, fetching using id
+    return render_template(
+        "node_parent.html",
+        node_title = "Plate with Alexander and Diogenes",
+        node_img_url = "../static/img/temp_image.jpg",
+        node_owner = "Grace",
+        node_description = "This is a painting of an ornate decorative plate depicting the scene where Alexander meets Diogenes. Created in 1524 by ceramist Master of the Coppa Bergantini.",
+        connections = [
+            {
+                "img_url": "../static/img/temp_con3.jpg",
+                "node_title": "Alexander the Great",
+                "link": "/node/3"
+            },
+            {
+                "img_url": "../static/img/temp_con2.jpg",
+                "node_title": "Plate with Marcus Curtius",
+                "link": "/node/2"
+            },
+            {
+                "img_url": "../static/img/temp_con1.jpg",
+                "node_title": "Plate with Battle Scene",
+                "link": "/node/1"
+            }
+        ]
+    )
 
 @app.route("/edit-node/<int:node_id>")
 def edit_node(node_id):
@@ -77,7 +101,7 @@ def edit_node(node_id):
 
 @app.route("/create-node")
 def create_node():
-    return
+    return 
 
 @app.route("/profile/<int:user_id>")
 def view_profile(user_id):

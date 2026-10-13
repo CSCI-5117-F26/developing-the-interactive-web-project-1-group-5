@@ -1,8 +1,4 @@
-.pure-button {
-  padding: 1rem;
-}
-
-.pure-form {
+.randomize-btn-div {
   display: flex;
   align-items: center;
   margin: 20px 0;

@@ -17,16 +17,18 @@
 }
 
 .label {
-  background: #0bc0e0;
+  background: #adadad;
   cursor: pointer;
   padding: 12px 0;
+  margin: 0;
+
   text-align: center;
 }
 #tab-one:checked ~ .pure-g label[for="tab-one"],
 #tab-two:checked ~ .pure-g label[for="tab-two"],
 #tab-three:checked ~ .pure-g label[for="tab-three"],
 #tab-four:checked ~ .pure-g label[for="tab-four"] {
-  background: #e00b12;
+  background: #eaeaea;
 }
 
 .panel {
@@ -39,11 +41,21 @@
 #tab-three:checked ~ #panel-three,
 #tab-four:checked ~ #panel-four {
   display: flex;
-  background: #e00b12;
+  background: #eaeaea;
+}
+.panel-all {
+  align-items: center;
+  margin: 10px 10px;
+
+  justify-content: center;
+  text-align: center;
+}
+#display-node {
+  border: 2px solid #90a2c9;
 }
 
-
-
-#display-node {
-  border: 2px solid yellow;
+img {
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
 }

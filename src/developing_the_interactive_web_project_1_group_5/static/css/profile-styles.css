@@ -1,11 +1,12 @@
-/* temp: outlines so I don't lose my mind */
-/* .pure-u-3-4 {
-    outline: 2px solid black;
-} */
+:root {
+    --primary-color: #0a1836;
+    --secondary-color: white;
+    --accent-color2: #d7d7d7;
+}
 
 h1 {
-    /* mmm. ourple. */
-    color:blueviolet;
+    color: var(--primary-color);
+    font-weight: bold;
 }
 
 .profile-sidebar {
@@ -14,8 +15,8 @@ h1 {
     box-sizing: border-box;
 }
 .pfp {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     max-width: 100%;
     border: 3px solid black;
     border-radius: 50%;
@@ -71,7 +72,7 @@ h1 {
 }
 
 .tab-label:checked{
-    background: #fff;
+    background: var(--secondary-color);
 }
 
 .panel {
@@ -85,7 +86,7 @@ h1 {
     background: #fff;
     font-weight: bold;
     z-index: 1;
-    border-bottom: 5px solid white;
+    border-bottom: 5px solid var(--secondary-color);
     
 }
 
@@ -139,6 +140,10 @@ h1 {
 .settings-line {
     width: 75%;
     display: block;
-    border-bottom: 2px solid rgb(191, 191, 191);
+    border-bottom: 2px solid var(--accent-color2);
     margin: 30px 0 30px 0;
+}
+
+textarea {
+    width: 45vw;
 }

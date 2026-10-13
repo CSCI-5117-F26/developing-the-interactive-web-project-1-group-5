@@ -81,14 +81,15 @@ nav {
 
 #login-overlay {
     display: block;
+    z-index: 9999;
     place-items: center;
     text-align: center;
     margin: auto;
-    border: 2px solid var(--primary-color);
     padding: 4rem;
     max-width: 40%;
     min-height: 80vh;
     border-radius: 3rem;
+    background-color: var(--secondary-color);
 }
 
 #links-container {
@@ -113,4 +114,16 @@ nav {
 #close-overlay {
     font-size: 0.75rem;
     color:grey;
+}
+
+#full-overlay {
+    padding: 5rem;
+    position: fixed;
+    place-items: center;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
 }

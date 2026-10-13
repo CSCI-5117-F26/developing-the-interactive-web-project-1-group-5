@@ -14,7 +14,7 @@
             <h1 class="profile-name">{{ user.name }}</h1>
             <p class="profile-bio">{{ user.bio or "Empty bio"}}</p>
             <a class="pure-button" href="{{url_for('view_settings')}}">Settings</a>
-            <a class="pure-button" href="">Logout</a>
+            <a class="pure-button" href="{{url_for('logout')}}">Logout</a>
         </div>
     </div>
 

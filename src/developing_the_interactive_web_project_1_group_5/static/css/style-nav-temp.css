@@ -1,6 +1,6 @@
 :root {
-    --primary-color: #90A2C9;
-    --secondary-color: #F6F0E4;
+    --primary-color: #0a1836;
+    --secondary-color: white;
 }
 
 * {
@@ -16,12 +16,19 @@
     border-radius: 1.5rem;
 }
 
+.pure-button:hover {
+    text-decoration: none;
+    background-image: none;
+    color: var(--secondary-color);
+}
+
 #login-button {
     background-color: inherit;
     color: var(--primary-color);
 }
 
 nav {
+    padding: 1rem;
     background-color: var(--secondary-color);
 }
 
@@ -42,12 +49,13 @@ nav {
 
 .pure-form input[type="search"] {
     box-shadow: none;
-    background-color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    background-color: var(--secondary-color);
     padding: 0.75rem 1.5rem;
 }
 
 .pure-form input[type="search"]::placeholder {
-    color: var(--secondary-color);
+    color: var(--primary-color);
 }
 
 .logo {
@@ -66,7 +74,56 @@ nav {
 }
 
 #nav-links i {
-    font-size: 2rem;
+    font-size: 2.5rem;
     -webkit-text-stroke: 1px var(--primary-color);
     color: var(--primary-color);
+}
+
+#login-overlay {
+    display: block;
+    z-index: 9999;
+    place-items: center;
+    text-align: center;
+    margin: auto;
+    padding: 4rem;
+    max-width: 40%;
+    min-height: 80vh;
+    border-radius: 3rem;
+    background-color: var(--secondary-color);
+}
+
+#links-container {
+    place-items: center;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#links-container div {
+    padding: 0.5rem;
+}
+
+#links-container a {
+    padding: 1rem 5rem;
+}
+
+#overlay-image {
+    padding: 2rem;
+    max-width: 40%;
+}
+
+#close-overlay {
+    font-size: 0.75rem;
+    color:grey;
+}
+
+#full-overlay {
+    padding: 5rem;
+    position: fixed;
+    place-items: center;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
 }

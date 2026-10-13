@@ -7,7 +7,7 @@
           action="{{ url_for('create_node') }}">
 
 
-        <label for="node_title"><h1>Rename: </h1></label>
+        <label for="node_title"><h3>Rename: </h3></label>
         <!-- Do we want input invalidation? Feels like there's a lot more options here -->
         <input type="text" id="node_title" name="node_title" placeholder="{{node_title}}" minLength="1" maxLength="60" required="">
 
@@ -19,7 +19,7 @@
                   name="node_description"
                   rows="5" maxLength="600" style="width:100%;" placeholder="{{node_description}}"></textarea>
 
-        <button class="pure-button" href="#">
+        <button class="pure-button secondary-button" href="#">
             Cancel
         </button>
         <button type="submit" class="pure-button pure-button-primary">

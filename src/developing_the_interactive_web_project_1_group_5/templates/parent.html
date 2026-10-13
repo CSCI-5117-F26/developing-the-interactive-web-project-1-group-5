@@ -21,31 +21,33 @@
     <nav>
         <div id="nav-container">
             <div>
-                <a id="home-link" href="/">
+                <a id="home-link" href="{{url_for('landing')}}">
                     <h1 class="logo">QUILT</h1>
                 </a>
             </div>
-            <div id="search-container">
+            <!-- <div id="search-container">
                 <search>
                     <form class="pure-form">
                         <input class="pure-input-rounded pure-input-1" type="search" id="search-bar" name="search"
                             placeholder="Search">
                     </form>
                 </search>
-            </div>
+            </div> -->
             <div id="nav-links">
                 {%if loggedin%}
-                <a class="icon-link" aria-hidden="true" href="/notifs"><i
+                <a class="icon-link" aria-hidden="true" href="{{url_for('create_node')}}"><i
                         class="bi bi-plus-circle align-middle"></i></a>
-                <a class="icon-link" aria-hidden="true" href="/notifs"><i class="bi bi-bell align-middle"></i></a>
-                <a class="icon-link" aria-hidden="true" href="/profile"><i
+                <!-- <a class="icon-link" aria-hidden="true" href="/notifs"><i class="bi bi-bell align-middle"></i></a> -->
+                <a class="icon-link" aria-hidden="true" href="{{url_for('view_profile')}}"><i
                         class="bi bi-person-circle align-middle"></i></a>
                 {%else%}
-                <a id="login-button" class="pure-button" href="/notifs">Login</a>
-                <a id="signup-button" class="pure-button" href="/notifs">Sign Up</a>
+                <a id="login-button" class="pure-button" href="{{url_for('login')}}">Login</a>
+                <a id="signup-button" class="pure-button" href="{{url_for('signup')}}">Sign Up</a>
                 {%endif%}
             </div>
     </nav>
+    {%block overlay%}
+    {% endblock %}
     {% block body %}
     {% endblock %}
 </body>

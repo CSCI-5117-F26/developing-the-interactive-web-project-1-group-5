@@ -23,18 +23,16 @@
 
         <div class="profile-tabs">
             <input class="radiotab" type="radio" name="prof-tabs" id="profile-saved" checked>
-            <label class="tab-label" for="profile-saved">Saved Nodes</label>
+            <label class="tab-label" for="profile-saved">Saved Patches</label>
             <div class="panel">
                 {% if saved %}
                 <div class="profile-node-flex">
                     {% for node in yours %}
                     <div class="profile-node-container">
                         <div class="card">
-                            <div class="profile-node-img">
-                                placeholder for image
-                            </div>
+                            <img class="profile-node-img" src="{{ url_for('static', filename ='img/temp_image.jpg') }}">
                             <!-- make text clickable to access specific node?? Can't tell if we should do this or make the card itself clickable -->
-                            <a href=""><h1>{{ node }}</h1></a>
+                            <a href="{{url_for('view_node', node_id=1)}}"><h1>{{ node }}</h1></a>
                         </div>
                     </div>
                     {% endfor %}
@@ -46,18 +44,16 @@
             </div>
 
             <input class="radiotab" type="radio" name="prof-tabs" id="profile-yours">
-            <label class="tab-label" for="profile-yours">Your Nodes</label>
+            <label class="tab-label" for="profile-yours">Your Patches</label>
             <div class="panel">
                 {% if saved %}
                 <div class="profile-node-flex">
                     {% for node in saved %}
                     <div class="profile-node-container">
                         <div class="card">
-                            <div class="profile-node-img">
-                                placeholder for image
-                            </div>
+                            <img class="profile-node-img" src="{{ url_for('static', filename ='img/temp_image.jpg') }}">
                             <!-- make text clickable to access specific node?? Can't tell if we should do this or make the card itself clickable -->
-                            <a href=""><h1>{{ node }}</h1></a>
+                            <a href="{{url_for('view_node', node_id=1)}}"><h1>{{ node }}</h1></a>
                         </div>
                     </div>
                     {% endfor %}

@@ -50,17 +50,13 @@ def landing():
 def search():
     return
 
-
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
-    """
-    Callback redirect from Auth0
-    """
     token = oauth.auth0.authorize_access_token()
     session["user"] = token
     return redirect("/")
 
-@app.route("/login")
+@app.route("/auth-login")
 def login():
     return oauth.auth0.authorize_redirect(
         redirect_uri=url_for("callback", _external=True)
@@ -72,6 +68,11 @@ def signup():
         redirect_uri=url_for("callback", _external=True),
         screen_hint="signup"
     )
+
+
+@app.route("/login")
+def login_overlay():
+    return render_template("login.html")
 
 @app.route("/logout")
 def logout():

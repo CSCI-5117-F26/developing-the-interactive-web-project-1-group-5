@@ -1,8 +1,14 @@
-{%extend block%}
-{% block title %}Login{% endblock %}</title>
-<div class="pure-g" id="login-container"> 
-    <h1>Welcome!</h1>
-    <a class="pure-button" href="/parent">Login with SSO</a>
-</div>
-{% endblock %}
+{%extends "parent.html"%}
 
+{%block overlay%}
+<div id="login-overlay">
+    <h2>Get to quilting!</h2>
+    <p>Sign up to to keep exploring similar patches and save ones you like!</p>
+    <img id="overlay-image" src="{{ url_for('static', filename ='img/temp_chungus.png') }}" alt="little guy">
+    <div id="links-container">
+        <div><a id="login-button" class="pure-button" href="{{url_for('login')}}">Login</a></div>
+        <div><a id="signup-button" class="pure-button" href="{{url_for('signup')}}">Sign Up</a></div>
+    </div>
+    <div><a id="close-overlay" href="{{url_for('landing')}}">Close</a></div>
+</div>
+{%endblock%}

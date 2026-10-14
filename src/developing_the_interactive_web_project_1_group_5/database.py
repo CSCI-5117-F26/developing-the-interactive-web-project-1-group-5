@@ -42,7 +42,10 @@ def get_node_connections(nodeid):
                             where nodeId in (
                                 select nodeId2 
                                 from connections 
-                                where nodeId1 = %s);''', (nodeid,))
+                                where nodeId1 = %s) or nodeId in (
+                                                    select nodeId1
+                                                    from connections
+                                                    where nodeId2 = %s);''', (nodeid,nodeid))
             return cur.fetchall()
 
 # get all nodes with a certain topic

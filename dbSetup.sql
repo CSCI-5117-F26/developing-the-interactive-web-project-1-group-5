@@ -1,8 +1,7 @@
---title and img currently not required in actual db (need to figure out images, also for simpler initial testing)
 CREATE table nodes (
     nodeId serial PRIMARY KEY,
     title varchar(100) NOT NULL,
-    img BYTEA NOT NULL,
+    img BYTEA,
     description varchar(250),
     creatorId int,
     topic varchar(100),
@@ -14,9 +13,12 @@ CREATE table connections (
     nodeId2 int NOT NULL,
     connectorId int NOT NULL,
     PRIMARY KEY (nodeId1, nodeId2),
+    FOREIGN KEY (nodeId1) REFERENCES nodes ON DELETE CASCADE,
+    FOREIGN KEY (nodeId2) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (connectorId) REFERENCES users
 );
 
+-- TODO: auth0 stuff
 CREATE table users (
     userId serial PRIMARY KEY,
     username varchar(50) NOT NULL,
@@ -28,15 +30,16 @@ CREATE table savedNodes (
     userId int NOT NULL,
     nodeId int NOT NULL,
     FOREIGN KEY (userId) REFERENCES users,
-    FOREIGN KEY (nodeId) REFERENCES nodes,
+    FOREIGN KEY (nodeId) REFERENCES nodes ON DELETE CASCADE,
     PRIMARY KEY (userId, nodeId)
 );
 
 CREATE table recentNodes (
     userId int NOT NULL,
     nodeId int NOT NULL,
+    timestamp varchar(50),
     FOREIGN KEY (userId) REFERENCES users,
-    FOREIGN KEY (nodeId) REFERENCES nodes,
+    FOREIGN KEY (nodeId) REFERENCES nodes ON DELETE CASCADE,
     PRIMARY KEY (userId, nodeId)
 );
 
@@ -46,4 +49,4 @@ insert into users (username, bio) values ('chungus', 'I am chungus');
 insert into nodes (title, description, creatorId) values ('cool dog', 'my dog is cool', 1);
 insert into nodes (title, description, creatorId) values ('demure cat', 'this cat so demure', 1);
 
-insert into connections (nodeId1, nodeId2, connectorId) values (1, 2, 1)  
+insert into connections (nodeId1, nodeId2, connectorId) values (1, 2, 1);

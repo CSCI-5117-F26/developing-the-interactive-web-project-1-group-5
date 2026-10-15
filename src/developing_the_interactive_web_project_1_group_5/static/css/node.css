@@ -18,13 +18,12 @@
     border-radius: 1.5rem;
 }
 
-.flip-color {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-}
-
 .secondary-button {
     background-color: inherit;
+    color: var(--primary-color);
+}
+
+.secondary-button:hover {
     color: var(--primary-color);
 }
 
@@ -38,8 +37,17 @@ body, a {
     padding: 1em 4em;
 }
 
-.node-box{
+.format-box{
     padding: 0.5em 2em;
+}
+
+.node-box{
+    padding: 1em 2em;
+}
+
+.node-box:hover {
+    text-decoration: underline;
+    font-weight: strong;
 }
 
 /* images */
@@ -71,10 +79,20 @@ body, a {
 
 .connection-img:hover{
     filter: brightness(0.8); 
+    color:var(--primary-color);
 }
 
 .center-text {
   text-align: center;
+}
+
+
+/* From https://css-tricks.com/almanac/properties/l/line-clamp/ */
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
 }
 
 /* Connect node modal */
@@ -106,6 +124,7 @@ body, a {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    text-align:right;
 }
 
 .close:hover,

@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, url_for, redirect, g, session
+from flask import Flask, render_template, request, url_for, redirect, g, session, abort
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
-
+from developing_the_interactive_web_project_1_group_5.node import format_node_display, dict_get, get_popular_nodes
 import os
 
 import developing_the_interactive_web_project_1_group_5.database as database
@@ -106,30 +106,25 @@ def logout():
 
 @app.route("/node/<int:node_id>")
 def view_node(node_id):
-    # TODO: Replace temporary params with node info from database, fetching using id
+    node = database.get_node(node_id)
+    if ((node == None)):
+        abort(404)
+    connections = format_node_display(database.get_node_connections(node_id))
+
+    # TODO: How do you get the user_id?
+    # saved_nodes = format_node_display(database.get_saved_nodes(user_id))
+    # recent_nodes = format_node_display(database.get_recent_nodes(user_id))
+    # created_nodes = format_node_display(database.get_user_nodes(user_id))
     return render_template(
         "node_parent.html",
-        node_title="Plate with Alexander and Diogenes",
-        node_img_url="../static/img/temp_image.jpg",
-        node_owner="Grace",
-        node_description="This is a painting of an ornate decorative plate depicting the scene where Alexander meets Diogenes. Created in 1524 by ceramist Master of the Coppa Bergantini.",
-        connections=[
-            {
-                "img_url": "../static/img/temp_con3.jpg",
-                "node_title": "Alexander the Great",
-                "link": "/node/3",
-            },
-            {
-                "img_url": "../static/img/temp_con2.jpg",
-                "node_title": "Plate with Marcus Curtius",
-                "link": "/node/2",
-            },
-            {
-                "img_url": "../static/img/temp_con1.jpg",
-                "node_title": "Plate with Battle Scene",
-                "link": "/node/1",
-            },
-        ],
+        node_title = dict_get(node, "title", "Untitled"),
+        node_img_url = dict_get(node, "img", "../static/img/temp_chungus.png"), 
+        node_owner = (database.get_user(dict_get(node, "creatorid", "1"))["username"] or "Quilt"),
+        node_description = dict_get(node,"description","None"),
+        connections = connections,
+        # saved_nodes = saved_nodes,
+        # recent_nodes = recent_nodes,
+        # created_nodes = created_nodes,
         loggedin=check_signin(),
     )
 
@@ -137,30 +132,25 @@ def view_node(node_id):
 @app.route("/edit-node/<int:node_id>")
 @login_required
 def edit_node(node_id):
-    # TODO: Replace temporary params with node info from database, fetching using id
+    node = database.get_node(node_id)
+    if ((node == None)):
+        abort(404)
+    connections = format_node_display(database.get_node_connections(node_id))
+
+    # TODO: How do you get the user_id?
+    # saved_nodes = format_node_display(database.get_saved_nodes(user_id))
+    # recent_nodes = format_node_display(database.get_recent_nodes(user_id))
+    # created_nodes = format_node_display(database.get_user_nodes(user_id))
     return render_template(
         "node_edit.html",
-        node_title="Plate with Alexander and Diogenes",
-        node_img_url="../static/img/temp_image.jpg",
-        node_owner="Grace",
-        node_description="This is a painting of an ornate decorative plate depicting the scene where Alexander meets Diogenes. Created in 1524 by ceramist Master of the Coppa Bergantini.",
-        connections=[
-            {
-                "img_url": "../static/img/temp_con3.jpg",
-                "node_title": "Alexander the Great",
-                "link": "/node/3",
-            },
-            {
-                "img_url": "../static/img/temp_con2.jpg",
-                "node_title": "Plate with Marcus Curtius",
-                "link": "/node/2",
-            },
-            {
-                "img_url": "../static/img/temp_con1.jpg",
-                "node_title": "Plate with Battle Scene",
-                "link": "/node/1",
-            },
-        ],
+        node_title = dict_get(node, "title", "Untitled"),
+        node_img_url = dict_get(node, "img", "../static/img/temp_chungus.png"), 
+        node_owner = (database.get_user(dict_get(node, "creatorid", "1"))["username"] or "Quilt"),
+        node_description = dict_get(node,"description","None"),
+        connections = connections,
+        # saved_nodes = saved_nodes,
+        # recent_nodes = recent_nodes,
+        # created_nodes = created_nodes,
         loggedin=check_signin(),
     )
 
@@ -208,3 +198,8 @@ def view_settings():
 @login_required
 def edit_profile(user_id):
     return
+
+# From https://stackoverflow.com/questions/69234307/flask-generate-404-page-if-data-not-found-in-database
+@app.errorhandler(404)
+def page_404(e):
+    return render_template("404.html"), 404

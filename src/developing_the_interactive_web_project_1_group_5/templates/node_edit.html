@@ -2,16 +2,17 @@
 
 {% block title %}Edit Node{% endblock %}
 {% block node_info %}
+<!-- TODO: none of this works yet -->
     <form class="pure-form pure-form-stacked"
           method="POST"
           action="{{ url_for('create_node') }}">
 
 
-        <label for="node_title"><h1>Rename: </h1></label>
-        <!-- Do we want input invalidation? Feels like there's a lot more options here -->
-        <input type="text" id="node_title" name="node_title" placeholder="{{node_title}}" minLength="1" maxLength="60" required="">
+        <label for="node_title"><strong>New Title: </strong></label>
+        <!-- Do we want input validation? Feels like there's a lot more options here -->
+        <input type="text" id="node_title" name="node_title" placeholder="{{node_title}}" minLength="1" maxLength="60">
 
-        <!-- TODO: Ability to insert account -->
+        <!-- TODO: Ability to insert and check account (like %if user_id==owner% or in server.py)-->
         <p><strong>Owner: You</strong></p>
         <label for="node_description"><strong>Description:</strong></label>
         <!-- Maybe: add a char counter -->

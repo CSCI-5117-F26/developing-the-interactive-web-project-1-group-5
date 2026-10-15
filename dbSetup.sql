@@ -5,6 +5,7 @@ CREATE table nodes (
     description varchar(250),
     creatorId int,
     topic varchar(100),
+    category boolean DEFAULT false, 
     FOREIGN KEY (creatorId) REFERENCES users
 );
 

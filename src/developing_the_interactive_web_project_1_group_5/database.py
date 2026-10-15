@@ -114,9 +114,12 @@ def add_user(username, bio=None, profilepic=None):
 # add a connection between two nodes to the connections table
 def add_connection(node1, node2, connector):
     with pool.connection() as conn:
-                with conn.cursor() as cur:
-                    cur.execute('''insert into connections (nodeId1, nodeId2, connectorId)
-                                    values (%s, %s, %s);''', (node1, node2, connector))
+        with conn.cursor() as cur:
+            cur.execute('''select * from connections where nodeId1 = %s and nodeId2 = %s;''', (node2, node1))
+            exists = cur.fetchone()
+            if not exists:
+                cur.execute('''insert into connections (nodeId1, nodeId2, connectorId)
+                                values (%s, %s, %s);''', (node1, node2, connector))
 
 # add a node to a user's saved nodes
 def add_to_saved_nodes(userid, nodeid):
@@ -125,12 +128,22 @@ def add_to_saved_nodes(userid, nodeid):
             cur.execute('''insert into savedNodes (userId, nodeId)
                             values (%s, %s);''', (userid, nodeid))
 
-#TODO: remove the first-in/oldest node when adding the 11th node
 # add a node to a user's recent nodes
 def add_to_recent_nodes(userid, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            timestamp = datetime.datetime.now()
+            num_history = 10
+            cur.execute('''select count(nodeId) from recentNodes where userId = %s''', (userid,))
+            count = cur.fetchone()
+
+            # remove oldest node in the history
+            if count.get("count") == num_history:
+                cur.execute('''select * from recentNodes where userId = %s order by timestamp;''', (userid,))
+                recents = cur.fetchall()
+                to_delete = recents[0].get("nodeid") 
+                cur.execute('''delete from recentNodes where userId = %s and nodeId = %s''', (userid, to_delete))
+
+            timestamp = datetime.datetime.now(datetime.timezone.utc)
             cur.execute('''insert into recentNodes (userId, nodeId, timestamp)
                             values (%s, %s, %s);''', (userid, nodeid, timestamp))
 

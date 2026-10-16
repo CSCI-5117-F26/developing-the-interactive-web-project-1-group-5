@@ -26,6 +26,20 @@ def get_node(nodeid):
             cur.execute("select * from nodes where nodeId = %s;", (nodeid,))
             return cur.fetchone()
 
+# get every single node in the table (exclude categories)
+def get_all_nodes():
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("select nodeId from nodes where category = false;")
+            return cur.fetchall()
+
+# get every single category in the table
+def get_all_categories():
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("select nodeId from nodes where category = true;")
+            return cur.fetchall()
+
 # get a user's information
 def get_user(userid):
     with pool.connection() as conn:

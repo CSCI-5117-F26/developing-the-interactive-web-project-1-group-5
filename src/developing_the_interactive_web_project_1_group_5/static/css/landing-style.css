@@ -1,0 +1,60 @@
+.pure-button {
+  padding: 1rem;
+}
+
+.pure-form {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+
+  justify-content: center;
+}
+
+#landing-tabs input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.label {
+  background: #adadad;
+  cursor: pointer;
+  padding: 12px 0;
+  margin: 0;
+
+  text-align: center;
+}
+#tab-one:checked ~ .pure-g label[for="tab-one"],
+#tab-two:checked ~ .pure-g label[for="tab-two"],
+#tab-three:checked ~ .pure-g label[for="tab-three"],
+#tab-four:checked ~ .pure-g label[for="tab-four"] {
+  background: #eaeaea;
+}
+
+.panel {
+  display: none;
+  width: 100%;
+}
+
+#tab-one:checked ~ #panel-one,
+#tab-two:checked ~ #panel-two,
+#tab-three:checked ~ #panel-three,
+#tab-four:checked ~ #panel-four {
+  display: flex;
+  background: #eaeaea;
+}
+.panel-all {
+  align-items: center;
+  margin: 10px 10px;
+
+  justify-content: center;
+  text-align: center;
+}
+#display-node {
+  border: 2px solid #90a2c9;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}

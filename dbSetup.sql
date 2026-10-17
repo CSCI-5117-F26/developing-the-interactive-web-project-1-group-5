@@ -44,6 +44,20 @@ CREATE table recentNodes (
     PRIMARY KEY (userId, nodeId)
 );
 
+CREATE table notifications (
+    notifId serial PRIMARY KEY,
+    recipient int NOT NULL,
+    connector int NOT NULL,
+    usersNode int NOT NULL,
+    connectingNode int NOT NULL,
+    timestamp varchar(50),
+    FOREIGN KEY (recipient) REFERENCES users,
+    FOREIGN KEY (connector) REFERENCES users,
+    FOREIGN KEY (usersNode) REFERENCES nodes,
+    FOREIGN KEY (connectingNode) REFERENCES nodes
+);
+
+insert into notifications (recipient, connector, usersnode, connectingNode) values (1, 2, 5, 6);
 
 insert into users (username, bio) values ('chungus', 'I am chungus');
 

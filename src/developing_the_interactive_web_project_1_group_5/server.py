@@ -193,6 +193,13 @@ def view_settings():
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 
+# TODO: authorization
+@app.route("/notifications/<int:user_id>")
+#@login_required
+def notifications(user_id):
+    notifs = database.get_notifs(user_id)
+    return render_template("notifications.html", notifs=notifs)
+
 
 @app.route("/edit-profile/<int:user_id>")
 @login_required

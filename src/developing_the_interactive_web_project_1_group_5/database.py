@@ -102,6 +102,22 @@ def get_recent_nodes(userid):
                                 where userId = %s);''', (userid,))
             return cur.fetchall()
 
+# retrieve a user's notifications
+def get_notifs(userid):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''
+            select U1.username, U1.profPic, N1.nodeId as userNode, N1.title as userTitle, N2.nodeId as connectingNode, N2.title as connectingTitle, notif.timestamp, notif.notifid
+            from nodes as N1, nodes as N2, users as U1, notifications as notif
+            where notif.recipient = %s and
+                U1.userId = notif.connector and
+                N1.nodeId = notif.usersNode and
+                N2.nodeId = notif.connectingNode
+            order by timestamp asc;''', (userid,))
+
+            return cur.fetchall()
+            # [{'username': 'Samantha', 'profpic': None, 'usernode': 5, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:47:51.285334'}, {'username': 'Samantha', 'profpic': None, 'usernode': 4, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:49:25.671458'}]
+
 
 
 # ---------------- CREATE ----------------
@@ -134,6 +150,26 @@ def add_connection(node1, node2, connector):
             if not exists:
                 cur.execute('''insert into connections (nodeId1, nodeId2, connectorId)
                                 values (%s, %s, %s);''', (node1, node2, connector))
+
+                # also insert into the notification table
+                add_notificaiton(node1, node2, connector)
+                
+# add a notification (used in add_connection)
+def add_notificaiton(node1, node2, connector):
+    with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('''select creatorId from nodes where nodeid = %s;''', (node1))
+                node1user = cur.fetchone()
+                cur.execute('''select creatorId from nodes where nodeid = %s;''', (node2))
+                node2user = cur.fetchone()
+
+                timestamp = datetime.datetime.now()
+
+                cur.execute('''insert into notifications (recipient, connector, usersNode, connectingNode, timestamp)
+                                values (%s, %s, %s, %s, %s);''', (node1user, connector, node1, node2, timestamp))
+                cur.execute('''insert into notifications (recipient, connector, usersNode, connectingNode, timestamp)
+                                values (%s, %s, %s, %s, %s);''', (node2user, connector, node2, node1, timestamp))
+
 
 # add a node to a user's saved nodes
 def add_to_saved_nodes(userid, nodeid):
@@ -199,6 +235,11 @@ def remove_from_saved(userid, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''delete from savedNodes where nodeId = %s and userId = %s;''', (nodeid,userid))
+
+def delete_notif(notifid):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''delete from notifications where notifIf = %s;''', (notifid,))
 
 #NOTE: Do we need this?
 def remove_from_recent():

@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request, url_for, redirect, g, session, abort
+from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
 from developing_the_interactive_web_project_1_group_5.node import format_node_display, dict_get, get_popular_nodes
+
+from psycopg import errors
+
 import os
 
 import developing_the_interactive_web_project_1_group_5.database as database
@@ -10,8 +14,8 @@ import developing_the_interactive_web_project_1_group_5.database as database
 app = Flask(__name__)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
 
-# auth0 setup (can make a new file for auth later, but let's just leave it here for starters)
 oauth = OAuth(app)
+csrf = CSRFProtect(app)
 
 domain = os.environ["AUTH0_DOMAIN"]
 client_id = os.environ["AUTH0_CLIENT_ID"]
@@ -31,17 +35,16 @@ database.setup()
 
 
 def check_signin():
-    if "user" in session:
-        return True
+    return "sub_id" in session
 
 
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if "user" not in session:
+        if not check_signin():
             return redirect("/login")
-        return f(*args, **kwargs)
-
+        else: 
+            return f(*args, **kwargs)
     return decorated
 
 
@@ -72,8 +75,13 @@ def search():
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
-    session["user"] = token
-    return redirect("/")
+    sub_id = token.get("userinfo").get('sub')
+    session["sub_id"] = sub_id
+
+    if (database.get_user(session.get('sub_id')) == None):
+        return redirect("/set-username")
+    else:
+        return redirect("/")
 
 
 @app.route("/auth-login")
@@ -82,17 +90,28 @@ def login():
         redirect_uri=url_for("callback", _external=True)
     )
 
-
-@app.route("/signup")
-def signup():
-    return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("callback", _external=True), screen_hint="signup"
-    )
-
-
+# TODO: Change this to JS modal instead of Jinja template 
 @app.route("/login")
 def login_overlay():
     return render_template("login.html")
+
+
+@app.route("/set-username")
+@login_required
+def set_username():
+    if (database.get_user(session.get('sub_id')) == None):
+        return render_template("username.html")
+    else: 
+        return redirect("/")
+
+@app.route("/create-username", methods=["GET", "POST"])
+@login_required
+def username_setup():
+    if (database.get_user(session.get('sub_id')) == None):
+        # TODO: Validate username here 
+        username = request.form.get('username')
+        database.add_user( subId=session.get("sub_id"), username=username)
+    return redirect("/")
 
 
 @app.route("/logout")
@@ -178,7 +197,7 @@ def create_node():
 @login_required
 def view_profile():
     user = {
-        "name": "John Chungus",
+        "name": database.get_user(session.get("sub_id"))['username'],
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     # TODO: Change this when you can get user id from auth
@@ -198,7 +217,7 @@ def view_profile():
 @login_required
 def view_settings():
     user = {
-        "name": "John Chungus",
+        "name": database.get_user(session.get("sub_id"))['username'],
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     return render_template("settings.html", user=user, loggedin=check_signin())

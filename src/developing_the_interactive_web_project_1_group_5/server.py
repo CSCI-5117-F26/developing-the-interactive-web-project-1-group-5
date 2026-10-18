@@ -4,6 +4,7 @@ from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
 from developing_the_interactive_web_project_1_group_5.node import format_node_display, dict_get, get_popular_nodes
 import os
+import datetime
 
 import developing_the_interactive_web_project_1_group_5.database as database
 
@@ -198,8 +199,28 @@ def view_settings():
 #@login_required
 def notifications(user_id):
     notifs = database.get_notifs(user_id)
-    return render_template("notifications.html", notifs=notifs)
 
+    # format dates
+    timestamps = {}
+    current_date = ""
+    for notif in notifs:
+        date = datetime.datetime.fromisoformat(notif["timestamp"])
+        date_str = date.strftime("%x")
+        if (date_str != current_date):
+            timestamps[notif["notifid"]] = date_str
+            current_date = date_str
+        else:
+            timestamps[notif["notifid"]] = None
+
+    return render_template("notifications.html", notifs=notifs, dates=timestamps)
+
+# TODO: authorization
+@app.route("/delete-notif/<int:notif_id>", methods=('POST',))
+#@login_required
+def delete_notif(notif_id):
+    userid = database.get_notif_recipient(notif_id)
+    database.delete_notif(notif_id)
+    return redirect(url_for("notifications", user_id=userid["recipient"]))
 
 @app.route("/edit-profile/<int:user_id>")
 @login_required

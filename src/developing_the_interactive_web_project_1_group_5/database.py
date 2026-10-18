@@ -26,10 +26,10 @@ def get_node(nodeid):
             return cur.fetchone()
 
 # get a user's information
-def get_user(userid):
+def get_user(subId):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select * from users where userId = %s;", (userid,))
+            cur.execute("select * from users where subId = %s;", (subId,))
             return cur.fetchone()
 
 # get all nodeids connected to a node
@@ -98,13 +98,13 @@ def add_node(creatorId, title, image, desc=None, topic=None): # which ones are r
                             values (%s, %s, %s, %s, %s);''', (title, image, desc, creatorId, topic))
 
 # add a user
-def add_user(username, bio=None, profilepic=None):
+def add_user(subId, username, bio=None, profilepic=None):
     #TODO: input validation??
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''insert into users (username, bio, profPic)
-                            values (%s, %s, %s);''', (username, bio, profilepic))
+            cur.execute('''insert into users (subId, username, bio, profPic)
+                            values (%s, %s, %s, %s);''', (subId, username, bio, profilepic))
 
 # add a connection between two nodes to the connections table
 def add_connection(node1, node2, connector):

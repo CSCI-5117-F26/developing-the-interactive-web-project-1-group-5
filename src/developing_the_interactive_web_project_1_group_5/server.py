@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, g, session
+from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
@@ -10,8 +11,8 @@ import developing_the_interactive_web_project_1_group_5.database as database
 app = Flask(__name__)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
 
-# auth0 setup (can make a new file for auth later, but let's just leave it here for starters)
 oauth = OAuth(app)
+csrf = CSRFProtect(app)
 
 domain = os.environ["AUTH0_DOMAIN"]
 client_id = os.environ["AUTH0_CLIENT_ID"]
@@ -31,17 +32,20 @@ database.setup()
 
 
 def check_signin():
-    if "user" in session:
-        return True
+    return "userId" in session
 
 
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if "user" not in session:
+        if not check_signin():
             return redirect("/login")
+        print("reached here")
+        print(session["userId"])
+        if (database.get_user(session["userId"]) == None):
+            print("checked database")
+            return render_template("username_setup.html")
         return f(*args, **kwargs)
-
     return decorated
 
 
@@ -49,8 +53,7 @@ def login_required(f):
 def landing():
     return render_template(
         "landing.html", loggedin=check_signin()
-    )  # I will find more efficient way of checking logged in...
-
+    )  
 
 @app.route("/search")
 @login_required
@@ -61,7 +64,7 @@ def search():
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
-    session["user"] = token
+    session["userId"] = token.get("userinfo").get('sub')
     return redirect("/")
 
 
@@ -72,17 +75,16 @@ def login():
     )
 
 
-@app.route("/signup")
-def signup():
-    return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("callback", _external=True), screen_hint="signup"
-    )
-
-
 @app.route("/login")
 def login_overlay():
     return render_template("login.html")
 
+@app.route("/username", methods=["GET", "POST"])
+def username_setup():
+    if (database.get_user(session["userId"]) == None):
+        username = request.form.get('username')
+        database.add_user( subId=session["userId"], username=username)
+    return redirect("/")
 
 @app.route("/logout")
 def logout():
@@ -175,7 +177,7 @@ def create_node():
 @login_required
 def view_profile():
     user = {
-        "name": "John Chungus",
+        "name": database.get_user(session["userId"])['username'],
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     bogus_nodes_yours = ["Chungus node", "bogus node2", "node node"]
@@ -198,7 +200,7 @@ def view_profile():
 @login_required
 def view_settings():
     user = {
-        "name": "John Chungus",
+        "name": database.get_user(session["userId"])['username'],
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     return render_template("settings.html", user=user, loggedin=check_signin())

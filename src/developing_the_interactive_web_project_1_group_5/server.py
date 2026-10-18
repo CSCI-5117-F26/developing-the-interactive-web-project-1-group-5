@@ -32,7 +32,7 @@ database.setup()
 
 
 def check_signin():
-    return "userId" in session
+    return "sub_id" in session
 
 
 def login_required(f):
@@ -40,12 +40,8 @@ def login_required(f):
     def decorated(*args, **kwargs):
         if not check_signin():
             return redirect("/login")
-        print("reached here")
-        print(session["userId"])
-        if (database.get_user(session["userId"]) == None):
-            print("checked database")
-            return render_template("username_setup.html")
-        return f(*args, **kwargs)
+        else: 
+            return f(*args, **kwargs)
     return decorated
 
 
@@ -54,6 +50,7 @@ def landing():
     return render_template(
         "landing.html", loggedin=check_signin()
     )  
+
 
 @app.route("/search")
 @login_required
@@ -64,8 +61,13 @@ def search():
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
-    session["userId"] = token.get("userinfo").get('sub')
-    return redirect("/")
+    sub_id = token.get("userinfo").get('sub')
+    session["sub_id"] = sub_id
+
+    if (database.get_user(session.get('sub_id')) == None):
+        return redirect("/set-username")
+    else:
+        return redirect("/")
 
 
 @app.route("/auth-login")
@@ -74,17 +76,28 @@ def login():
         redirect_uri=url_for("callback", _external=True)
     )
 
-
+# TODO: Change this to JS modal instead of Jinja template 
 @app.route("/login")
 def login_overlay():
     return render_template("login.html")
 
-@app.route("/username", methods=["GET", "POST"])
+
+@app.route("/set-username")
+@login_required
+def set_username():
+    if (database.get_user(session.get('sub_id')) == None):
+        return render_template("username.html")
+    else: 
+        return redirect("/")
+
+@app.route("/create-username", methods=["GET", "POST"])
+@login_required
 def username_setup():
-    if (database.get_user(session["userId"]) == None):
+    if (database.get_user(session["sub_id"]) == None):
         username = request.form.get('username')
-        database.add_user( subId=session["userId"], username=username)
+        database.add_user( subId=session["sub_id"], username=username)
     return redirect("/")
+
 
 @app.route("/logout")
 def logout():
@@ -177,7 +190,7 @@ def create_node():
 @login_required
 def view_profile():
     user = {
-        "name": database.get_user(session["userId"])['username'],
+        "name": database.get_user(session["sub_id"])['username'],
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     bogus_nodes_yours = ["Chungus node", "bogus node2", "node node"]
@@ -200,7 +213,7 @@ def view_profile():
 @login_required
 def view_settings():
     user = {
-        "name": database.get_user(session["userId"])['username'],
+        "name": database.get_user(session["sub_id"])['username'],
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     return render_template("settings.html", user=user, loggedin=check_signin())

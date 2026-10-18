@@ -27,14 +27,14 @@
                     <h1 class="logo">QUILT</h1>
                 </a>
             </div>
-            <!-- <div id="search-container">
+            <div id="search-container">
                 <search>
-                    <form class="pure-form">
+                    <form class="pure-form" action="{{url_for('search')}}" method="post">
                         <input class="pure-input-rounded pure-input-1" type="search" id="search-bar" name="search"
                             placeholder="Search">
                     </form>
                 </search>
-            </div> -->
+            </div>
             <div id="nav-links">
                 {%if loggedin%}
                 <a class="icon-link" aria-hidden="true" href="{{url_for('create_node')}}"><i

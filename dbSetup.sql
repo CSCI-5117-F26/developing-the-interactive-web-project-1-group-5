@@ -6,8 +6,15 @@ CREATE table nodes (
     creatorId int,
     topic varchar(100),
     category boolean DEFAULT false, 
-    FOREIGN KEY (creatorId) REFERENCES users
+    FOREIGN KEY (creatorId) REFERENCES users,
+    textSearch tsvector GENERATED ALWAYS AS    
+    (setweight(to_tsvector('title', coalesce(title, '')), 'A') ||
+    setweight(to_tsvector('description', coalesce(description, '')), 'B')) STORED,
+
 );
+-- cannot create index within table most be made outside. this is for full text search
+CREATE INDEX textSearch_idx
+ON nodes USING GIN (textSearch);
 
 CREATE table connections (
     nodeId1 int NOT NULL,

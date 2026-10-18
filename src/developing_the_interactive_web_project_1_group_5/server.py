@@ -2,9 +2,13 @@ from flask import Flask, render_template, request, url_for, redirect, g, session
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
-from developing_the_interactive_web_project_1_group_5.node import format_node_display, dict_get, get_popular_nodes
+from developing_the_interactive_web_project_1_group_5.node import (
+    format_node_display,
+    dict_get,
+    get_popular_nodes,
+)
 import os
-
+import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
 import developing_the_interactive_web_project_1_group_5.database as database
 
 app = Flask(__name__)
@@ -47,6 +51,7 @@ def login_required(f):
 
 @app.route("/")
 def landing():
+    print(check_signin())
     return render_template(
         "landing.html", loggedin=check_signin()
     )  # I will find more efficient way of checking logged in...
@@ -55,7 +60,8 @@ def landing():
 @app.route("/search")
 @login_required
 def search():
-    return
+    show = fulltext.full_text_search()
+    return render_template("search.html")
 
 
 @app.route("/callback", methods=["GET", "POST"])
@@ -107,7 +113,7 @@ def logout():
 @app.route("/node/<int:node_id>")
 def view_node(node_id):
     node = database.get_node(node_id)
-    if ((node == None)):
+    if node == None:
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
 
@@ -117,11 +123,13 @@ def view_node(node_id):
     # created_nodes = format_node_display(database.get_user_nodes(user_id))
     return render_template(
         "node_parent.html",
-        node_title = dict_get(node, "title", "Untitled"),
-        node_img_url = dict_get(node, "img", "../static/img/temp_chungus.png"), 
-        node_owner = (database.get_user(dict_get(node, "creatorid", "1"))["username"] or "Quilt"),
-        node_description = dict_get(node,"description","None"),
-        connections = connections,
+        node_title=dict_get(node, "title", "Untitled"),
+        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+        node_owner=(
+            database.get_user(dict_get(node, "creatorid", "1"))["username"] or "Quilt"
+        ),
+        node_description=dict_get(node, "description", "None"),
+        connections=connections,
         # saved_nodes = saved_nodes,
         # recent_nodes = recent_nodes,
         # created_nodes = created_nodes,
@@ -133,7 +141,7 @@ def view_node(node_id):
 @login_required
 def edit_node(node_id):
     node = database.get_node(node_id)
-    if ((node == None)):
+    if node == None:
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
 
@@ -143,11 +151,13 @@ def edit_node(node_id):
     # created_nodes = format_node_display(database.get_user_nodes(user_id))
     return render_template(
         "node_edit.html",
-        node_title = dict_get(node, "title", "Untitled"),
-        node_img_url = dict_get(node, "img", "../static/img/temp_chungus.png"), 
-        node_owner = (database.get_user(dict_get(node, "creatorid", "1"))["username"] or "Quilt"),
-        node_description = dict_get(node,"description","None"),
-        connections = connections,
+        node_title=dict_get(node, "title", "Untitled"),
+        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+        node_owner=(
+            database.get_user(dict_get(node, "creatorid", "1"))["username"] or "Quilt"
+        ),
+        node_description=dict_get(node, "description", "None"),
+        connections=connections,
         # saved_nodes = saved_nodes,
         # recent_nodes = recent_nodes,
         # created_nodes = created_nodes,
@@ -198,6 +208,7 @@ def view_settings():
 @login_required
 def edit_profile(user_id):
     return
+
 
 # From https://stackoverflow.com/questions/69234307/flask-generate-404-page-if-data-not-found-in-database
 @app.errorhandler(404)

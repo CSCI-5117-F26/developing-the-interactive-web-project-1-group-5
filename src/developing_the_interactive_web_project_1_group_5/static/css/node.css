@@ -18,13 +18,12 @@
     border-radius: 1.5rem;
 }
 
-.flip-color {
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-}
-
 .secondary-button {
     background-color: inherit;
+    color: var(--primary-color);
+}
+
+.secondary-button:hover {
     color: var(--primary-color);
 }
 
@@ -38,8 +37,26 @@ body, a {
     padding: 1em 4em;
 }
 
-.node-box{
+.format-box{
     padding: 0.5em 2em;
+}
+
+.node-box{
+    padding: 1em 2em;
+}
+
+.node-box:hover {
+    text-decoration: underline;
+    font-weight: strong;
+}
+
+.node-card{
+    object-position: center;
+    width: 100%;
+    min-height: 220px;
+    min-width: 200px;
+    background-color: var(--accent-color2);
+    padding: 0;
 }
 
 /* images */
@@ -65,16 +82,25 @@ body, a {
     object-position: center;  
     padding: 0;
     background-color: var(--accent-color2);
-    color: var(--primary-color);
-    border-radius: 1.5rem;
+    border-radius: 1.5rem 1.5rem 0rem 0rem;
 }
 
-.connection-img:hover{
+.node-card:hover{
     filter: brightness(0.8); 
+    color:var(--primary-color);
 }
 
 .center-text {
   text-align: center;
+}
+
+
+/* From https://css-tricks.com/almanac/properties/l/line-clamp/ */
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
 }
 
 /* Connect node modal */
@@ -106,6 +132,7 @@ body, a {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    text-align:right;
 }
 
 .close:hover,
@@ -126,10 +153,12 @@ body, a {
   cursor: pointer;
   padding: 12px 0;
   text-align: center;
+  margin: 0;
 }
 #tab-one:checked ~ .pure-g label[for="tab-one"],
 #tab-two:checked ~ .pure-g label[for="tab-two"],
-#tab-three:checked ~ .pure-g label[for="tab-three"]{
+#tab-three:checked ~ .pure-g label[for="tab-three"],
+#tab-four:checked ~ .pure-g label[for="tab-four"]{
   background: #eaeaea;
 }
 
@@ -140,14 +169,16 @@ body, a {
 
 #tab-one:checked ~ #panel-one,
 #tab-two:checked ~ #panel-two,
-#tab-three:checked ~ #panel-three {
-  display: flex;
+#tab-three:checked ~ #panel-three,
+#tab-four:checked ~ #panel-four  {
+  display: block;
   background: #eaeaea;
 }
 
 #tab-one:not(:checked) ~ #panel-one,
 #tab-two:not(:checked) ~ #panel-two,
-#tab-three:not(:checked) ~ #panel-three {
+#tab-three:not(:checked) ~ #panel-three,
+#tab-four:not(:checked) ~ #panel-four {
   display: none;
 }
 

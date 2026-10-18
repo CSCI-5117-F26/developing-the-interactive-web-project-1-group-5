@@ -1,5 +1,6 @@
 import os
 import atexit
+import datetime
 from psycopg_pool import ConnectionPool
 from psycopg.rows import dict_row
 
@@ -25,6 +26,20 @@ def get_node(nodeid):
             cur.execute("select * from nodes where nodeId = %s;", (nodeid,))
             return cur.fetchone()
 
+# get every single node in the table (exclude categories)
+def get_all_nodes():
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("select * from nodes where category = false;")
+            return cur.fetchall()
+
+# get every single category in the table
+def get_all_categories():
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("select * from nodes where category = true;")
+            return cur.fetchall()
+
 # get a user's information
 def get_user(subId):
     with pool.connection() as conn:
@@ -42,7 +57,10 @@ def get_node_connections(nodeid):
                             where nodeId in (
                                 select nodeId2 
                                 from connections 
-                                where nodeId1 = %s);''', (nodeid,))
+                                where nodeId1 = %s) or nodeId in (
+                                                    select nodeId1
+                                                    from connections
+                                                    where nodeId2 = %s);''', (nodeid,nodeid))
             return cur.fetchall()
 
 # get all nodes with a certain topic
@@ -96,6 +114,7 @@ def add_node(creatorId, title, image, desc=None, topic=None): # which ones are r
             cur.execute('''insert into nodes (title, img, description, creatorId, topic)
                             values (%s, %s, %s, %s, %s);''', (title, image, desc, creatorId, topic))
 
+# TODO: add auth0 stuff
 # add a user
 def add_user(subId, username, bio=None, profilepic=None):
     #TODO: input validation??
@@ -119,11 +138,54 @@ def add_to_saved_nodes(userid, nodeid):
             cur.execute('''insert into savedNodes (userId, nodeId)
                             values (%s, %s);''', (userid, nodeid))
 
+#TODO: remove the first-in/oldest node when adding the 11th node
 # add a node to a user's recent nodes
 def add_to_recent_nodes(userid, nodeid):
     with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute('''insert into recentNodes (userId, nodeId)
-                                values (%s, %s);''', (userid, nodeid))
+        with conn.cursor() as cur:
+            timestamp = datetime.datetime.now()
+            cur.execute('''insert into recentNodes (userId, nodeId, timestamp)
+                            values (%s, %s, %s);''', (userid, nodeid, timestamp))
 
-    
+
+
+# ---------------- UPDATE ----------------
+
+#NOTE: Can you change a node's topic?
+# update a node with new values
+def edit_node(title=None, image=None, desc=None):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+
+            cur.execute('''update nodes 
+                            set title = %s, img = %s, description = %s''', (title, image, desc))
+
+# update a user with new values
+def edit_user(name=None, bio=None, pic=None):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''update users 
+                            set username = %s, bio = %s, profPic = %s''', (name, bio, pic))
+
+# ---------------- DELETE ----------------
+
+def delete_node(nodeid):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''delete from nodes where nodeId = %s;''', (nodeid,))
+
+def delete_connection(nodeid1, nodeid2):
+    with pool.connection() as conn:
+            with conn.cursor() as cur:
+                # delete both possibilities
+                cur.execute('''delete from connections where nodeId1 = %s and nodeId2 = %s;''', (nodeid1, nodeid2))
+                cur.execute('''delete from connections where nodeId1 = %s and nodeId2 = %s;''', (nodeid2, nodeid1))
+
+def remove_from_saved(userid, nodeid):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''delete from savedNodes where nodeId = %s and userId = %s;''', (nodeid,userid))
+
+#NOTE: Do we need this?
+def remove_from_recent():
+    return

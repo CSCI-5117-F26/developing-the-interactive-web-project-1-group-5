@@ -4,6 +4,8 @@ from functools import wraps
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
 
+from psycopg import errors
+
 import os
 
 import developing_the_interactive_web_project_1_group_5.database as database
@@ -93,9 +95,10 @@ def set_username():
 @app.route("/create-username", methods=["GET", "POST"])
 @login_required
 def username_setup():
-    if (database.get_user(session["sub_id"]) == None):
+    if (database.get_user(session.get('sub_id')) == None):
+        # TODO: Validate username here 
         username = request.form.get('username')
-        database.add_user( subId=session["sub_id"], username=username)
+        database.add_user( subId=session.get("sub_id"), username=username)
     return redirect("/")
 
 
@@ -190,7 +193,7 @@ def create_node():
 @login_required
 def view_profile():
     user = {
-        "name": database.get_user(session["sub_id"])['username'],
+        "name": database.get_user(session.get("sub_id"))['username'],
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     bogus_nodes_yours = ["Chungus node", "bogus node2", "node node"]
@@ -213,7 +216,7 @@ def view_profile():
 @login_required
 def view_settings():
     user = {
-        "name": database.get_user(session["sub_id"])['username'],
+        "name": database.get_user(session.get("sub_id"))['username'],
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     return render_template("settings.html", user=user, loggedin=check_signin())

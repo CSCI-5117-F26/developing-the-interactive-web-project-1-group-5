@@ -19,8 +19,8 @@ CREATE table connections (
 
 CREATE table users (
     userId serial PRIMARY KEY,
-    subId int NOT NULL,
-    username varchar(50) NOT NULL,
+    subId varchar(250) NOT NULL,
+    username varchar(15) NOT NULL,
     bio varchar(250),
     profPic BYTEA
 );

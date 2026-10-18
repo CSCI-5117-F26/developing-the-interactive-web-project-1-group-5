@@ -31,6 +31,7 @@ def get_user(subId):
         with conn.cursor() as cur:
             cur.execute("select * from users where subId = %s;", (subId,))
             return cur.fetchone()
+        
 
 # get all nodeids connected to a node
 def get_node_connections(nodeid):
@@ -83,8 +84,6 @@ def get_recent_nodes(userid):
                                 from recentNodes 
                                 where userId = %s);''', (userid,))
             return cur.fetchall()
-
-
 
 # ---------------- CREATE ----------------
 

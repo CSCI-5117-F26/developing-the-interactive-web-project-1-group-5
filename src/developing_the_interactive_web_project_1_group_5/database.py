@@ -30,14 +30,14 @@ def get_node(nodeid):
 def get_all_nodes():
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select nodeId from nodes where category = false;")
+            cur.execute("select * from nodes where category = false;")
             return cur.fetchall()
 
 # get every single category in the table
 def get_all_categories():
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select nodeId from nodes where category = true;")
+            cur.execute("select * from nodes where category = true;")
             return cur.fetchall()
 
 # get a user's information

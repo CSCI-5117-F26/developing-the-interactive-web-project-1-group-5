@@ -47,10 +47,21 @@ def login_required(f):
 
 @app.route("/")
 def landing():
-    return render_template(
-        "landing.html", loggedin=check_signin()
-    )  # I will find more efficient way of checking logged in...
+    categories = format_node_display(database.get_all_categories())
+    popular_nodes = format_node_display(get_popular_nodes())
 
+    # TODO: Change this when you can get user_id
+    user_id = 1
+    recent_nodes = format_node_display(database.get_recent_nodes(user_id))
+    # new_nodes = format_node_display(database.get_new_nodes??(user_id))
+    return render_template(
+        "landing.html",
+        categories = categories,
+        popular_nodes = popular_nodes,
+        recent_nodes = recent_nodes,
+        # new_nodes = new_nodes,
+        loggedin=check_signin(),
+    )
 
 @app.route("/search")
 @login_required
@@ -111,10 +122,11 @@ def view_node(node_id):
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
 
-    # TODO: How do you get the user_id?
-    # saved_nodes = format_node_display(database.get_saved_nodes(user_id))
-    # recent_nodes = format_node_display(database.get_recent_nodes(user_id))
-    # created_nodes = format_node_display(database.get_user_nodes(user_id))
+    # TODO: Change this when you can ge user_id
+    user_id = 1
+    saved_nodes = format_node_display(database.get_saved_nodes(user_id))
+    recent_nodes = format_node_display(database.get_recent_nodes(user_id))
+    created_nodes = format_node_display(database.get_user_nodes(user_id))
     return render_template(
         "node_parent.html",
         node_title = dict_get(node, "title", "Untitled"),
@@ -122,9 +134,9 @@ def view_node(node_id):
         node_owner = (database.get_user(dict_get(node, "creatorid", "1"))["username"] or "Quilt"),
         node_description = dict_get(node,"description","None"),
         connections = connections,
-        # saved_nodes = saved_nodes,
-        # recent_nodes = recent_nodes,
-        # created_nodes = created_nodes,
+        saved_nodes = saved_nodes,
+        recent_nodes = recent_nodes,
+        created_nodes = created_nodes,
         loggedin=check_signin(),
     )
 
@@ -137,10 +149,11 @@ def edit_node(node_id):
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
 
-    # TODO: How do you get the user_id?
-    # saved_nodes = format_node_display(database.get_saved_nodes(user_id))
-    # recent_nodes = format_node_display(database.get_recent_nodes(user_id))
-    # created_nodes = format_node_display(database.get_user_nodes(user_id))
+    # TODO: Change this when you can ge user_id
+    user_id = 1
+    saved_nodes = format_node_display(database.get_saved_nodes(user_id))
+    recent_nodes = format_node_display(database.get_recent_nodes(user_id))
+    created_nodes = format_node_display(database.get_user_nodes(user_id))
     return render_template(
         "node_edit.html",
         node_title = dict_get(node, "title", "Untitled"),
@@ -148,9 +161,9 @@ def edit_node(node_id):
         node_owner = (database.get_user(dict_get(node, "creatorid", "1"))["username"] or "Quilt"),
         node_description = dict_get(node,"description","None"),
         connections = connections,
-        # saved_nodes = saved_nodes,
-        # recent_nodes = recent_nodes,
-        # created_nodes = created_nodes,
+        saved_nodes = saved_nodes,
+        recent_nodes = recent_nodes,
+        created_nodes = created_nodes,
         loggedin=check_signin(),
     )
 
@@ -168,18 +181,15 @@ def view_profile():
         "name": "John Chungus",
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
-    bogus_nodes_yours = ["Chungus node", "bogus node2", "node node"]
-    bogus_nodes_saved = [
-        "saved node",
-        "hihihihihihi",
-        "YIPPPEEEEEE",
-        "node4  kg. g jg. glu gy lug ulyflf f y",
-    ]
+    # TODO: Change this when you can get user id from auth
+    user_id = 1
+    saved_nodes = format_node_display(database.get_saved_nodes(user_id))
+    created_nodes = format_node_display(database.get_user_nodes(user_id))
     return render_template(
         "profile.html",
         user=user,
-        saved=bogus_nodes_saved,
-        yours=bogus_nodes_yours,
+        saved_nodes=saved_nodes,
+        created_nodes=created_nodes,
         loggedin=check_signin(),
     )
 

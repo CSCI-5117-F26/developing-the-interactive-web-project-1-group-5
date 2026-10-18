@@ -37,7 +37,7 @@
                     {% for connection in connections %}
                     <div class="pure-u-1-2 pure-u-md-1-4">
                         <div class="node-box">
-                            <button class="pure-button connection-img" onclick="window.location.href='{{connection.link}}';">
+                            <button class="pure-button node-card" onclick="window.location.href='{{connection.link}}';">
                                 <img class="connection-img" src="{{connection.img_url}}">
                                 <p class="line-clamp">{{connection.node_title}}</p>
                             </button>
@@ -48,9 +48,9 @@
                     <!-- prevent user from adding connection if they aren't logged in -->
                     {%if loggedin%}
                     <div class="pure-u-1-2 pure-u-md-1-4">
-                        <div class="node-box">
-                            <button class="pure-button connection-img" id="addNode" style="font-size: 150%;">
-                                <i class="fa-solid fa-circle-plus"></i> Add
+                        <div class="node-box ">
+                            <button class="pure-button node-card" id="addNode" style="font-size: 150%;">
+                                <i class="fa-solid fa-circle-plus"></i> <p>Add</p>
                             </button>
                         </div> 
                     </div>
@@ -76,25 +76,24 @@
                         <label class="pure-u-1-4 label" for="tab-three">Created</label>
                     </div>
 
-                    <!-- TODO: Uncomment when we have the user_id! -->
                     <div class="pure-g scroll-box" id="panel-one">
                         <div class="pure-g">
-                            <!-- {% for saved in saved_nodes%}
+                            {% for saved in saved_nodes%}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this)'>
                                         <img class="pure-img connection-img" src="{{saved.img_url}}">
                                     </button>
-                                    <p class="center-text">{{saved.node_title}}</p>
+                                    <p class="center-text line-clamp">{{saved.node_title}}</p>
                                 </div>
                             </div>
-                            {% endfor %}  -->
+                            {% endfor %} 
                         </div>
                     </div>
 
                     <div class="pure-g scroll-box" id="panel-two">
                         <div class="pure-g">
-                            <!-- {% for recent in recent_nodes %}
+                            {% for recent in recent_nodes %}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this)'>
@@ -103,13 +102,13 @@
                                     <p class="center-text line-clamp">{{recent.node_title}}</p>
                                 </div>
                             </div>
-                            {% endfor %}  -->
+                            {% endfor %} 
                         </div>
                     </div>
 
                     <div class="pure-g scroll-box" id="panel-three">
                         <div class="pure-g">
-                            <!-- {% for created in created_nodes%}
+                            {% for created in created_nodes%}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this)'>
@@ -118,7 +117,7 @@
                                     <p class="center-text">{{created.node_title}}</p>
                                 </div>
                             </div>
-                            {% endfor %}  -->
+                            {% endfor %} 
                         </div>
                     </div>
 

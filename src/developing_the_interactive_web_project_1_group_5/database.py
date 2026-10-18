@@ -31,7 +31,7 @@ def get_node(nodeid):
 def get_all_nodes():
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select nodeId from nodes where category = false;")
+            cur.execute("select * from nodes where category = false;")
             return cur.fetchall()
 
 
@@ -39,16 +39,17 @@ def get_all_nodes():
 def get_all_categories():
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select nodeId from nodes where category = true;")
+            cur.execute("select * from nodes where category = true;")
             return cur.fetchall()
 
 
 # get a user's information
-def get_user(userid):
+def get_user(subId):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select * from users where userId = %s;", (userid,))
+            cur.execute("select * from users where subId = %s;", (subId,))
             return cur.fetchone()
+        
 
 
 # get all nodeids connected to a node
@@ -123,6 +124,7 @@ def get_recent_nodes(userid):
             return cur.fetchall()
 
 
+
 # ---------------- CREATE ----------------
 
 
@@ -143,15 +145,15 @@ def add_node(
 
 # TODO: add auth0 stuff
 # add a user
-def add_user(username, bio=None, profilepic=None):
+def add_user(subId, username, bio=None, profilepic=None):
     # TODO: input validation??
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                """insert into users (username, bio, profPic)
-                            values (%s, %s, %s);""",
-                (username, bio, profilepic),
+                """insert into users (subId, username, bio, profPic)
+                            values (%s, %s, %s, %s);""",
+                (subId, username, bio, profilepic),
             )
 
 

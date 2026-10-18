@@ -3,6 +3,7 @@
 {% block title %}Profile{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-styles.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/node.css') }}">
 {% endblock %}
 {% block body %}
 
@@ -25,18 +26,19 @@
             <input class="radiotab" type="radio" name="prof-tabs" id="profile-saved" checked>
             <label class="tab-label" for="profile-saved">Saved Patches</label>
             <div class="panel">
-                {% if saved %}
-                <div class="profile-node-flex">
-                    {% for node in yours %}
-                    <div class="profile-node-container">
-                        <div class="card">
-                            <img class="profile-node-img" src="{{ url_for('static', filename ='img/temp_image.jpg') }}">
-                            <!-- make text clickable to access specific node?? Can't tell if we should do this or make the card itself clickable -->
-                            <a href="{{url_for('view_node', node_id=1)}}"><h1>{{ node }}</h1></a>
+                {% if saved_nodes %}
+                    <div class="pure-g center-text">
+                        {% for node in saved_nodes %}
+                        <div class="pure-u-1-2 pure-u-md-1-4">
+                            <div class="node-box">
+                                <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                                    <img class="connection-img" src="{{node.img_url}}">
+                                    <p class="line-clamp">{{node.node_title}}</p>
+                                </button>
+                            </div>
                         </div>
+                        {% endfor %} 
                     </div>
-                    {% endfor %}
-                </div>
                 {% else %}
                 <p>You've got no saved nodes. Go find some here</p>
                 <button class="pure-button">[add a button or somethn to explore page]</button>
@@ -46,18 +48,19 @@
             <input class="radiotab" type="radio" name="prof-tabs" id="profile-yours">
             <label class="tab-label" for="profile-yours">Your Patches</label>
             <div class="panel">
-                {% if saved %}
-                <div class="profile-node-flex">
-                    {% for node in saved %}
-                    <div class="profile-node-container">
-                        <div class="card">
-                            <img class="profile-node-img" src="{{ url_for('static', filename ='img/temp_image.jpg') }}">
-                            <!-- make text clickable to access specific node?? Can't tell if we should do this or make the card itself clickable -->
-                            <a href="{{url_for('view_node', node_id=1)}}"><h1>{{ node }}</h1></a>
+                {% if created_nodes %}
+                <div class="pure-g center-text">
+                        {% for node in created_nodes %}
+                        <div class="pure-u-1-2 pure-u-md-1-4">
+                            <div class="node-box">
+                                <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                                    <img class="connection-img" src="{{node.img_url}}">
+                                    <p class="line-clamp">{{node.node_title}}</p>
+                                </button>
+                            </div>
                         </div>
+                        {% endfor %} 
                     </div>
-                    {% endfor %}
-                </div>
                 {% else %}
                 <p>You've got no nodes. Make one here</p>
                 <button class="pure-button">[add a button or somethn to create node page]</button>

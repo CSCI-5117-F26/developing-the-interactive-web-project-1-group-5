@@ -9,6 +9,13 @@ CREATE table nodes (
     FOREIGN KEY (creatorId) REFERENCES users
 );
 
+CREATE TABLE images (
+    imageId serial PRIMARY KEY,
+    filename varchar(255),
+    mimetype varchar(100) NOT NULL,
+    data BYTEA NOT NULL
+);
+
 CREATE table connections (
     nodeId1 int NOT NULL,
     nodeId2 int NOT NULL,

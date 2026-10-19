@@ -7,7 +7,14 @@
 {% block body %}
 
 {% for node in show %}
-<div></div>
+<div class="pure-u-1-2 pure-u-md-1-4">
+    <div class="node-box">
+        <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+            <img class="pure-img connection-img" src="{{node.img_url}}">
+            <p class="center-text line-clamp">{{node.node_title}}</p>
+        </button>
+    </div>
+</div>
 {% endfor %}
 
 

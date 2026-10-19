@@ -1,12 +1,13 @@
 CREATE table nodes (
     nodeId serial PRIMARY KEY,
     title varchar(100) NOT NULL,
-    img BYTEA,
+    imgId int,
     description varchar(250),
     creatorId int,
     topic varchar(100),
     category boolean DEFAULT false, 
-    FOREIGN KEY (creatorId) REFERENCES users
+    FOREIGN KEY (creatorId) REFERENCES users,
+    FOREIGN KEY (img) REFERENCES images
 );
 
 CREATE TABLE images (
@@ -31,7 +32,8 @@ CREATE table users (
     userId serial PRIMARY KEY,
     username varchar(50) NOT NULL,
     bio varchar(250),
-    profPic BYTEA
+    profPicId int,
+    FOREIGN KEY (profPic) REFERENCES images
 );
 
 CREATE table savedNodes (

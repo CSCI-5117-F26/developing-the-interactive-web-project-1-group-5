@@ -30,22 +30,23 @@ def get_node(nodeid):
 def get_all_nodes():
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select nodeId from nodes where category = false;")
+            cur.execute("select * from nodes where category = false;")
             return cur.fetchall()
 
 # get every single category in the table
 def get_all_categories():
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select nodeId from nodes where category = true;")
+            cur.execute("select * from nodes where category = true;")
             return cur.fetchall()
 
 # get a user's information
-def get_user(userid):
+def get_user(subId):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("select * from users where userId = %s;", (userid,))
+            cur.execute("select * from users where subId = %s;", (subId,))
             return cur.fetchone()
+        
 
 # get all nodeids connected to a node
 def get_node_connections(nodeid):
@@ -70,16 +71,16 @@ def get_nodes_by_topic(topic):
                 return cur.fetchall()
 
 # get nodes that a user has created
-def get_user_nodes(userid):
+def get_user_nodes(subId):
     with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute('''select * 
                                 from nodes
-                                where creatorId = %s;''', (userid,))
+                                where subId = %s;''', (subId,))
                 return cur.fetchall()
 
 # get a user's saved nodes
-def get_saved_nodes(userid):
+def get_saved_nodes(subId):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''select * 
@@ -87,11 +88,11 @@ def get_saved_nodes(userid):
                             where nodeId in (
                                 select nodeId 
                                 from savedNodes 
-                                where userId = %s);''', (userid,))
+                                where subId = %s);''', (subId,))
             return cur.fetchall()
 
 # get a user's recent nodes
-def get_recent_nodes(userid):
+def get_recent_nodes(subId):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''select * 
@@ -99,7 +100,7 @@ def get_recent_nodes(userid):
                             where nodeId in (
                                 select nodeId 
                                 from recentNodes 
-                                where userId = %s);''', (userid,))
+                                where subId = %s);''', (subId,))
             return cur.fetchall()
 
 # retrieve a user's notifications
@@ -139,13 +140,13 @@ def add_node(creatorId, title, image, desc=None, topic=None): # which ones are r
 
 # TODO: add auth0 stuff
 # add a user
-def add_user(username, bio=None, profilepic=None):
+def add_user(subId, username, bio=None, profilepic=None):
     #TODO: input validation??
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''insert into users (username, bio, profPic)
-                            values (%s, %s, %s);''', (username, bio, profilepic))
+            cur.execute('''insert into users (subId, username, bio, profPic)
+                            values (%s, %s, %s, %s);''', (subId, username, bio, profilepic))
 
 # add a connection between two nodes to the connections table
 def add_connection(node1, node2, connector):
@@ -180,14 +181,14 @@ def add_notification(node1, node2, connector):
 
 
 # add a node to a user's saved nodes
-def add_to_saved_nodes(userid, nodeid):
+def add_to_saved_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''insert into savedNodes (userId, nodeId)
-                            values (%s, %s);''', (userid, nodeid))
+            cur.execute('''insert into savedNodes (subId, nodeId)
+                            values (%s, %s);''', (subId, nodeid))
 
 # add a node to a user's recent nodes
-def add_to_recent_nodes(userid, nodeid):
+def add_to_recent_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             num_history = 10
@@ -204,6 +205,9 @@ def add_to_recent_nodes(userid, nodeid):
             timestamp = datetime.datetime.now(datetime.timezone.utc)
             cur.execute('''insert into recentNodes (userId, nodeId, timestamp)
                             values (%s, %s, %s);''', (userid, nodeid, timestamp))
+            timestamp = datetime.datetime.now()
+            cur.execute('''insert into recentNodes (subId, nodeId, timestamp)
+                            values (%s, %s, %s);''', (subId, nodeid, timestamp))
 
 
 
@@ -239,10 +243,10 @@ def delete_connection(nodeid1, nodeid2):
                 cur.execute('''delete from connections where nodeId1 = %s and nodeId2 = %s;''', (nodeid1, nodeid2))
                 cur.execute('''delete from connections where nodeId1 = %s and nodeId2 = %s;''', (nodeid2, nodeid1))
 
-def remove_from_saved(userid, nodeid):
+def remove_from_saved(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''delete from savedNodes where nodeId = %s and userId = %s;''', (nodeid,userid))
+            cur.execute('''delete from savedNodes where nodeId = %s and subId = %s;''', (nodeid,subId))
 
 def delete_notif(notifid):
     with pool.connection() as conn:

@@ -8,7 +8,11 @@
 <div class="pure-g">
     <div class="pure-u-1-4 profile-sidebar">
         <div class="sidebar-box">
-            <img class="pfp" src="{{ url_for('static', filename ='img/temp_image.jpg') }}" alt="ye pfp">
+            {% if user.profpicid %}
+                <img class="pfp" src="{{ url_for('get_image', image_id=user.profpicid) }}" alt="ye pfp">
+            {% else %}
+                <img class="pfp" src="{{ url_for('static', filename ='img/temp_chungus.png') }}" alt="ye pfp">
+            {% endif %}
             <h1 class="profile-name"></h1>
             <h1 class="profile-name">{{ user.name }}</h1>
             <p class="profile-bio">{{ user.bio or "Empty bio"}}</p>
@@ -19,12 +23,12 @@
     <div class="pure-u-3-4">
         <div class="settings-box">
 
-            <form class="pure-form pure-form-stacked" method="POST">
+            <form class="pure-form pure-form-stacked" method="POST" enctype="multipart/form-data">
                 <h1>Edit Profile Settings</h1>
                 <fieldset>
                     <span class="settings-line"></span>
-                    <label for="picture"><h2>Edit Profile Picture</h2></label>
-                    <p>Uhhh I have no idea how to make an 'submit a image file' for a form so I'm leaving it blank. Use your imagination kiddos!!</p>
+                    <label for="picture">Profile picture (optional)</label>
+                    <input id="picture" name="picture" type="file" accept="image/*">
                     <span class="settings-line"></span>
 
                     <label for="name"><h2>Edit Name</h2></label>

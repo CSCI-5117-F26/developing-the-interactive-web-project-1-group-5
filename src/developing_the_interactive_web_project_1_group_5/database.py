@@ -3,6 +3,7 @@ import atexit
 import datetime
 from psycopg_pool import ConnectionPool
 from psycopg.rows import dict_row
+from werkzeug.utils import secure_filename
 
 
 db_url = os.environ["DATABASE_URL"]
@@ -125,6 +126,12 @@ def get_notif_recipient(notif_id):
             cur.execute('''select recipient from notifications where notifId = %s;''', (notif_id,))
             return cur.fetchone()
 
+def get_image(cur, picture):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''SELECT data, mimetype FROM images WHERE imageId = %s;''', (image_id,))
+            return cur.fetchone()
+
 
 
 # ---------------- CREATE ----------------
@@ -209,6 +216,16 @@ def add_to_recent_nodes(subId, nodeid):
             cur.execute('''insert into recentNodes (subId, nodeId, timestamp)
                             values (%s, %s, %s);''', (subId, nodeid, timestamp))
 
+# Putting an uploaded file into the images table. Returns imageId (or none)
+def save_image(cur, picture):
+    if not picture or not picture.filename:
+        return None
+    if not picture.mimetype.startswith("image/"):
+        return None
+    cur.execute('''INSERT INTO images (filename, mimetype, data) VALUES (%s, %s, %s) RETURNING imageId''',
+                (secure_filename(picture.filename), picture.mimetype, picture.read()),
+    )
+    return cur.fetchone()["imageid"]
 
 
 # ---------------- UPDATE ----------------
@@ -223,11 +240,15 @@ def edit_node(title=None, image=None, desc=None):
                             set title = %s, img = %s, description = %s''', (title, image, desc))
 
 # update a user with new values
-def edit_user(name=None, bio=None, pic=None):
+def edit_user(subId, username, bio, picture):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''update users 
-                            set username = %s, bio = %s, profPic = %s''', (name, bio, pic))
+                            set username = %s, bio = %s where subId = %s''', (username, bio, subId))
+            image_id = save_image(cur, picture)
+            if image_id:
+                cur.execute('''update users 
+                            set profpicid = %s where subId = %s''', (image_id, subId))
 
 # ---------------- DELETE ----------------
 

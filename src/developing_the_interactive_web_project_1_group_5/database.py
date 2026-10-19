@@ -4,10 +4,10 @@ import datetime
 from psycopg_pool import ConnectionPool
 from psycopg.rows import dict_row
 
-
 db_url = os.environ["DATABASE_URL"]
 
 pool = None
+
 
 def setup():
     global pool
@@ -49,7 +49,6 @@ def get_user(subId):
         with conn.cursor() as cur:
             cur.execute("select * from users where subId = %s;", (subId,))
             return cur.fetchone()
-        
 
 
 # get all nodeids connected to a node
@@ -86,8 +85,10 @@ def get_user_nodes(subId):
             cur.execute(
                 """select * 
                                 from nodes
-                                where subId = %s;''', (subId,))
-                return cur.fetchall()
+                                where subId = %s;""",
+                (subId,),
+            )
+            return cur.fetchall()
 
 
 # get a user's saved nodes
@@ -100,7 +101,9 @@ def get_saved_nodes(subId):
                             where nodeId in (
                                 select nodeId 
                                 from savedNodes 
-                                where subId = %s);''', (subId,))
+                                where subId = %s);""",
+                (subId,),
+            )
             return cur.fetchall()
 
 
@@ -114,9 +117,10 @@ def get_recent_nodes(subId):
                             where nodeId in (
                                 select nodeId 
                                 from recentNodes 
-                                where subId = %s);''', (subId,))
+                                where subId = %s);""",
+                (subId,),
+            )
             return cur.fetchall()
-
 
 
 # ---------------- CREATE ----------------
@@ -166,18 +170,24 @@ def add_connection(node1, node2, connector):
 def add_to_saved_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''insert into savedNodes (subId, nodeId)
-                            values (%s, %s);''', (subId, nodeid))
+            cur.execute(
+                """insert into savedNodes (subId, nodeId)
+                            values (%s, %s);""",
+                (subId, nodeid),
+            )
 
-#TODO: remove the first-in/oldest node when adding the 11th node
+
+# TODO: remove the first-in/oldest node when adding the 11th node
 # add a node to a user's recent nodes
 def add_to_recent_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             timestamp = datetime.datetime.now()
-            cur.execute('''insert into recentNodes (subId, nodeId, timestamp)
-                            values (%s, %s, %s);''', (subId, nodeid, timestamp))
-
+            cur.execute(
+                """insert into recentNodes (subId, nodeId, timestamp)
+                            values (%s, %s, %s);""",
+                (subId, nodeid, timestamp),
+            )
 
 
 # ---------------- UPDATE ----------------
@@ -233,8 +243,12 @@ def delete_connection(nodeid1, nodeid2):
 def remove_from_saved(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''delete from savedNodes where nodeId = %s and subId = %s;''', (nodeid,subId))
+            cur.execute(
+                """delete from savedNodes where nodeId = %s and subId = %s;""",
+                (nodeid, subId),
+            )
 
-#NOTE: Do we need this?
+
+# NOTE: Do we need this?
 def remove_from_recent():
     return

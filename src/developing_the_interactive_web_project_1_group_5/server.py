@@ -196,9 +196,10 @@ def create_node():
 @app.route("/profile")
 @login_required
 def view_profile():
+    db_user = database.get_user(session.get("sub_id"))
     user = {
-        "name": database.get_user(session.get("sub_id"))['username'],
-        "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
+        "name": db_user["username"],
+        "bio": db_user.get("bio"),
     }
     # TODO: Change this when you can get user id from auth
     user_id = 1

@@ -1,0 +1,96 @@
+{% extends "parent.html" %}
+
+{% block title %}Quilt{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="../static/css/node.css">
+{% endblock %}
+{% block body %}
+<div class="pure-g center-text">
+    <form action="/" method="post" class="pure-form" id="randomize-btn-div" style="padding:1em 1em;">
+        <!-- <input type="text" id="search_query" name="search_query">
+            <button type="submit" class="pure-button pure-button-primary">Search</button> -->
+        <button type="button" class="pure-button landing-button" id="randomize-button">Randomize!</button>
+    </form>
+
+    <div class="pure-u-1">
+        <div class="connection-tabs" id="connection-tabs">
+                <input type="radio" name="tabs" id="tab-one" checked>
+                <input type="radio" name="tabs" id="tab-two">
+                <input type="radio" name="tabs" id="tab-three">
+                <input type="radio" name="tabs" id="tab-four">
+
+                <div class="pure-g">
+                    <label class="pure-u-1-4 label" for="tab-one">Categories</label>
+                    <label class="pure-u-1-4 label" for="tab-two">Popular Nodes</label>
+                    {% if loggedin %}
+                    <label class="pure-u-1-4 label" for="tab-three">Recently Viewed</label>
+                    <label class="pure-u-1-4 label" for="tab-four">New Connections</label>
+                    {% endif %}
+                </div>
+
+                <div class="panel" id="panel-one">
+                    <div class="pure-g">
+                        {% for category in categories%}
+                        <div class="pure-u-1-2 pure-u-md-1-4">
+                            <div class="node-box">
+                                <button class="pure-button node-card" onclick="window.location.href='{{category.link}}';">
+                                    <img class="pure-img connection-img" src="{{category.img_url}}">
+                                    <p class="center-text line-clamp">{{category.node_title}}</p>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %} 
+                    </div>
+                </div>
+
+                <div class="pure-g" id="panel-two">
+                    <div class="pure-g">
+                        {% for node in popular_nodes%}
+                        <div class="pure-u-1-2 pure-u-md-1-4">
+                            <div class="node-box">
+                                <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                                    <img class="pure-img connection-img" src="{{node.img_url}}">
+                                    <p class="center-text line-clamp">{{node.node_title}}</p>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %} 
+                    </div>
+                </div>
+
+                {% if loggedin %}
+                <div class="pure-g" id="panel-three">
+                    <div class="pure-g">
+                        {% for node in recent_nodes%}
+                        <div class="pure-u-1-2 pure-u-md-1-4">
+                            <div class="node-box">
+                                <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                                    <img class="pure-img connection-img" src="{{node.img_url}}">
+                                    <p class="center-text line-clamp">{{node.node_title}}</p>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %} 
+                    </div>
+                </div>
+                <div class="pure-g" id="panel-four">
+                    <div class="pure-g">
+                        <!-- TODO: uncomment when user_id got -->
+                        <!-- {% for node in new_nodes%}
+                        <div class="pure-u-1-2 pure-u-md-1-4">
+                            <div class="node-box">
+                                <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                                    <img class="pure-img connection-img" src="{{node.img_url}}">
+                                    <p class="center-text line-clamp">{{node.node_title}}</p>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}  -->
+                    </div>
+                </div>
+                {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

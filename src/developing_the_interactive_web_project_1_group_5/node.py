@@ -1,0 +1,35 @@
+"""
+A bunch of helper functions for node related formatting and functionality!
+"""
+import developing_the_interactive_web_project_1_group_5.database as database
+
+def format_node_display(query=[]):
+    # Formatter for displaying any nodes that aren't the current node for jinja vars
+    if (query == []):
+        return []
+    connections = []
+    for node in query:
+        connections.append (
+            {
+            "img_url": dict_get(node, "img", "../static/img/temp_chungus.png"),
+            "node_title": dict_get(node, "title", "Untitled"),
+            "link": "/node/" + str(dict_get(node, "nodeid", "doesnotexist")),
+            })
+    return connections
+    
+def dict_get(dict, key, default):
+    # Fetch value of key from dictionary, return default if none
+    return (dict.get(key) or default)
+
+# NOTE: I would like it if we could return all of the nodes but just ordered and have some pagination in the popular nodes page, but only if we have time
+def get_popular_nodes(n=30):
+    # Order by number of connections and return n nodes
+    all_nodes = database.get_all_nodes()
+    popularities = []
+    for node in all_nodes:
+        nodeid = node.get("nodeid")
+        connection_count = len(database.get_node_connections(nodeid))
+        node["connection_count"] = connection_count
+        popularities.append(node)
+    popularities.sort(key=lambda x: x["connection_count"], reverse=True)
+    return popularities[0:n]

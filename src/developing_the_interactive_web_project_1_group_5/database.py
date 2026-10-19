@@ -104,17 +104,17 @@ def get_recent_nodes(subId):
             return cur.fetchall()
 
 # retrieve a user's notifications
-def get_notifs(userid):
+def get_notifs(subid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''
-            select U1.username, U1.profPic, N1.nodeId as userNode, N1.title as userTitle, N2.nodeId as connectingNode, N2.title as connectingTitle, notif.timestamp, notif.notifid
+            select U1.username, U1.profPicId, N1.nodeId as userNode, N1.title as userTitle, N2.nodeId as connectingNode, N2.title as connectingTitle, notif.timestamp, notif.notifid
             from nodes as N1, nodes as N2, users as U1, notifications as notif
             where notif.recipient = %s and
                 U1.userId = notif.connector and
                 N1.nodeId = notif.usersNode and
                 N2.nodeId = notif.connectingNode
-            order by timestamp asc;''', (userid,))
+            order by timestamp asc;''', (subid,))
 
             return cur.fetchall()
             # [{'username': 'Samantha', 'profpic': None, 'usernode': 5, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:47:51.285334'}, {'username': 'Samantha', 'profpic': None, 'usernode': 4, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:49:25.671458'}]
@@ -135,17 +135,16 @@ def add_node(creatorId, title, image, desc=None, topic=None): # which ones are r
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''insert into nodes (title, img, description, creatorId, topic)
+            cur.execute('''insert into nodes (title, imgId, description, subId, topic)
                             values (%s, %s, %s, %s, %s);''', (title, image, desc, creatorId, topic))
 
-# TODO: add auth0 stuff
 # add a user
 def add_user(subId, username, bio=None, profilepic=None):
     #TODO: input validation??
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''insert into users (subId, username, bio, profPic)
+            cur.execute('''insert into users (subId, username, bio, profPicId)
                             values (%s, %s, %s, %s);''', (subId, username, bio, profilepic))
 
 # add a connection between two nodes to the connections table
@@ -165,9 +164,9 @@ def add_connection(node1, node2, connector):
 def add_notification(node1, node2, connector):
     with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute('''select creatorId from nodes where nodeid = %s;''', (node1))
+                cur.execute('''select subId from nodes where nodeid = %s;''', (node1))
                 node1user = cur.fetchone()
-                cur.execute('''select creatorId from nodes where nodeid = %s;''', (node2))
+                cur.execute('''select subId from nodes where nodeid = %s;''', (node2))
                 node2user = cur.fetchone()
 
                 timestamp = datetime.datetime.now()
@@ -192,19 +191,16 @@ def add_to_recent_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             num_history = 10
-            cur.execute('''select count(nodeId) from recentNodes where userId = %s''', (userid,))
+            cur.execute('''select count(subid) from recentNodes where subid = %s''', (subId,))
             count = cur.fetchone()
 
             # remove oldest node in the history
             if count.get("count") == num_history:
-                cur.execute('''select * from recentNodes where userId = %s order by timestamp;''', (userid,))
+                cur.execute('''select * from recentNodes where subid = %s order by timestamp;''', (subId,))
                 recents = cur.fetchall()
                 to_delete = recents[0].get("nodeid") 
-                cur.execute('''delete from recentNodes where userId = %s and nodeId = %s''', (userid, to_delete))
+                cur.execute('''delete from recentNodes where subid = %s and nodeId = %s''', (subId, to_delete))
 
-            timestamp = datetime.datetime.now(datetime.timezone.utc)
-            cur.execute('''insert into recentNodes (userId, nodeId, timestamp)
-                            values (%s, %s, %s);''', (userid, nodeid, timestamp))
             timestamp = datetime.datetime.now()
             cur.execute('''insert into recentNodes (subId, nodeId, timestamp)
                             values (%s, %s, %s);''', (subId, nodeid, timestamp))
@@ -215,19 +211,21 @@ def add_to_recent_nodes(subId, nodeid):
 
 #NOTE: Can you change a node's topic?
 # update a node with new values
-def edit_node(title=None, image=None, desc=None):
+def edit_node(nodeid, title=None, image=None, desc=None):
     with pool.connection() as conn:
         with conn.cursor() as cur:
 
             cur.execute('''update nodes 
-                            set title = %s, img = %s, description = %s''', (title, image, desc))
+                            set title = %s, imgId = %s, description = %s
+                            where nodeid = %s;''', (title, image, desc, nodeid))
 
 # update a user with new values
-def edit_user(name=None, bio=None, pic=None):
+def edit_user(subid, name=None, bio=None, pic=None):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''update users 
-                            set username = %s, bio = %s, profPic = %s''', (name, bio, pic))
+                            set username = %s, bio = %s, profPicId = %s
+                            where subid = %s;''', (name, bio, pic, subid))
 
 # ---------------- DELETE ----------------
 

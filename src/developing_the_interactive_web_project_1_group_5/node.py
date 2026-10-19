@@ -15,7 +15,6 @@ def format_node_display(query=[]):
             "node_title": dict_get(node, "title", "Untitled"),
             "link": "/node/" + str(dict_get(node, "nodeid", "doesnotexist")),
             })
-    print(connections)
     return connections
     
 def dict_get(dict, key, default):
@@ -30,6 +29,7 @@ def get_popular_nodes(n=30):
     for node in all_nodes:
         nodeid = node.get("nodeid")
         connection_count = len(database.get_node_connections(nodeid))
-        popularities.append({"nodeid": nodeid, "connection_count": connection_count})
+        node["connection_count"] = connection_count
+        popularities.append(node)
     popularities.sort(key=lambda x: x["connection_count"], reverse=True)
     return popularities[0:n]

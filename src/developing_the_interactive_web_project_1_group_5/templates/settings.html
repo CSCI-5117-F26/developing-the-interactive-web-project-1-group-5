@@ -25,14 +25,15 @@
 
             <form class="pure-form pure-form-stacked" method="POST" enctype="multipart/form-data">
                 <h1>Edit Profile Settings</h1>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <fieldset>
                     <span class="settings-line"></span>
                     <label for="picture">Profile picture (optional)</label>
                     <input id="picture" name="picture" type="file" accept="image/*">
                     <span class="settings-line"></span>
 
-                    <label for="name"><h2>Edit Name</h2></label>
-                    <input id="name" name="name" type="text" placeholder="Enter new name here">
+                    <label for="username"><h2>Edit Name</h2></label>
+                    <input id="username" name="username" type="text" placeholder="Enter new name here">
                     <span class="settings-line"></span>
 
                     <label for="bio"><h2>Edit Bio</h2></label>

@@ -126,7 +126,7 @@ def get_notif_recipient(notif_id):
             cur.execute('''select recipient from notifications where notifId = %s;''', (notif_id,))
             return cur.fetchone()
 
-def get_image(cur, picture):
+def get_image(image_id):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''SELECT data, mimetype FROM images WHERE imageId = %s;''', (image_id,))

@@ -230,8 +230,17 @@ def view_settings():
     db_user = database.get_user(sub_id)
 
     if request.method == "POST":
-        username = request.form.get("username", "")
-        bio = request.form.get("bio", "").strip() #put strip for cleanliness
+        print("FORM:", request.form)
+        print("FILES:", request.files)
+        username = request.form.get("username", "").strip() 
+        bio = request.form.get("bio", "").strip() 
+
+        #in case of empty input, keep whatever was there
+        if username == "":
+            username = db_user["username"]
+        if bio == "":
+            bio = db_user.get("bio")
+
         database.edit_user(sub_id, username, bio, request.files.get("picture"))
         return redirect(url_for("view_profile"))
 

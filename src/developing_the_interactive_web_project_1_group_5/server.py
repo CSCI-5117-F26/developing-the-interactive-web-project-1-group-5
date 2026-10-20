@@ -77,8 +77,8 @@ def landing():
 def search():
     query = request.form["search"]
     parse_query = fulltext.full_text_search(query)
-    print(parse_query)
-    return render_template("search.html", show=parse_query)
+    show = format_node_display(parse_query)
+    return render_template("search.html", show=show)
 
 
 @app.route("/callback", methods=["GET", "POST"])
@@ -155,11 +155,11 @@ def view_node(node_id):
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
+    # database.add_to_recent_nodes(session.get("sub_id"), node_id)
     return render_template(
         "node_parent.html",
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
-        # fix this line
         node_owner=(
             database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
@@ -179,8 +179,6 @@ def edit_node(node_id):
     if node == None:
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
-
-    # TODO: Change this when you can ge session.get('sub_id')
 
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))

@@ -14,6 +14,7 @@ def format_node_display(query=[]):
             "img_url": dict_get(node, "img", "../static/img/temp_chungus.png"),
             "node_title": dict_get(node, "title", "Untitled"),
             "link": "/node/" + str(dict_get(node, "nodeid", "doesnotexist")),
+            "node_id": str(dict_get(node, "nodeid", "doesnotexist")),
             })
     return connections
     
@@ -33,3 +34,14 @@ def get_popular_nodes(n=30):
         popularities.append(node)
     popularities.sort(key=lambda x: x["connection_count"], reverse=True)
     return popularities[0:n]
+
+def add_selections(subid, newConnections=[]):
+    for node_id in newConnections:
+        database.add_connection(node_id[0], node_id[1], subid)
+
+def filter_connecting_nodes(node_list, curr_node_id):
+    # Remove already existing connections and the node itself for connection modal
+    for node in node_list[:]:
+        if ((int(node.get("node_id")) == int(curr_node_id)) or (database.connects(node.get("node_id"), curr_node_id))):
+            node_list.remove(node)
+    return node_list

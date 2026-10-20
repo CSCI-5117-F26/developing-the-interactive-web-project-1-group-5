@@ -2,6 +2,7 @@
 {% block head %}
 <link rel="stylesheet" href="../static/css/node.css">
 <script src="https://kit.fontawesome.com/25f4f0a920.js" crossorigin="anonymous"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
 
 {% block title %} {{node_title}} {% endblock %}
@@ -81,10 +82,10 @@
                             {% for saved in saved_nodes%}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
-                                    <button class="pure-button connection-img" onclick='selectConnection(this)'>
+                                    <button class="pure-button connection-img" onclick='selectConnection(this, "{{saved.node_id}}")'>
                                         <img class="pure-img connection-img" src="{{saved.img_url}}">
                                     </button>
-                                    <p class="center-text line-clamp">{{saved.node_title}}</p>
+                                    <p class="center-text">{{saved.node_title}}</p>
                                 </div>
                             </div>
                             {% endfor %} 
@@ -96,10 +97,10 @@
                             {% for recent in recent_nodes %}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
-                                    <button class="pure-button connection-img" onclick='selectConnection(this)'>
+                                    <button class="pure-button connection-img" onclick='selectConnection(this, "{{recent.node_id}}")'>
                                         <img class="pure-img connection-img" src="{{recent.img_url}}">
                                     </button>
-                                    <p class="center-text line-clamp">{{recent.node_title}}</p>
+                                    <p class="center-text">{{recent.node_title}}</p>
                                 </div>
                             </div>
                             {% endfor %} 
@@ -111,7 +112,7 @@
                             {% for created in created_nodes%}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
-                                    <button class="pure-button connection-img" onclick='selectConnection(this)'>
+                                    <button class="pure-button connection-img" onclick='selectConnection(this, "{{created.node_id}}")'>
                                         <img class="pure-img connection-img" src="{{created.img_url}}">
                                     </button>
                                     <p class="center-text">{{created.node_title}}</p>
@@ -126,8 +127,8 @@
         <!-- TODO: add actual functionality to add connection! Also, make clear button actually clear! -->
          <div class="pure-g">
             <div class="pure-u-1 add-connection-footer">
-                <button class="pure-button">Clear</button>
-                <button class="pure-button pure-button-primary">Add</button>
+                <button class="pure-button" onclick="clearSelections()">Clear</button>
+                <button class="pure-button pure-button-primary" id="add_selection" onclick="addSelections({{node_id}})">Add</button>
             </div>
          </div>
         {%endif%}

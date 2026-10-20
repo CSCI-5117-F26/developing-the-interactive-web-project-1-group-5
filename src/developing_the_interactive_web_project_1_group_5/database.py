@@ -184,7 +184,7 @@ def add_connection(node1, node2, connector):
         with conn.cursor() as cur:
             cur.execute(
                 """insert into connections (nodeId1, nodeId2, connectorId)
-                                    values (%s, %s, %s);""",
+                                    values (%s, %s, %s) returning (nodeId1, nodeId2);""",
                 (node1, node2, connector),
             )
             exists = cur.fetchone()
@@ -324,3 +324,13 @@ def delete_notif(notifid):
 #NOTE: Do we need this?
 def remove_from_recent():
     return
+
+# CHECK EXISTENCE
+def connects(node1, node2):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''select count(1) from connections where ((nodeid1, nodeid2) = (%s, %s) 
+                        or (nodeid2, nodeid1) = (%s, %s));''', (node1, node2, node1, node2))
+            count = cur.fetchone()
+            if count.get('count') == 0: return False
+            return True

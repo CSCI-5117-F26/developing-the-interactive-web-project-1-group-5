@@ -4,18 +4,20 @@ import datetime
 from psycopg_pool import ConnectionPool
 from psycopg.rows import dict_row
 from werkzeug.utils import secure_filename
+import dotenv
 
+# for local testing
+dotenv.load_dotenv()
+
+
+# set up connection pool
 db_url = os.environ["DATABASE_URL"]
+pool = ConnectionPool(db_url, open=False, kwargs={"row_factory": dict_row})
+atexit.register(pool.close)
 
-pool = None
-
-
-def setup():
-    global pool
-
-    pool = ConnectionPool(db_url, open=True, kwargs={"row_factory": dict_row})
-    atexit.register(pool.close)
-
+is_gunicorn = "gunicorn" in os.environ.get("SERVER_SOFTWARE", "")
+if not is_gunicorn:
+    pool.open()
 
 # ---------------- READ ----------------
 
@@ -255,11 +257,11 @@ def save_image(cur, picture):
 #removes image from image table. duh.
 def delete_image(cur, image_id):
     cur.execute('''DELETE FROM images WHERE imageId = %s;''', (image_id,))
-            cur.execute(
-                """insert into recentNodes (subId, nodeId, timestamp)
-                            values (%s, %s, %s);""",
-                (subId, nodeid, timestamp),
-            )
+    # cur.execute(
+    #     """insert into recentNodes (subId, nodeId, timestamp)
+    #                 values (%s, %s, %s);""",
+    #     (subId, nodeid, timestamp),
+    # )
 
 
 # ---------------- UPDATE ----------------

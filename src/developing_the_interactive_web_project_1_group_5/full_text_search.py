@@ -12,10 +12,7 @@ def view():
             cur.execute("""SELECT
                * FROM nodes
             """)
-            rows = cur.fetchall()
-            for row in rows:
-                print(row)
-            return rows
+            return cur.fetchall()
 
 
 # get nodes for full tech search

@@ -14,7 +14,7 @@ from psycopg import errors
 import os
 import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
 import datetime
-
+import random
 import developing_the_interactive_web_project_1_group_5.database as database
 
 app = Flask(__name__)
@@ -57,20 +57,22 @@ def login_required(f):
 
 @app.route("/")
 def landing():
-    
+
     categories = format_node_display(database.get_all_categories())
     popular_nodes = format_node_display(get_popular_nodes())
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
-    # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
+    # new_nodes = format_node_display(database.get_new_nodes(session.get("sub_id")))
 
-    all_nodes = fulltext.view()
-    length = len(all_nodes)
+    all_nodes = format_node_display(fulltext.view())
+    random_node = random.choice(all_nodes)
+    print(random_node)
     return render_template(
         "landing.html",
         categories=categories,
         popular_nodes=popular_nodes,
         recent_nodes=recent_nodes,
-        # new_nodes = new_nodes,
+        # new_nodes=new_nodes,
+        random_node=random_node,
         loggedin=check_signin(),
     )
 
@@ -80,7 +82,6 @@ def landing():
 def search():
     query = request.form["search"]
     parse_query = format_node_display(fulltext.full_text_search(query))
-    print(parse_query)
     return render_template("search.html", show=parse_query)
 
 
@@ -240,9 +241,10 @@ def view_settings():
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 
+
 # TODO: authorization
 @app.route("/notifications/<int:user_id>")
-#@login_required
+# @login_required
 def notifications(user_id):
     notifs = database.get_notifs(user_id)
 
@@ -252,7 +254,7 @@ def notifications(user_id):
     for notif in notifs:
         date = datetime.datetime.fromisoformat(notif["timestamp"])
         date_str = date.strftime("%x")
-        if (date_str != current_date):
+        if date_str != current_date:
             timestamps[notif["notifid"]] = date_str
             current_date = date_str
         else:
@@ -260,13 +262,15 @@ def notifications(user_id):
 
     return render_template("notifications.html", notifs=notifs, dates=timestamps)
 
+
 # TODO: authorization
-@app.route("/delete-notif/<int:notif_id>", methods=('POST',))
-#@login_required
+@app.route("/delete-notif/<int:notif_id>", methods=("POST",))
+# @login_required
 def delete_notif(notif_id):
     userid = database.get_notif_recipient(notif_id)
     database.delete_notif(notif_id)
     return redirect(url_for("notifications", user_id=userid["recipient"]))
+
 
 # this threw errors soo
 # @app.route("/edit-profile/<int:session.get('sub_id')>")

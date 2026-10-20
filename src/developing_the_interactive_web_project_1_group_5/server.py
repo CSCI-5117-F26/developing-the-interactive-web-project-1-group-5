@@ -161,7 +161,7 @@ def view_node(node_id):
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         # fix this line
         node_owner=(
-            database.get_user(dict_get(node, "subId", "noid"))["username"] or "Quilt"
+            database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
         node_description=dict_get(node, "description", "None"),
         connections=connections,

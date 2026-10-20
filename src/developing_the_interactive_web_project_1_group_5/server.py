@@ -57,16 +57,14 @@ def login_required(f):
 def landing():
     categories = format_node_display(database.get_all_categories())
     popular_nodes = format_node_display(get_popular_nodes())
-
-
-    recent_nodes = format_node_display(database.get_recent_nodes(session.get('sub_id')))
+    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
     return render_template(
         "landing.html",
-        # categories=categories,
-        # popular_nodes=popular_nodes,
-        # recent_nodes=recent_nodes,
-        # # new_nodes = new_nodes,
+        categories=categories,
+        popular_nodes=popular_nodes,
+        recent_nodes=recent_nodes,
+        # new_nodes = new_nodes,
         loggedin=check_signin(),
     )
 
@@ -151,21 +149,22 @@ def view_node(node_id):
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
 
-
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get('sub_id')))
-    recent_nodes = format_node_display(database.get_recent_nodes(session.get('sub_id')))
-    created_nodes = format_node_display(database.get_user_nodes(session.get('sub_id')))
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
+    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
+    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     return render_template(
         "node_parent.html",
-        node_title = dict_get(node, "title", "Untitled"),
-        node_img_url = dict_get(node, "img", "../static/img/temp_chungus.png"), 
+        node_title=dict_get(node, "title", "Untitled"),
+        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         # fix this line
-        node_owner = (database.get_user(dict_get(node, "subId", "noid"))["username"] or "Quilt"),
-        node_description = dict_get(node,"description","None"),
-        connections = connections,
-        saved_nodes = saved_nodes,
-        recent_nodes = recent_nodes,
-        created_nodes = created_nodes,
+        node_owner=(
+            database.get_user(dict_get(node, "subId", "noid"))["username"] or "Quilt"
+        ),
+        node_description=dict_get(node, "description", "None"),
+        connections=connections,
+        saved_nodes=saved_nodes,
+        recent_nodes=recent_nodes,
+        created_nodes=created_nodes,
         loggedin=check_signin(),
     )
 
@@ -179,20 +178,23 @@ def edit_node(node_id):
     connections = format_node_display(database.get_node_connections(node_id))
 
     # TODO: Change this when you can ge session.get('sub_id')
-    
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get('sub_id')))
-    recent_nodes = format_node_display(database.get_recent_nodes(session.get('sub_id')))
-    created_nodes = format_node_display(database.get_user_nodes(session.get('sub_id')))
+
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
+    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
+    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     return render_template(
         "node_edit.html",
-        node_title = dict_get(node, "title", "Untitled"),
-        node_img_url = dict_get(node, "img", "../static/img/temp_chungus.png"), 
-        node_owner = (database.get_user(dict_get(node, "creatorId", "noid"))["username"] or "Quilt"),
-        node_description = dict_get(node,"description","None"),
-        connections = connections,
-        saved_nodes = saved_nodes,
-        recent_nodes = recent_nodes,
-        created_nodes = created_nodes,
+        node_title=dict_get(node, "title", "Untitled"),
+        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+        node_owner=(
+            database.get_user(dict_get(node, "creatorId", "noid"))["username"]
+            or "Quilt"
+        ),
+        node_description=dict_get(node, "description", "None"),
+        connections=connections,
+        saved_nodes=saved_nodes,
+        recent_nodes=recent_nodes,
+        created_nodes=created_nodes,
         loggedin=check_signin(),
     )
 
@@ -211,9 +213,9 @@ def view_profile():
         "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
     }
     # TODO: Change this when you can get user id from auth
-    
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get('sub_id')))
-    created_nodes = format_node_display(database.get_user_nodes(session.get('sub_id')))
+
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
+    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     return render_template(
         "profile.html",
         user=user,
@@ -233,11 +235,11 @@ def view_settings():
     return render_template("settings.html", user=user, loggedin=check_signin())
 
 
-@app.route("/edit-profile/<int:session.get('sub_id')>")
-@login_required
-def edit_profile():
-    return
-
+# this threw errors soo
+# @app.route("/edit-profile/<int:session.get('sub_id')>")
+# @login_required
+# def edit_profile():
+#     return
 
 
 # From https://stackoverflow.com/questions/69234307/flask-generate-404-page-if-data-not-found-in-database

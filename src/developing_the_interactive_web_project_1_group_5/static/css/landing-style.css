@@ -1,3 +1,9 @@
+:root {
+  --primary-color: #0a1836;
+  --secondary-color: white;
+  --accent-color2: #d7d7d7;
+}
+
 .landing-button {
   padding: 1rem;
 }
@@ -10,56 +16,64 @@
   justify-content: center;
 }
 
-.content-box{
-    height: 150%;
+.content-box {
+  height: 150%;
 }
 
 #landing-tabs input[type="radio"] {
   position: absolute;
   opacity: 0;
 }
-/* 
-.label {
-  background: #adadad;
-  cursor: pointer;
-  padding: 12px 0;
-  margin: 0;
-
-  text-align: center;
-}
-#tab-one:checked ~ .pure-g label[for="tab-one"],
-#tab-two:checked ~ .pure-g label[for="tab-two"],
-#tab-three:checked ~ .pure-g label[for="tab-three"],
-#tab-four:checked ~ .pure-g label[for="tab-four"] {
-  background: #eaeaea;
-} */
 
 .panel {
   display: none;
   width: 100%;
 }
 
-/* 
-#tab-one:checked ~ #panel-one,
-#tab-two:checked ~ #panel-two,
-#tab-three:checked ~ #panel-three,
-#tab-four:checked ~ #panel-four {
-  display: flex;
-  background: #eaeaea;
+.node-box {
+  padding: 1em 2em;
 }
-.panel-all {
-  align-items: center;
-  margin: 10px 10px;
 
-  justify-content: center;
+.node-box:hover {
+  text-decoration: underline;
+  font-weight: strong;
+}
+
+.node-card {
+  object-position: center;
+  width: 100%;
+  min-height: 220px;
+  min-width: 200px;
+  background-color: var(--accent-color2);
+  padding: 0;
+}
+
+.connection-img {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  min-width: 100px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center;
+  padding: 0;
+  background-color: var(--accent-color2);
+  border-radius: 1.5rem 1.5rem 0rem 0rem;
+}
+
+.node-card:hover {
+  filter: brightness(0.8);
+  color: var(--primary-color);
+}
+
+.center-text {
   text-align: center;
-} */
-/* #display-node {
-  border: 2px solid #90a2c9;
-} */
+}
 
-/* img {
-  height: auto;
-  max-width: 100%;
-  object-fit: contain;
-} */
+/* From https://css-tricks.com/almanac/properties/l/line-clamp/ */
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

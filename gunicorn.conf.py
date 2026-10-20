@@ -1,0 +1,6 @@
+from developing_the_interactive_web_project_1_group_5.database import pool
+
+
+def post_fork(server, worker):
+    pool.open()
+

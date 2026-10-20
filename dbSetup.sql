@@ -1,12 +1,14 @@
 CREATE table nodes (
     nodeId serial PRIMARY KEY,
     title varchar(100) NOT NULL,
-    img BYTEA,
+    imgId int,
     description varchar(250),
-    creatorId int,
+    --creatorId int,
+    subId varchar(255),
     topic varchar(100),
     category boolean DEFAULT false, 
     FOREIGN KEY (creatorId) REFERENCES users,
+    FOREIGN KEY (img) REFERENCES images
     textSearch tsvector GENERATED ALWAYS AS    
     (setweight(to_tsvector('title', coalesce(title, '')), 'A') ||
     setweight(to_tsvector('description', coalesce(description, '')), 'B')) STORED,
@@ -26,7 +28,7 @@ CREATE TABLE images (
 CREATE table connections (
     nodeId1 int NOT NULL,
     nodeId2 int NOT NULL,
-    connectorId int NOT NULL,
+    connectorId varchar(255) NOT NULL,
     PRIMARY KEY (nodeId1, nodeId2),
     FOREIGN KEY (nodeId1) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (nodeId2) REFERENCES nodes ON DELETE CASCADE,
@@ -36,43 +38,46 @@ CREATE table connections (
 -- TODO: auth0 stuff
 CREATE table users (
     userId serial PRIMARY KEY,
-    subId varchar(250) NOT NULL,
+    subId varchar(250) NOT NULL UNIQUE,
     username varchar(15) NOT NULL,
     bio varchar(250),
-    profPic BYTEA
+    profPicId int,
+    FOREIGN KEY (profPic) REFERENCES images
 );
 
 CREATE table savedNodes (
     userId int NOT NULL,
     nodeId int NOT NULL,
+    subId varchar(255),
     FOREIGN KEY (userId) REFERENCES users,
     FOREIGN KEY (nodeId) REFERENCES nodes ON DELETE CASCADE,
+    FOREIGN KEY (subId) REFERENCES users,
     PRIMARY KEY (userId, nodeId)
 );
 
 CREATE table recentNodes (
     userId int NOT NULL,
     nodeId int NOT NULL,
+    subId varchar(255),
     timestamp varchar(50),
     FOREIGN KEY (userId) REFERENCES users,
     FOREIGN KEY (nodeId) REFERENCES nodes ON DELETE CASCADE,
+    FOREIGN KEY (subId) REFERENCES users,
     PRIMARY KEY (userId, nodeId)
 );
 
 CREATE table notifications (
     notifId serial PRIMARY KEY,
-    recipient int NOT NULL,
-    connector int NOT NULL,
+    recipient varchar(255) NOT NULL,
+    connector varchar(255) NOT NULL,
     usersNode int NOT NULL,
     connectingNode int NOT NULL,
     timestamp varchar(50),
-    FOREIGN KEY (recipient) REFERENCES users,
-    FOREIGN KEY (connector) REFERENCES users,
+    FOREIGN KEY (recipient) REFERENCES users(subid),
+    FOREIGN KEY (connector) REFERENCES users(subid),
     FOREIGN KEY (usersNode) REFERENCES nodes,
     FOREIGN KEY (connectingNode) REFERENCES nodes
 );
-
-insert into notifications (recipient, connector, usersnode, connectingNode) values (1, 2, 5, 6);
 
 insert into users (username, bio) values ('chungus', 'I am chungus');
 

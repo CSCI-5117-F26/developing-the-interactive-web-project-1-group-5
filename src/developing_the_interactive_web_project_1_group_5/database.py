@@ -257,11 +257,11 @@ def save_image(cur, picture):
 #removes image from image table. duh.
 def delete_image(cur, image_id):
     cur.execute('''DELETE FROM images WHERE imageId = %s;''', (image_id,))
-    cur.execute(
-        """insert into recentNodes (subId, nodeId, timestamp)
-                    values (%s, %s, %s);""",
-        (subId, nodeid, timestamp),
-    )
+    # cur.execute(
+    #     """insert into recentNodes (subId, nodeId, timestamp)
+    #                 values (%s, %s, %s);""",
+    #     (subId, nodeid, timestamp),
+    # )
 
 
 # ---------------- UPDATE ----------------

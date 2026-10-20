@@ -264,11 +264,12 @@ def view_settings():
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 
-# TODO: authorization
-@app.route("/notifications/<int:user_id>")
-#@login_required
-def notifications(user_id):
-    notifs = database.get_notifs(user_id)
+
+@app.route("/notifs")
+@login_required
+def notifs():
+    user_sub_id = session.get("sub_id")
+    notifs = database.get_notifs(user_sub_id)
 
     # format dates
     timestamps = {}
@@ -284,13 +285,32 @@ def notifications(user_id):
 
     return render_template("notifications.html", notifs=notifs, dates=timestamps)
 
-# TODO: authorization
+
 @app.route("/delete-notif/<int:notif_id>", methods=('POST',))
-#@login_required
+@login_required
 def delete_notif(notif_id):
-    userid = database.get_notif_recipient(notif_id)
-    database.delete_notif(notif_id)
-    return redirect(url_for("notifications", user_id=userid["recipient"]))
+    user_sub_id = session.get("sub_id")
+    notif = database.get_notif(notif_id)
+
+    if (user_sub_id == notif['recipient']):
+        database.delete_notif(notif_id)
+    # else: message? You cant delete this node? Or?
+
+    return redirect(url_for("notifs"))
+
+
+@app.route("/disconnect/<int:node_id1>/<int:node_id2>", methods=('POST',))
+@login_required
+def disconnect(node_id1,node_id2):
+    user_sub_id = session.get("sub_id")
+    node1 = database.get_node(node_id1)
+    node2 = database.get_node(node_id2)
+
+    if (user_sub_id == node1['subid'] or user_sub_id == node2['subid']):
+            database.delete_connection(node_id1, node_id2)
+
+    #TODO: how to redirect to where the request came from ?
+    return redirect(url_for("notifs"))
 
 # this threw errors soo
 # @app.route("/edit-profile/<int:session.get('sub_id')>")

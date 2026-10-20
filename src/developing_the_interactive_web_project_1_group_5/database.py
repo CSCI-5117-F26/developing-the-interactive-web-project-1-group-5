@@ -130,21 +130,23 @@ def get_notifs(subid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''
-            select U1.username, U1.profPicId, N1.nodeId as userNode, N1.title as userTitle, N2.nodeId as connectingNode, N2.title as connectingTitle, notif.timestamp, notif.notifid
+            select U1.username, U1.profPicId, N1.nodeId as userNode, N1.title as userTitle, 
+                N2.nodeId as connectingNode, N2.title as connectingTitle, notif.timestamp, 
+                notif.notifid, notif.deleted
             from nodes as N1, nodes as N2, users as U1, notifications as notif
             where notif.recipient = %s and
-                U1.userId = notif.connector and
+                U1.subId = notif.connector and
                 N1.nodeId = notif.usersNode and
                 N2.nodeId = notif.connectingNode
-            order by timestamp asc;''', (subid,))
+            order by timestamp desc;''', (subid,))
 
             return cur.fetchall()
             # [{'username': 'Samantha', 'profpic': None, 'usernode': 5, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:47:51.285334'}, {'username': 'Samantha', 'profpic': None, 'usernode': 4, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:49:25.671458'}]
 
-def get_notif_recipient(notif_id):
+def get_notif(notif_id):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''select recipient from notifications where notifId = %s;''', (notif_id,))
+            cur.execute('''select * from notifications where notifId = %s;''', (notif_id,))
             return cur.fetchone()
 
 def get_image(image_id):
@@ -305,6 +307,20 @@ def delete_connection(nodeid1, nodeid2):
             cur.execute(
                 """delete from connections where nodeId1 = %s and nodeId2 = %s;""",
                 (nodeid2, nodeid1),
+            )
+
+            #update notifications
+            cur.execute(
+                '''update notifications 
+                    set deleted = TRUE 
+                    where usersNode = %s and connectingNode = %s''',
+                    (nodeid1, nodeid2)
+            )
+            cur.execute(
+                '''update notifications 
+                    set deleted = TRUE
+                    where usersNode = %s and connectingNode = %s''',
+                    (nodeid2, nodeid1)
             )
 
 

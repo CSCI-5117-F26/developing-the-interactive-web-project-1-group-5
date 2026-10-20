@@ -39,7 +39,6 @@ oauth.register(
     server_metadata_url=f"https://{domain}/.well-known/openid-configuration",
 )
 
-database.setup()
 
 
 def check_signin():

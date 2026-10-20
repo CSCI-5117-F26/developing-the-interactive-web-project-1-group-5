@@ -55,10 +55,14 @@ def login_required(f):
 
 @app.route("/")
 def landing():
+    
     categories = format_node_display(database.get_all_categories())
     popular_nodes = format_node_display(get_popular_nodes())
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
+
+    all_nodes = fulltext.view()
+    length = len(all_nodes)
     return render_template(
         "landing.html",
         categories=categories,
@@ -73,7 +77,7 @@ def landing():
 @login_required
 def search():
     query = request.form["search"]
-    parse_query = fulltext.full_text_search(query)
+    parse_query = format_node_display(fulltext.full_text_search(query))
     print(parse_query)
     return render_template("search.html", show=parse_query)
 

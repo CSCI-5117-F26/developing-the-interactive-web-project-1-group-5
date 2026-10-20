@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, g, session, abort
+from flask import Flask, render_template, request, url_for, redirect, g, session, abort, send_file
 from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
@@ -11,6 +11,7 @@ from developing_the_interactive_web_project_1_group_5.node import (
 
 from psycopg import errors
 
+import io
 import os
 import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
 import datetime
@@ -19,6 +20,7 @@ import developing_the_interactive_web_project_1_group_5.database as database
 
 app = Flask(__name__)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
+app.config["MAX_CONTENT_LENGTH"] = 5 * 1000 * 1000 # Rejects any kinda upload that'll exceed 5MB. Taken from Flask documentation (Uploading Files, 'Improving Uploads')
 
 oauth = OAuth(app)
 csrf = CSRFProtect(app)
@@ -206,18 +208,26 @@ def edit_node(node_id):
 def create_node():
     return render_template("node_create.html", connections=[], loggedin=check_signin())
 
+@app.route("/images/<int:image_id>")
+def get_image(image_id):
+    row = database.get_image(image_id)
+    if row == None:
+        abort(404)
+    return send_file(io.BytesIO(row["data"]), mimetype=row["mimetype"])
+
 
 @app.route("/profile")
 @login_required
 def view_profile():
+    db_user = database.get_user(session.get("sub_id"))
     user = {
-        "name": database.get_user(session.get("sub_id"))["username"],
-        "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
+        "name": db_user["username"],
+        "bio": db_user.get("bio"),
+        "profpicid": db_user.get("profpicid")
     }
-    # TODO: Change this when you can get user id from auth
-
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
-    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
+    
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get('sub_id')))
+    created_nodes = format_node_display(database.get_user_nodes(session.get('sub_id')))
     return render_template(
         "profile.html",
         user=user,
@@ -227,12 +237,31 @@ def view_profile():
     )
 
 
-@app.route("/settings")
+@app.route("/settings", methods=["GET", "POST"])
 @login_required
 def view_settings():
+    sub_id = session.get("sub_id")
+    db_user = database.get_user(sub_id)
+
+    if request.method == "POST":
+        print("FORM:", request.form)
+        print("FILES:", request.files)
+        username = request.form.get("username", "").strip() 
+        bio = request.form.get("bio", "").strip() 
+
+        #in case of empty input, keep whatever was there
+        if username == "":
+            username = db_user["username"]
+        if bio == "":
+            bio = db_user.get("bio")
+
+        database.edit_user(sub_id, username, bio, request.files.get("picture"))
+        return redirect(url_for("view_profile"))
+
     user = {
-        "name": database.get_user(session.get("sub_id"))["username"],
-        "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
+            "name": db_user["username"],
+            "bio": db_user.get("bio"),
+            "profpicid": db_user.get("profpicid")
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 

@@ -227,6 +227,10 @@ def save_image(cur, picture):
     )
     return cur.fetchone()["imageid"]
 
+#removes image from image table. duh.
+def delete_image(cur, image_id):
+    cur.execute('''DELETE FROM images WHERE imageId = %s;''', (image_id,))
+
 
 # ---------------- UPDATE ----------------
 
@@ -245,10 +249,18 @@ def edit_user(subId, username, bio, picture):
         with conn.cursor() as cur:
             cur.execute('''update users 
                             set username = %s, bio = %s where subId = %s''', (username, bio, subId))
+            
             image_id = save_image(cur, picture)
+
             if image_id:
+                #image switch: store old profpicid before replacing it
+                cur.execute('''select profpicid from users where subId = %s''', (subId,))
+                old_id = cur.fetchone()["profpicid"]
+                # ye update
                 cur.execute('''update users 
                             set profpicid = %s where subId = %s''', (image_id, subId))
+                if old_id:
+                    delete_image(cur, old_id)
 
 # ---------------- DELETE ----------------
 

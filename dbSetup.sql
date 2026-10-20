@@ -2,7 +2,10 @@ CREATE table nodes (
     nodeId serial PRIMARY KEY,
     title varchar(100) NOT NULL,
     imgId int,
+    imgId int,
     description varchar(250),
+    --creatorId int,
+    subId varchar(255),
     --creatorId int,
     subId varchar(255),
     topic varchar(100),
@@ -29,6 +32,7 @@ CREATE table connections (
     nodeId1 int NOT NULL,
     nodeId2 int NOT NULL,
     connectorId varchar(255) NOT NULL,
+    connectorId varchar(255) NOT NULL,
     PRIMARY KEY (nodeId1, nodeId2),
     FOREIGN KEY (nodeId1) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (nodeId2) REFERENCES nodes ON DELETE CASCADE,
@@ -39,8 +43,11 @@ CREATE table connections (
 CREATE table users (
     userId serial PRIMARY KEY,
     subId varchar(250) NOT NULL UNIQUE,
+    subId varchar(250) NOT NULL UNIQUE,
     username varchar(15) NOT NULL,
     bio varchar(250),
+    profPicId int,
+    FOREIGN KEY (profPic) REFERENCES images
     profPicId int,
     FOREIGN KEY (profPic) REFERENCES images
 );

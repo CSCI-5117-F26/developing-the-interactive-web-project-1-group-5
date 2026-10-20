@@ -103,6 +103,13 @@ def get_recent_nodes(subId):
                                 where subId = %s);''', (subId,))
             return cur.fetchall()
 
+# check if existing username
+def check_username_taken(username):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''select count(1) from users where username = %s''', (username,)) 
+            return cur.fetchone()
+
 # ---------------- CREATE ----------------
 
 # add a node to the node table

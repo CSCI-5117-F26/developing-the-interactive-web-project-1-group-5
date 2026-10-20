@@ -1,11 +1,9 @@
-from flask import Flask, render_template, request, url_for, redirect, g, session, abort
+from flask import Flask, render_template, request, url_for, redirect, g, session, abort, jsonify
 from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
 from developing_the_interactive_web_project_1_group_5.node import format_node_display, dict_get, get_popular_nodes
-
-from psycopg import errors
 
 import os
 
@@ -43,10 +41,8 @@ def login_required(f):
     def decorated(*args, **kwargs):
         if not check_signin():
             return redirect("/login")
-        else: 
-            return f(*args, **kwargs)
+        return f(*args, **kwargs)
     return decorated
-
 
 @app.route("/")
 def landing():
@@ -93,7 +89,6 @@ def login():
 @app.route("/login")
 def login_overlay():
     return render_template("login.html")
-
 
 @app.route("/set-username")
 @login_required

@@ -261,8 +261,9 @@ h1 {
     width: 100%;
     font-size: 1rem;
     cursor: pointer;
-    padding: 1rem 0;
+    padding: 1.25rem 0;
     text-align: center;
+    background-color: var(--background-color);
 }
 
 .tab-label:checked {
@@ -274,7 +275,6 @@ h1 {
     display: none;
     width: 100%;
     order: 99;
-    margin-top: -5px;
 }
 
 .radiotab:checked+.tab-label {
@@ -338,4 +338,20 @@ h1 {
 
 textarea {
     width: 45vw;
+}
+
+#kickstart-section {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 6rem;
+    box-shadow: 0rem 0.1rem var(--sub-background-color);
+    z-index: 800;
+}
+
+.landing-button {
+    background-color: var(--accent-color);
+    border-radius: 1rem;
+    padding: 0.75rem 2.5rem;
 }

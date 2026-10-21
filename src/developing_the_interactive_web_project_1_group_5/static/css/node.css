@@ -148,7 +148,7 @@ body, a {
   opacity: 0;
 }
 
-.label {
+/* .label {
   background: var(--accent-color2);
   cursor: pointer;
   padding: 12px 0;
@@ -162,10 +162,6 @@ body, a {
   background: #eaeaea;
 }
 
-.panel {
-  display: none;
-  width: 100%;
-}
 
 #tab-one:checked ~ #panel-one,
 #tab-two:checked ~ #panel-two,
@@ -180,7 +176,7 @@ body, a {
 #tab-three:not(:checked) ~ #panel-three,
 #tab-four:not(:checked) ~ #panel-four {
   display: none;
-}
+} */
 
 .scroll-box{
     overflow: auto;

@@ -57,12 +57,19 @@ def login_required(f):
 
 @app.route("/")
 def landing():
+    db_user = database.get_user(session.get("sub_id"))
+    user = {
+            "name": db_user["username"],
+            "bio": db_user.get("bio"),
+            "profpicid": db_user.get("profpicid")
+    }
     categories = format_node_display(database.get_all_categories())
     popular_nodes = format_node_display(get_popular_nodes())
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
     return render_template(
         "landing.html",
+        user=user,
         categories=categories,
         popular_nodes=popular_nodes,
         recent_nodes=recent_nodes,

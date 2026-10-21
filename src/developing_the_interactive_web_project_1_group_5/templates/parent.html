@@ -5,53 +5,74 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Placeholder{% endblock %}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/pure-min.css"
-        integrity="sha384-kj0X2NG2KHBie8Tq8fH1kxnyWM9XsXQpq7XdwbKmFKjwwaXGKBlB2Klu3VOltSFx" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/pure-min.css"
-        integrity="sha384-kj0X2NG2KHBie8Tq8fH1kxnyWM9XsXQpq7XdwbKmFKjwwaXGKBlB2Klu3VOltSFx" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/grids-responsive-min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-nav-temp.css') }}">
+
+    <!-- Font & Icon -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
 
     {% block head %}
     {% endblock %}
+
+    <!-- PureCSS + CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/pure-min.css"
+        integrity="sha384-kj0X2NG2KHBie8Tq8fH1kxnyWM9XsXQpq7XdwbKmFKjwwaXGKBlB2Klu3VOltSFx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/grids-responsive-min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-nav-temp.css') }}">
 </head>
 
 <body>
-    <nav>
-        <div id="nav-container">
-            <div>
-                <a id="home-link" href="{{url_for('landing')}}">
-                    <h1 class="logo">QUILT</h1>
-                </a>
-            </div>
-            <div id="search-container">
-                <search>
-                    <form class="pure-form" action="{{url_for('search')}}" method="post">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                        <input class="pure-input-rounded pure-input-1" type="search" id="search-bar" name="search"
-                            placeholder="Search">
-                    </form>
+    <div class="pure-g">
+        <nav class="pure-u-1">
+            <div id="nav-container">
+                <div>
+                    <a id="home-link" href="{{url_for('landing')}}">
+                        <h1>Quilt</h1>
+                    </a>
+                </div>
+                <div id="search-container">
+                    <search>
+                        <form class="pure-form" action="{{url_for('search')}}" method="post">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <div class="input-group">
+                                <!-- <span class="material-symbols-outlined">
+                                search
+                            </span> -->
+                                <input id="search" class="pure-input-1 input-field" type="search" id="search-bar"
+                                    name="search" placeholder="Search">
+                            </div>
+                        </form>
+                </div>
                 </search>
+                <div id="nav-links">
+                    {%if loggedin%}
+                    <a class="icon-link" aria-hidden="true" href="{{url_for('create_node')}}"><span
+                            class="material-symbols-outlined">
+                            add_box
+                        </span></a>
+                    <a class="icon-link" aria-hidden="true" href="/notifs"><span class="material-symbols-outlined">
+                            notifications
+                        </span></a>
+                    <a class="icon-link" aria-hidden="true" href="{{url_for('view_profile')}}">
+                        {% if user.profpicid %}
+                        <img class="corner-profile" src="{{ url_for('get_image', image_id=user.profpicid) }}"
+                            alt="ye pfp">
+                        {% else %}
+                        <img class="corner-profile" src="{{ url_for('static', filename ='img/temp_chungus.png') }}"
+                            alt="ye pfp">
+                        {% endif %}</i></a>
+                    {%else%}
+                    <a id="login-button" class="pure-button pure-button-primary" href="{{url_for('login')}}">Login</a>
+                    {%endif%}
+                </div>
             </div>
-            <div id="nav-links">
-                {%if loggedin%}
-                <a class="icon-link" aria-hidden="true" href="{{url_for('create_node')}}"><i
-                        class="bi bi-plus-circle align-middle"></i></a>
-                <a class="icon-link" aria-hidden="true" href="/notifs"><i class="bi bi-bell align-middle"></i></a>
-                <a class="icon-link" aria-hidden="true" href="{{url_for('view_profile')}}"><i
-                        class="bi bi-person-circle align-middle"></i></a>
-                {%else%}
-                <a id="login-button" class="pure-button pure-button-primary" href="{{url_for('login')}}">Login</a>
-                {%endif%}
-            </div>
-    </nav>
-    {%block overlay%}
-    {%endblock%}
-    {% block body %}
-    {% endblock %}
+        </nav>
+        {%block overlay%}
+        {%endblock%}
+        {% block body %}
+        {% endblock %}
+    </div>
 </body>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 

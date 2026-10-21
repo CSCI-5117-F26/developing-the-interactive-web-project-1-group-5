@@ -1,39 +1,88 @@
 :root {
-    --primary-color: #0a1836;
-    --secondary-color: white;
+    --text-color: #1F1C1B;
+    --background-color: #ffffff;
+    --sub-background-color: #f1f1f1;
+    --secondary-text-color: #747474;
+    --accent-color: #FABC05;
 }
 
 * {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 500;
-    color: var(--primary-color);
+    font-family: 'LINE Seed JP', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    color: var(--text-color);
 }
 
-.pure-button {
-    padding: 0.75rem 1.5rem;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    border-radius: 1.5rem;
+.corner-profile {
+    border-radius: 50%;
+    margin: 0.4rem;
+    place-items: center;
+    max-width: 40px;
+}
+
+/* https://developers.google.com/fonts/docs/material_icons */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2rem;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+h2 {
+    font-size: 1rem;
+}
+
+p {
+    font-size: 0.8rem;
+}
+
+.icon-link {
+    background-color: white;
+    border-radius: 0.75rem;
+}
+
+.icon-link:hover {
+    background-color: var(--sub-background-color);
 }
 
 .pure-button:hover {
     text-decoration: none;
     background-image: none;
-    color: var(--secondary-color);
+    color: var(--background-color);
 }
 
 #login-button {
     background-color: inherit;
-    color: var(--primary-color);
+    color: var(--text-color);
 }
 
 nav {
     padding: 1rem;
-    background-color: var(--secondary-color);
+    background-color: var(--background-color);
+    align-items: center;
+    box-shadow: 0rem 0.1rem var(--sub-background-color);
+    z-index: 999;
 }
 
 #nav-container {
-    background-color: var(--secondary-color);
+    background-color: var(--background-color);
     padding: 0 5rem;
     display: flex;
     justify-content: flex-start;
@@ -41,27 +90,25 @@ nav {
 }
 
 #search-container {
-    padding-left: 2rem;
+    padding: 0rem 2rem;
     display: block;
     align-self: left;
-    width: 70%;
+    width: 60%;
 }
+
 
 .pure-form input[type="search"] {
     box-shadow: none;
-    border: 2px solid var(--primary-color);
-    background-color: var(--secondary-color);
+    border: none;
+    background-color: var(--sub-background-color);
     padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
 }
 
 .pure-form input[type="search"]::placeholder {
-    color: var(--primary-color);
+    color: var(--secondary-text-color);
 }
 
-.logo {
-    font-weight: 900;
-    color: var(--primary-color);
-}
 #home-link {
     text-decoration: none;
 }
@@ -69,14 +116,14 @@ nav {
 #nav-links {
     margin-left: auto;
     display: flex;
-    gap: 10px;
+    gap: 5px;
     place-items: center;
 }
 
 #nav-links i {
     font-size: 2.5rem;
-    -webkit-text-stroke: 1px var(--primary-color);
-    color: var(--primary-color);
+    -webkit-text-stroke: 1px var(--text-color);
+    color: var(--text-color);
 }
 
 #login-overlay {
@@ -89,7 +136,7 @@ nav {
     max-width: 40%;
     min-height: 80vh;
     border-radius: 3rem;
-    background-color: var(--secondary-color);
+    background-color: var(--background-color);
 }
 
 #links-container {
@@ -113,7 +160,7 @@ nav {
 
 #close-overlay {
     font-size: 0.75rem;
-    color:grey;
+    color: grey;
 }
 
 #full-overlay {
@@ -126,4 +173,169 @@ nav {
     width: 100vw;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
+}
+
+
+/* Profile */
+
+h1 {
+    color: var(--text-color);
+}
+
+.profile-sidebar {
+    position: sticky;
+    box-shadow: 0.1rem 0rem var(--sub-background-color);
+    height: 100vh;
+    box-sizing: border-box;
+    z-index: 900;
+}
+
+.pfp {
+    width: 200px;
+    height: 200px;
+    max-width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 1em auto;
+}
+
+.pure-button {
+    background-color: var(--sub-background-color);
+    color: var(--secondary-text-color);
+}
+
+.sidebar-box {
+    margin: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.pure-button.pure-button-primary {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+}
+
+.pure-button.pure-button-primary:hover{
+    background-color: #ea9400;
+    color: var(--text-color);
+}
+
+
+.profile-buttons {
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    width: 100%;
+    margin-top: auto;
+}
+
+.pure-menu-list {
+    display: flex;
+    width: 100%;
+}
+
+.pure-menu-item {
+    text-align: center;
+}
+
+
+.profile-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.pure-u-3-4 {
+    background-color: white;
+}
+
+.radiotab {
+    position: absolute;
+    opacity: 0;
+}
+
+.tab-label {
+    flex: 1;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.tab-label:checked {
+    background: var(--background-color);
+}
+
+.panel {
+    padding: 3rem;
+    display: none;
+    width: 100%;
+    order: 99;
+    margin-top: -5px;
+}
+
+.radiotab:checked+.tab-label {
+    background: 5px solid var(--sub-background-color);
+    box-shadow: 0rem 0.1rem;
+}
+
+.radiotab:checked+.tab-label+.panel {
+    display: block;
+}
+
+.profile-node-container {
+    padding: 1rem;
+}
+
+.profile-node-flex {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.card {
+    width: 275px;
+    min-height: 375px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 25px;
+    padding-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.profile-node-img {
+    width: 275px;
+    height: 275px;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+
+.settings-box {
+    margin: 100px;
+    gap: 10px;
+}
+
+.settings-box h1 {
+    font-size: 3rem;
+}
+
+.settings-line {
+    width: 75%;
+    display: block;
+    border-bottom: 2px solid var(--accent-color2);
+    margin: 30px 0 30px 0;
+}
+
+textarea {
+    width: 45vw;
 }

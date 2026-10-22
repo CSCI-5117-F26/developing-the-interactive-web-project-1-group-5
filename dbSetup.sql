@@ -2,13 +2,16 @@ CREATE table nodes (
     nodeId serial PRIMARY KEY,
     title varchar(100) NOT NULL,
     imgId int,
+    imgId int,
     description varchar(250),
+    --creatorId int,
+    subId varchar(255),
     --creatorId int,
     subId varchar(255),
     topic varchar(100),
     category boolean DEFAULT false, 
     FOREIGN KEY (creatorId) REFERENCES users,
-    FOREIGN KEY (img) REFERENCES images
+    FOREIGN KEY (imgId) REFERENCES images,
     textSearch tsvector GENERATED ALWAYS AS    
     (setweight(to_tsvector('title', coalesce(title, '')), 'A') ||
     setweight(to_tsvector('description', coalesce(description, '')), 'B')) STORED,
@@ -29,6 +32,7 @@ CREATE table connections (
     nodeId1 int NOT NULL,
     nodeId2 int NOT NULL,
     connectorId varchar(255) NOT NULL,
+    connectorId varchar(255) NOT NULL,
     PRIMARY KEY (nodeId1, nodeId2),
     FOREIGN KEY (nodeId1) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (nodeId2) REFERENCES nodes ON DELETE CASCADE,
@@ -39,31 +43,34 @@ CREATE table connections (
 CREATE table users (
     userId serial PRIMARY KEY,
     subId varchar(250) NOT NULL UNIQUE,
+    subId varchar(250) NOT NULL UNIQUE,
     username varchar(15) NOT NULL,
     bio varchar(250),
+    profPicId int,
+    FOREIGN KEY (profPic) REFERENCES images
     profPicId int,
     FOREIGN KEY (profPic) REFERENCES images
 );
 
 CREATE table savedNodes (
-    userId int NOT NULL,
+    userId int,
     nodeId int NOT NULL,
     subId varchar(255),
     FOREIGN KEY (userId) REFERENCES users,
     FOREIGN KEY (nodeId) REFERENCES nodes ON DELETE CASCADE,
-    FOREIGN KEY (subId) REFERENCES users,
-    PRIMARY KEY (userId, nodeId)
+    FOREIGN KEY (subId) REFERENCES users(subId),
+    PRIMARY KEY (subid, nodeId)
 );
 
 CREATE table recentNodes (
-    userId int NOT NULL,
+    userId int,
     nodeId int NOT NULL,
     subId varchar(255),
     timestamp varchar(50),
     FOREIGN KEY (userId) REFERENCES users,
     FOREIGN KEY (nodeId) REFERENCES nodes ON DELETE CASCADE,
-    FOREIGN KEY (subId) REFERENCES users,
-    PRIMARY KEY (userId, nodeId)
+    FOREIGN KEY (subId) REFERENCES users(subId),
+    PRIMARY KEY (subId, nodeId)
 );
 
 CREATE table notifications (
@@ -73,6 +80,7 @@ CREATE table notifications (
     usersNode int NOT NULL,
     connectingNode int NOT NULL,
     timestamp varchar(50),
+    deleted boolean DEFAULT false,
     FOREIGN KEY (recipient) REFERENCES users(subid),
     FOREIGN KEY (connector) REFERENCES users(subid),
     FOREIGN KEY (usersNode) REFERENCES nodes,

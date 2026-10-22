@@ -1,36 +1,58 @@
 :root {
-    --primary-color: #0a1836;
+    --primary-color: #1F1C1B;
     --secondary-color: white;
-    --accent-color2: #d7d7d7;
+    --third-color: #F6F6F6;
+    --secondary-text-color: #878787;
+    --accent-color: #FABC05;
+}
+
+* {
+    font-family: 'LINE Seed JP', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    color: var(--primary-color);
 }
 
 h1 {
     color: var(--primary-color);
-    font-weight: bold;
 }
 
 .profile-sidebar {
-    border-right: 3px solid black; 
-    min-height: 100vh;
+    position: sticky;
+    box-shadow: 0.1rem 0rem var(--third-color);
+    height: 100vh;
     box-sizing: border-box;
 }
+
 .pfp {
     width: 200px;
     height: 200px;
     max-width: 100%;
-    border: 3px solid black;
     border-radius: 50%;
     object-fit: cover;
     margin: 1em auto;
 }
 
 .sidebar-box {
+    margin: 1rem;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 0.75rem;
 }
+
+.pure-button-primary {
+    background-color: var(--accent-color);
+}
+
+.profile-buttons {
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    width: 100%;
+    margin-top: auto;
+}
+
+
 
 .pure-menu-list {
     display: flex;
@@ -40,8 +62,6 @@ h1 {
 .pure-menu-item {
     text-align: center;
 }
-
-
 
 
 .profile-tabs {
@@ -71,7 +91,7 @@ h1 {
     background: #ccc;
 }
 
-.tab-label:checked{
+.tab-label:checked {
     background: var(--secondary-color);
 }
 
@@ -82,15 +102,15 @@ h1 {
     margin-top: -5px;
 }
 
-.radiotab:checked + .tab-label {
+.radiotab:checked+.tab-label {
     background: #fff;
     font-weight: bold;
     z-index: 1;
     border-bottom: 5px solid var(--secondary-color);
-    
+
 }
 
-.radiotab:checked + .tab-label + .panel {
+.radiotab:checked+.tab-label+.panel {
     display: block;
 }
 
@@ -114,7 +134,7 @@ h1 {
     border-radius: 5px;
     padding: 25px;
     padding-top: 25px;
-    display: flex; 
+    display: flex;
     flex-direction: column;
     align-items: center;
     /* justify-content: center; */

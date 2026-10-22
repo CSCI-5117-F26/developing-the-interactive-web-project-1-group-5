@@ -1,8 +1,23 @@
-from flask import Flask, render_template, request, url_for, redirect, g, session, abort, send_file
+from flask import (
+    Flask,
+    render_template,
+    request,
+    url_for,
+    redirect,
+    g,
+    session,
+    abort,
+    send_file,
+)
 from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
 from urllib.parse import quote_plus, urlencode
+from developing_the_interactive_web_project_1_group_5.node import (
+    format_node_display,
+    dict_get,
+    get_popular_nodes,
+)
 from developing_the_interactive_web_project_1_group_5.node import (
     format_node_display,
     dict_get,
@@ -14,13 +29,16 @@ from psycopg import errors
 import io
 import os
 import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
+import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
 import datetime
-
+import random
 import developing_the_interactive_web_project_1_group_5.database as database
 
 app = Flask(__name__)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
-app.config["MAX_CONTENT_LENGTH"] = 5 * 1000 * 1000 # Rejects any kinda upload that'll exceed 5MB. Taken from Flask documentation (Uploading Files, 'Improving Uploads')
+app.config["MAX_CONTENT_LENGTH"] = (
+    5 * 1000 * 1000
+)  # Rejects any kinda upload that'll exceed 5MB. Taken from Flask documentation (Uploading Files, 'Improving Uploads')
 
 oauth = OAuth(app)
 csrf = CSRFProtect(app)
@@ -40,7 +58,6 @@ oauth.register(
 )
 
 
-
 def check_signin():
     return "sub_id" in session
 
@@ -58,16 +75,22 @@ def login_required(f):
 
 @app.route("/")
 def landing():
+
     categories = format_node_display(database.get_all_categories())
     popular_nodes = format_node_display(get_popular_nodes())
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
-    # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
+    # new_nodes = format_node_display(database.get_new_nodes(session.get("sub_id")))
+
+    all_nodes = format_node_display(fulltext.view())
+    random_node = random.choice(all_nodes)
+    print(random_node)
     return render_template(
         "landing.html",
         categories=categories,
         popular_nodes=popular_nodes,
         recent_nodes=recent_nodes,
-        # new_nodes = new_nodes,
+        # new_nodes=new_nodes,
+        random_node=random_node,
         loggedin=check_signin(),
     )
 
@@ -76,8 +99,7 @@ def landing():
 @login_required
 def search():
     query = request.form["search"]
-    parse_query = fulltext.full_text_search(query)
-    print(parse_query)
+    parse_query = format_node_display(fulltext.full_text_search(query))
     return render_template("search.html", show=parse_query)
 
 
@@ -98,6 +120,9 @@ def login():
     return oauth.auth0.authorize_redirect(
         redirect_uri=url_for("callback", _external=True)
     )
+
+
+# TODO: Change this to JS modal instead of Jinja template
 
 
 # TODO: Change this to JS modal instead of Jinja template
@@ -151,7 +176,6 @@ def view_node(node_id):
     if node == None:
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
-
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
@@ -179,9 +203,7 @@ def edit_node(node_id):
     if node == None:
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
-
     # TODO: Change this when you can ge session.get('sub_id')
-
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
@@ -222,11 +244,11 @@ def view_profile():
     user = {
         "name": db_user["username"],
         "bio": db_user.get("bio"),
-        "profpicid": db_user.get("profpicid")
+        "profpicid": db_user.get("profpicid"),
     }
-    
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get('sub_id')))
-    created_nodes = format_node_display(database.get_user_nodes(session.get('sub_id')))
+
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
+    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     return render_template(
         "profile.html",
         user=user,
@@ -245,10 +267,10 @@ def view_settings():
     if request.method == "POST":
         print("FORM:", request.form)
         print("FILES:", request.files)
-        username = request.form.get("username", "").strip() 
-        bio = request.form.get("bio", "").strip() 
+        username = request.form.get("username", "").strip()
+        bio = request.form.get("bio", "").strip()
 
-        #in case of empty input, keep whatever was there
+        # in case of empty input, keep whatever was there
         if username == "":
             username = db_user["username"]
         if bio == "":
@@ -258,9 +280,9 @@ def view_settings():
         return redirect(url_for("view_profile"))
 
     user = {
-            "name": db_user["username"],
-            "bio": db_user.get("bio"),
-            "profpicid": db_user.get("profpicid")
+        "name": db_user["username"],
+        "bio": db_user.get("bio"),
+        "profpicid": db_user.get("profpicid"),
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 
@@ -277,7 +299,7 @@ def notifs():
     for notif in notifs:
         date = datetime.datetime.fromisoformat(notif["timestamp"])
         date_str = date.strftime("%x")
-        if (date_str != current_date):
+        if date_str != current_date:
             timestamps[notif["notifid"]] = date_str
             current_date = date_str
         else:
@@ -311,6 +333,7 @@ def disconnect(node_id1,node_id2):
 
     #TODO: how to redirect to where the request came from ?
     return redirect(url_for("notifs"))
+
 
 # this threw errors soo
 # @app.route("/edit-profile/<int:session.get('sub_id')>")

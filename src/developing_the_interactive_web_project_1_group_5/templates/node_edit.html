@@ -12,14 +12,16 @@
         <!-- Do we want input validation? Feels like there's a lot more options here -->
         <input type="text" id="node_title" name="node_title" value="{{node_title}}" placeholder="Title" minLength="1" maxLength="60">
 
-        <!-- TODO: Ability to insert and check account (like %if user_id==owner% or in server.py)-->
-        <p><strong>Owner: You</strong></p>
+        <p><strong>Owner: You ({{node_owner}})</strong></p>
         <label for="node_description"><strong>Description:</strong></label>
         <!-- Maybe: add a char counter -->
         <textarea id="node_description"
                   name="node_description"
                   rows="5" maxLength="600" style="width:100%;" placeholder="Description">{{node_description}}</textarea>
 
+        <button style="background-color: red" onclick="window.location.href='{{url_for('delete_node', node_id=node_id)}}'" class="pure-button">
+            Delete
+        </button>
         <button class="pure-button" href="#">
             Cancel
         </button>

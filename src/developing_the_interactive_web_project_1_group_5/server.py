@@ -169,11 +169,12 @@ def view_node(node_id):
         ),
         node_owner_id=dict_get(node, "subid", "noid"),
         node_description=dict_get(node, "description", "None"),
-        node_id=dict_get(node, "nodeid", "1"),
+        node_id=node_id,
         connections=connections,
         saved_nodes=saved_nodes,
         recent_nodes=recent_nodes,
         created_nodes=created_nodes,
+        is_saved=database.is_saved(session.get("sub_id"), node_id),
         sub_id=session.get("sub_id"),
         loggedin=check_signin(),
     )
@@ -222,6 +223,16 @@ def edit_node(node_id):
 @app.route("/create-node", methods=["GET", "POST"])
 @login_required
 def create_node():
+    if request.method == 'POST':
+        title = request.form.get('node_title') 
+        description = request.form.get('node_description')
+        # TODO: how to do this img stuff?
+        img_id = request.form.get('img_id')
+        sub_id = session.get("sub_id")
+        # TODO: what's topic?
+        node_id = database.add_node(sub_id, title, img_id, description)
+        return redirect("/node/" + str(node_id))
+    
     return render_template("node_create.html", connections=[], loggedin=check_signin())
 
 @app.route("/add-connections", methods=["POST"])
@@ -237,6 +248,30 @@ def delete_connections():
     data = request.get_json() 
     database.delete_connection(data.get("nodeid1"), data.get("nodeid2"))
     return jsonify({"success" : "true"})
+
+@app.route("/save-node/<int:node_id>")
+@login_required
+def save_node(node_id):
+    database.add_to_saved_nodes(session.get("sub_id"), node_id)
+    return redirect("/node/" + str(node_id))
+
+@app.route("/unsave-node/<int:node_id>")
+@login_required
+def unsave_node(node_id):
+    database.remove_from_saved(session.get("sub_id"), node_id)
+    return redirect("/node/" + str(node_id))
+
+
+@app.route("/delete-node/<int:node_id>")
+@login_required
+def delete_node(node_id):
+    node = database.get_node(node_id)
+    if node == None:
+        abort(404)
+    # Check delete permission
+    if (session.get("sub_id") == dict_get(node, "subid")):
+        database.delete_node(node_id)
+    return redirect("/node/" + str(node_id))
 
 # End node stuff -------------------------------------
 

@@ -174,7 +174,8 @@ def add_node(
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute('''insert into nodes (title, imgId, description, subId, topic)
-                            values (%s, %s, %s, %s, %s);''', (title, image, desc, creatorId, topic))
+                            values (%s, %s, %s, %s, %s) returning nodeId;''', (title, image, desc, creatorId, topic))
+            return cur.fetchone()
 
 # add a user
 def add_user(subId, username, bio=None, profilepic=None):
@@ -225,6 +226,12 @@ def add_notification(node1, node2, connector):
 def add_to_saved_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
+            cur.execute('''select * from savedNodes where subId = %s and nodeId = %s;''', (subId, nodeid))
+            exists = cur.fetchone()
+
+            if exists:
+                return
+            
             cur.execute(
                 """insert into savedNodes (subId, nodeId)
                             values (%s, %s);""",
@@ -339,6 +346,14 @@ def connects(node1, node2):
         with conn.cursor() as cur:
             cur.execute('''select count(1) from connections where ((nodeid1, nodeid2) = (%s, %s) 
                         or (nodeid2, nodeid1) = (%s, %s));''', (node1, node2, node1, node2))
+            count = cur.fetchone()
+            if count.get('count') == 0: return False
+            return True
+
+def is_saved(sub_id, node_id):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''select count(1) from savedNodes where ((subid, nodeid) = (%s, %s));''', (sub_id, node_id))
             count = cur.fetchone()
             if count.get('count') == 0: return False
             return True

@@ -26,6 +26,21 @@
                         <p><strong>Owner: {{node_owner}}</strong></p>
                         <p><strong>Description:</strong></p>
                         <p>{{node_description}}</p>
+                        <div class="pure-g">
+                            <div class="pure-u-1-6">
+                                    {% if is_saved %}
+                                        <button style="background-color: red" onclick="window.location.href='{{url_for('unsave_node', node_id=node_id)}}'" class="pure-button">Unsave</button>
+                                    {% else %}
+                                        <button onclick="window.location.href='{{url_for('save_node', node_id=node_id)}}'" class="pure-button">Save</button>
+                                    {% endif %}
+                            </div>
+                            <div class="pure-u-1-6">
+                                {% if (sub_id == node_owner_id) %}
+                                    <button onclick="window.location.href='{{url_for('edit_node', node_id=node_id)}}'" class="pure-button">Edit</button>
+                                {% endif %}
+                            </div>
+                        </div>
+
                     {% endblock %}
                 </div>
             </div>

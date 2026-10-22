@@ -314,9 +314,10 @@ def delete_notif(notif_id):
     user_sub_id = session.get("sub_id")
     notif = database.get_notif(notif_id)
 
-    if (user_sub_id == notif['recipient']):
-        database.delete_notif(notif_id)
-    # else: message? You cant delete this notif? Or?
+    if (user_sub_id != notif['recipient']):
+        abort(404)
+    
+    database.delete_notif(notif_id)
 
     return redirect(url_for("notifs"))
 

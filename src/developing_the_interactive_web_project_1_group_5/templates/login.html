@@ -3,14 +3,15 @@
 {%block overlay%}
 <div id="full-overlay">
     <div id="login-overlay">
-        <h2>Get to quilting!</h2>
-        <p>Sign up to to keep exploring similar patches and save ones you like!</p>
+        <h1>Get to quilting!</h1>
+        <h2>Sign up to to keep exploring similar patches and save ones you like!</h2>
         <img id="overlay-image" src="{{ url_for('static', filename ='img/temp_chungus.png') }}" alt="little guy">
         <div id="links-container">
-            <div><a id="signup-button" class="pure-button pure-button-primary" href="{{url_for('login')}}">Login</a>
+            <div><a id="signup-button" class="pure-button pure-button-primary profile-buttons" href="{{url_for('login')}}">Login</a>
             </div>
+            <div><a id="close-overlay" class="pure-button profile-buttons" href="{{url_for('landing')}}">Continue Without Login</a></div>
         </div>
-        <div><a id="close-overlay" href="{{url_for('landing')}}">Close</a></div>
+
     </div>
 </div>
 <script>
@@ -26,7 +27,6 @@
     //         populateEvents(events);
     //     })
     //     .catch((error) => console.log("Request failed", error));
-
 
 </script>
 {%endblock%}

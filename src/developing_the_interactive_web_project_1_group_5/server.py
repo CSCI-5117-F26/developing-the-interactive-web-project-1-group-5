@@ -203,6 +203,7 @@ def view_node(node_id):
     if(user):
         return render_template(
         "node_parent.html",
+        user=user,
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         node_owner=(
@@ -253,8 +254,10 @@ def edit_node(node_id):
     # database.add_to_recent_nodes(session.get("sub_id"), node_id)
     for l in [saved_nodes, recent_nodes, created_nodes]:
         l = filter_connecting_nodes(l, node_id)
+    user = get_user_profile()
     return render_template(
         "node_edit.html",
+        user=user,
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         node_owner=(
@@ -286,8 +289,10 @@ def create_node():
         # TODO: what's topic?
         node_id = database.add_node(sub_id, title, img_id, description)
         return redirect("/node/" + str(node_id))
+
     
-    return render_template("node_create.html", connections=[], loggedin=check_signin())
+    user = get_user_profile()
+    return render_template("node_create.html", user=user, connections=[], loggedin=check_signin())
 
 @app.route("/add-connections", methods=["POST"])
 @login_required

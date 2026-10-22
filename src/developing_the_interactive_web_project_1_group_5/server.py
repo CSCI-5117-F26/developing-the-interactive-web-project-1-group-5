@@ -350,19 +350,6 @@ def delete_notif(notif_id):
     return redirect(url_for("notifs"))
 
 
-@app.route("/disconnect/<int:node_id1>/<int:node_id2>", methods=('POST',))
-@login_required
-def disconnect(node_id1,node_id2):
-    user_sub_id = session.get("sub_id")
-    node1 = database.get_node(node_id1)
-    node2 = database.get_node(node_id2)
-
-    if (user_sub_id == node1['subid'] or user_sub_id == node2['subid']):
-            database.delete_connection(node_id1, node_id2)
-
-    
-    return redirect(url_for("notifs"))
-
 
 # this threw errors soo
 # @app.route("/edit-profile/<int:session.get('sub_id')>")

@@ -15,7 +15,7 @@ import io
 import os
 import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
 import datetime
-
+import random
 import developing_the_interactive_web_project_1_group_5.database as database
 
 app = Flask(__name__)
@@ -57,8 +57,11 @@ def login_required(f):
 
 @app.route("/")
 def landing():
+
     categories = format_node_display(database.get_all_categories())
     popular_nodes = format_node_display(get_popular_nodes())
+    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
+    # new_nodes = format_node_display(database.get_new_nodes(session.get("sub_id")))
 
     if (session.get("sub_id")):
         db_user = database.get_user(session.get("sub_id"))
@@ -175,7 +178,7 @@ def view_node(node_id):
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         # fix this line
         node_owner=(
-            database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
+            database.get_user(dict_get(node, "subId", "noid"))["username"] or "Quilt"
         ),
         node_description=dict_get(node, "description", "None"),
         connections=connections,
@@ -278,9 +281,10 @@ def view_settings():
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 
+
 # TODO: authorization
 @app.route("/notifications/<int:user_id>")
-#@login_required
+# @login_required
 def notifications(user_id):
     notifs = database.get_notifs(user_id)
 
@@ -290,7 +294,7 @@ def notifications(user_id):
     for notif in notifs:
         date = datetime.datetime.fromisoformat(notif["timestamp"])
         date_str = date.strftime("%x")
-        if (date_str != current_date):
+        if date_str != current_date:
             timestamps[notif["notifid"]] = date_str
             current_date = date_str
         else:
@@ -298,9 +302,10 @@ def notifications(user_id):
 
     return render_template("notifications.html", notifs=notifs, dates=timestamps)
 
+
 # TODO: authorization
-@app.route("/delete-notif/<int:notif_id>", methods=('POST',))
-#@login_required
+@app.route("/delete-notif/<int:notif_id>", methods=("POST",))
+# @login_required
 def delete_notif(notif_id):
     userid = database.get_notif_recipient(notif_id)
     database.delete_notif(notif_id)

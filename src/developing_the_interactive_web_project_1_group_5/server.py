@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, g, session, abort
+from flask import Flask, render_template, request, url_for, redirect, g, session, abort, send_file
 from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
@@ -8,10 +8,17 @@ from developing_the_interactive_web_project_1_group_5.node import (
     dict_get,
     get_popular_nodes,
 )
+from developing_the_interactive_web_project_1_group_5.node import (
+    format_node_display,
+    dict_get,
+    get_popular_nodes,
+)
 
 from psycopg import errors
 
+import io
 import os
+import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
 import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
 import datetime
 import random
@@ -19,6 +26,7 @@ import developing_the_interactive_web_project_1_group_5.database as database
 
 app = Flask(__name__)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
+app.config["MAX_CONTENT_LENGTH"] = 5 * 1000 * 1000 # Rejects any kinda upload that'll exceed 5MB. Taken from Flask documentation (Uploading Files, 'Improving Uploads')
 
 oauth = OAuth(app)
 csrf = CSRFProtect(app)
@@ -37,7 +45,6 @@ oauth.register(
     server_metadata_url=f"https://{domain}/.well-known/openid-configuration",
 )
 
-database.setup()
 
 
 def check_signin():
@@ -50,7 +57,9 @@ def login_required(f):
         if not check_signin():
             return redirect("/login")
         else:
+        else:
             return f(*args, **kwargs)
+
 
     return decorated
 
@@ -78,6 +87,8 @@ def landing():
 
 
 @app.route("/search", methods=["POST"])
+
+@app.route("/search", methods=["POST"])
 @login_required
 def search():
     query = request.form["search"]
@@ -89,8 +100,10 @@ def search():
 def callback():
     token = oauth.auth0.authorize_access_token()
     sub_id = token.get("userinfo").get("sub")
+    sub_id = token.get("userinfo").get("sub")
     session["sub_id"] = sub_id
 
+    if database.get_user(session.get("sub_id")) == None:
     if database.get_user(session.get("sub_id")) == None:
         return redirect("/set-username")
     else:
@@ -105,6 +118,8 @@ def login():
 
 
 # TODO: Change this to JS modal instead of Jinja template
+
+# TODO: Change this to JS modal instead of Jinja template
 @app.route("/login")
 def login_overlay():
     return render_template("login.html")
@@ -114,14 +129,21 @@ def login_overlay():
 @login_required
 def set_username():
     if database.get_user(session.get("sub_id")) == None:
+    if database.get_user(session.get("sub_id")) == None:
         return render_template("username.html")
     else:
+    else:
         return redirect("/")
+
 
 
 @app.route("/create-username", methods=["GET", "POST"])
 @login_required
 def username_setup():
+    if database.get_user(session.get("sub_id")) == None:
+        # TODO: Validate username here
+        username = request.form.get("username")
+        database.add_user(subId=session.get("sub_id"), username=username)
     if database.get_user(session.get("sub_id")) == None:
         # TODO: Validate username here
         username = request.form.get("username")
@@ -153,9 +175,13 @@ def logout():
 def view_node(node_id):
     node = database.get_node(node_id)
     if node == None:
+    if node == None:
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
 
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
+    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
+    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
@@ -163,9 +189,11 @@ def view_node(node_id):
         "node_parent.html",
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+        node_title=dict_get(node, "title", "Untitled"),
+        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         # fix this line
         node_owner=(
-            database.get_user(dict_get(node, "subId", "noid"))["username"] or "Quilt"
+            database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
         node_description=dict_get(node, "description", "None"),
         connections=connections,
@@ -189,8 +217,23 @@ def edit_node(node_id):
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
+
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
+    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
+    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     return render_template(
         "node_edit.html",
+        node_title=dict_get(node, "title", "Untitled"),
+        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+        node_owner=(
+            database.get_user(dict_get(node, "creatorId", "noid"))["username"]
+            or "Quilt"
+        ),
+        node_description=dict_get(node, "description", "None"),
+        connections=connections,
+        saved_nodes=saved_nodes,
+        recent_nodes=recent_nodes,
+        created_nodes=created_nodes,
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         node_owner=(
@@ -211,18 +254,26 @@ def edit_node(node_id):
 def create_node():
     return render_template("node_create.html", connections=[], loggedin=check_signin())
 
+@app.route("/images/<int:image_id>")
+def get_image(image_id):
+    row = database.get_image(image_id)
+    if row == None:
+        abort(404)
+    return send_file(io.BytesIO(row["data"]), mimetype=row["mimetype"])
+
 
 @app.route("/profile")
 @login_required
 def view_profile():
+    db_user = database.get_user(session.get("sub_id"))
     user = {
-        "name": database.get_user(session.get("sub_id"))["username"],
-        "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
+        "name": db_user["username"],
+        "bio": db_user.get("bio"),
+        "profpicid": db_user.get("profpicid")
     }
-    # TODO: Change this when you can get user id from auth
-
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
-    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
+    
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get('sub_id')))
+    created_nodes = format_node_display(database.get_user_nodes(session.get('sub_id')))
     return render_template(
         "profile.html",
         user=user,
@@ -232,12 +283,31 @@ def view_profile():
     )
 
 
-@app.route("/settings")
+@app.route("/settings", methods=["GET", "POST"])
 @login_required
 def view_settings():
+    sub_id = session.get("sub_id")
+    db_user = database.get_user(sub_id)
+
+    if request.method == "POST":
+        print("FORM:", request.form)
+        print("FILES:", request.files)
+        username = request.form.get("username", "").strip() 
+        bio = request.form.get("bio", "").strip() 
+
+        #in case of empty input, keep whatever was there
+        if username == "":
+            username = db_user["username"]
+        if bio == "":
+            bio = db_user.get("bio")
+
+        database.edit_user(sub_id, username, bio, request.files.get("picture"))
+        return redirect(url_for("view_profile"))
+
     user = {
-        "name": database.get_user(session.get("sub_id"))["username"],
-        "bio": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy. Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me-",
+            "name": db_user["username"],
+            "bio": db_user.get("bio"),
+            "profpicid": db_user.get("profpicid")
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 
@@ -270,7 +340,6 @@ def delete_notif(notif_id):
     userid = database.get_notif_recipient(notif_id)
     database.delete_notif(notif_id)
     return redirect(url_for("notifications", user_id=userid["recipient"]))
-
 
 # this threw errors soo
 # @app.route("/edit-profile/<int:session.get('sub_id')>")

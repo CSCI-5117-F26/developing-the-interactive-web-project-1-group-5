@@ -1,14 +1,4 @@
-from flask import (
-    Flask,
-    render_template,
-    request,
-    url_for,
-    redirect,
-    g,
-    session,
-    abort,
-    send_file,
-)
+from flask import Flask, render_template, request, url_for, redirect, g, session, abort, send_file, jsonify
 from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
@@ -17,11 +7,15 @@ from developing_the_interactive_web_project_1_group_5.node import (
     format_node_display,
     dict_get,
     get_popular_nodes,
+    add_selections,
+    filter_connecting_nodes
 )
 from developing_the_interactive_web_project_1_group_5.node import (
     format_node_display,
     dict_get,
     get_popular_nodes,
+    add_selections,
+    filter_connecting_nodes
 )
 
 from psycopg import errors
@@ -99,8 +93,9 @@ def landing():
 @login_required
 def search():
     query = request.form["search"]
-    parse_query = format_node_display(fulltext.full_text_search(query))
-    return render_template("search.html", show=parse_query)
+    parse_query = fulltext.full_text_search(query)
+    show = format_node_display(parse_query)
+    return render_template("search.html", show=show)
 
 
 @app.route("/callback", methods=["GET", "POST"])
@@ -169,7 +164,7 @@ def logout():
         )
     )
 
-
+# Node stuff -------------------------------------
 @app.route("/node/<int:node_id>")
 def view_node(node_id):
     node = database.get_node(node_id)
@@ -179,19 +174,24 @@ def view_node(node_id):
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
+    # database.add_to_recent_nodes(session.get("sub_id"), node_id)
+    for l in [saved_nodes, recent_nodes, created_nodes]:
+        l = filter_connecting_nodes(l, node_id)
     return render_template(
         "node_parent.html",
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
-        # fix this line
         node_owner=(
             database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
+        node_owner_id=dict_get(node, "subid", "noid"),
         node_description=dict_get(node, "description", "None"),
+        node_id=dict_get(node, "nodeid", "1"),
         connections=connections,
         saved_nodes=saved_nodes,
         recent_nodes=recent_nodes,
         created_nodes=created_nodes,
+        sub_id=session.get("sub_id"),
         loggedin=check_signin(),
     )
 
@@ -202,24 +202,36 @@ def edit_node(node_id):
     node = database.get_node(node_id)
     if node == None:
         abort(404)
+
+    # ensure user has edit permissions
+    if (session.get("sub_id") != dict_get(node, "subid", "noid")):
+        abort(404)
+
     connections = format_node_display(database.get_node_connections(node_id))
-    # TODO: Change this when you can ge session.get('sub_id')
+
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
+    # database.add_to_recent_nodes(session.get("sub_id"), node_id)
+    for l in [saved_nodes, recent_nodes, created_nodes]:
+        l = filter_connecting_nodes(l, node_id)
     return render_template(
         "node_edit.html",
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         node_owner=(
-            database.get_user(dict_get(node, "creatorId", "noid"))["username"]
-            or "Quilt"
+            database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
+        ),
+        node_owner_id=(
+            dict_get(node, "subid", "noid")
         ),
         node_description=dict_get(node, "description", "None"),
+        node_id=dict_get(node, "nodeid", "1"),
         connections=connections,
         saved_nodes=saved_nodes,
         recent_nodes=recent_nodes,
         created_nodes=created_nodes,
+        sub_id=session.get("sub_id"),
         loggedin=check_signin(),
     )
 
@@ -228,6 +240,22 @@ def edit_node(node_id):
 @login_required
 def create_node():
     return render_template("node_create.html", connections=[], loggedin=check_signin())
+
+@app.route("/add-connections", methods=["POST"])
+@login_required
+def add_connections():
+    data = request.get_json() 
+    add_selections(session.get("sub_id"), data.get("new_connections", []))
+    return jsonify({"success" : "true"})
+
+@app.route("/delete-connections", methods=["POST"])
+@login_required
+def delete_connections():
+    data = request.get_json() 
+    database.delete_connection(data.get("nodeid1"), data.get("nodeid2"))
+    return jsonify({"success" : "true"})
+
+# End node stuff -------------------------------------
 
 @app.route("/images/<int:image_id>")
 def get_image(image_id):

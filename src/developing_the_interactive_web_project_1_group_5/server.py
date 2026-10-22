@@ -1,4 +1,14 @@
-from flask import Flask, render_template, request, url_for, redirect, g, session, abort, send_file
+from flask import (
+    Flask,
+    render_template,
+    request,
+    url_for,
+    redirect,
+    g,
+    session,
+    abort,
+    send_file,
+)
 from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 from authlib.integrations.flask_client import OAuth
@@ -26,7 +36,9 @@ import developing_the_interactive_web_project_1_group_5.database as database
 
 app = Flask(__name__)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
-app.config["MAX_CONTENT_LENGTH"] = 5 * 1000 * 1000 # Rejects any kinda upload that'll exceed 5MB. Taken from Flask documentation (Uploading Files, 'Improving Uploads')
+app.config["MAX_CONTENT_LENGTH"] = (
+    5 * 1000 * 1000
+)  # Rejects any kinda upload that'll exceed 5MB. Taken from Flask documentation (Uploading Files, 'Improving Uploads')
 
 oauth = OAuth(app)
 csrf = CSRFProtect(app)
@@ -46,7 +58,6 @@ oauth.register(
 )
 
 
-
 def check_signin():
     return "sub_id" in session
 
@@ -57,9 +68,7 @@ def login_required(f):
         if not check_signin():
             return redirect("/login")
         else:
-        else:
             return f(*args, **kwargs)
-
 
     return decorated
 
@@ -87,8 +96,6 @@ def landing():
 
 
 @app.route("/search", methods=["POST"])
-
-@app.route("/search", methods=["POST"])
 @login_required
 def search():
     query = request.form["search"]
@@ -100,10 +107,8 @@ def search():
 def callback():
     token = oauth.auth0.authorize_access_token()
     sub_id = token.get("userinfo").get("sub")
-    sub_id = token.get("userinfo").get("sub")
     session["sub_id"] = sub_id
 
-    if database.get_user(session.get("sub_id")) == None:
     if database.get_user(session.get("sub_id")) == None:
         return redirect("/set-username")
     else:
@@ -119,6 +124,7 @@ def login():
 
 # TODO: Change this to JS modal instead of Jinja template
 
+
 # TODO: Change this to JS modal instead of Jinja template
 @app.route("/login")
 def login_overlay():
@@ -129,21 +135,14 @@ def login_overlay():
 @login_required
 def set_username():
     if database.get_user(session.get("sub_id")) == None:
-    if database.get_user(session.get("sub_id")) == None:
         return render_template("username.html")
     else:
-    else:
         return redirect("/")
-
 
 
 @app.route("/create-username", methods=["GET", "POST"])
 @login_required
 def username_setup():
-    if database.get_user(session.get("sub_id")) == None:
-        # TODO: Validate username here
-        username = request.form.get("username")
-        database.add_user(subId=session.get("sub_id"), username=username)
     if database.get_user(session.get("sub_id")) == None:
         # TODO: Validate username here
         username = request.form.get("username")
@@ -175,20 +174,13 @@ def logout():
 def view_node(node_id):
     node = database.get_node(node_id)
     if node == None:
-    if node == None:
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
-
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
-    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
-    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     return render_template(
         "node_parent.html",
-        node_title=dict_get(node, "title", "Untitled"),
-        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         # fix this line
@@ -211,29 +203,12 @@ def edit_node(node_id):
     if node == None:
         abort(404)
     connections = format_node_display(database.get_node_connections(node_id))
-
     # TODO: Change this when you can ge session.get('sub_id')
-
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
-    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
-    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
-
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     return render_template(
         "node_edit.html",
-        node_title=dict_get(node, "title", "Untitled"),
-        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
-        node_owner=(
-            database.get_user(dict_get(node, "creatorId", "noid"))["username"]
-            or "Quilt"
-        ),
-        node_description=dict_get(node, "description", "None"),
-        connections=connections,
-        saved_nodes=saved_nodes,
-        recent_nodes=recent_nodes,
-        created_nodes=created_nodes,
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
         node_owner=(
@@ -269,11 +244,11 @@ def view_profile():
     user = {
         "name": db_user["username"],
         "bio": db_user.get("bio"),
-        "profpicid": db_user.get("profpicid")
+        "profpicid": db_user.get("profpicid"),
     }
-    
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get('sub_id')))
-    created_nodes = format_node_display(database.get_user_nodes(session.get('sub_id')))
+
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
+    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
     return render_template(
         "profile.html",
         user=user,
@@ -292,10 +267,10 @@ def view_settings():
     if request.method == "POST":
         print("FORM:", request.form)
         print("FILES:", request.files)
-        username = request.form.get("username", "").strip() 
-        bio = request.form.get("bio", "").strip() 
+        username = request.form.get("username", "").strip()
+        bio = request.form.get("bio", "").strip()
 
-        #in case of empty input, keep whatever was there
+        # in case of empty input, keep whatever was there
         if username == "":
             username = db_user["username"]
         if bio == "":
@@ -305,9 +280,9 @@ def view_settings():
         return redirect(url_for("view_profile"))
 
     user = {
-            "name": db_user["username"],
-            "bio": db_user.get("bio"),
-            "profpicid": db_user.get("profpicid")
+        "name": db_user["username"],
+        "bio": db_user.get("bio"),
+        "profpicid": db_user.get("profpicid"),
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 
@@ -340,6 +315,7 @@ def delete_notif(notif_id):
     userid = database.get_notif_recipient(notif_id)
     database.delete_notif(notif_id)
     return redirect(url_for("notifications", user_id=userid["recipient"]))
+
 
 # this threw errors soo
 # @app.route("/edit-profile/<int:session.get('sub_id')>")

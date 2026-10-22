@@ -72,6 +72,13 @@ def get_node_connections(nodeid):
             )
             return cur.fetchall()
 
+# get node connection
+def get_node_connection(node1, node2):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''select * from connections where ((nodeid1, nodeid2) = (%s, %s) 
+                        or (nodeid2, nodeid1) = (%s, %s));''', (node1, node2, node1, node2))
+            return cur.fetchone()
 
 # get all nodes with a certain topic
 def get_nodes_by_topic(topic):
@@ -298,6 +305,7 @@ def delete_connection(nodeid1, nodeid2):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             # delete both possibilities
+            print("help")
             cur.execute(
                 """delete from connections where nodeId1 = %s and nodeId2 = %s;""",
                 (nodeid1, nodeid2),

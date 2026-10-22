@@ -167,12 +167,14 @@ def view_node(node_id):
         node_owner=(
             database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
+        node_owner_id=dict_get(node, "subid", "noid"),
         node_description=dict_get(node, "description", "None"),
         node_id=dict_get(node, "nodeid", "1"),
         connections=connections,
         saved_nodes=saved_nodes,
         recent_nodes=recent_nodes,
         created_nodes=created_nodes,
+        sub_id=session.get("sub_id"),
         loggedin=check_signin(),
     )
 
@@ -183,6 +185,11 @@ def edit_node(node_id):
     node = database.get_node(node_id)
     if node == None:
         abort(404)
+
+    # ensure user has edit permissions
+    if (session.get("sub_id") != dict_get(node, "subid", "noid")):
+        abort(404)
+
     connections = format_node_display(database.get_node_connections(node_id))
 
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
@@ -198,12 +205,16 @@ def edit_node(node_id):
         node_owner=(
             database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
+        node_owner_id=(
+            dict_get(node, "subid", "noid")
+        ),
         node_description=dict_get(node, "description", "None"),
         node_id=dict_get(node, "nodeid", "1"),
         connections=connections,
         saved_nodes=saved_nodes,
         recent_nodes=recent_nodes,
         created_nodes=created_nodes,
+        sub_id=session.get("sub_id"),
         loggedin=check_signin(),
     )
 
@@ -218,6 +229,13 @@ def create_node():
 def add_connections():
     data = request.get_json() 
     add_selections(session.get("sub_id"), data.get("new_connections", []))
+    return jsonify({"success" : "true"})
+
+@app.route("/delete-connections", methods=["POST"])
+@login_required
+def delete_connections():
+    data = request.get_json() 
+    database.delete_connection(data.get("nodeid1"), data.get("nodeid2"))
     return jsonify({"success" : "true"})
 
 # End node stuff -------------------------------------

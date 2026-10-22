@@ -3,7 +3,7 @@ var modal = document.getElementById("connectNodeModal");
 
 var btn = document.getElementById("addNode");
 
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementById("close-modal");
 
 btn.onclick = function() {
   modal.style.display = "block";
@@ -66,6 +66,28 @@ function addSelections(node_id){
         throw new Error(`Response status: ${response.status}`);
       }
       clearSelections();
+      window.location.reload();
+      return response.json(); 
+  })
+  .catch(error => {
+      console.error(error.message);
+  });
+}
+
+function deleteConnection(nodeid1, nodeid2){
+  // TODO: add pop-up for a check to delete or not?
+  fetch('/delete-connections', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({"nodeid1": String(nodeid1), "nodeid2": String(nodeid2)})
+  })
+  .then(response => {
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
       window.location.reload();
       return response.json(); 
   })

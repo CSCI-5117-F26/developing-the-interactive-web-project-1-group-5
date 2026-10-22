@@ -15,6 +15,7 @@ def format_node_display(query=[]):
             "node_title": dict_get(node, "title", "Untitled"),
             "link": "/node/" + str(dict_get(node, "nodeid", "doesnotexist")),
             "node_id": str(dict_get(node, "nodeid", "doesnotexist")),
+            "creator_id": str(dict_get(node, "subid", 1))
             })
     return connections
     

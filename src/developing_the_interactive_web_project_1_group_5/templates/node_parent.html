@@ -38,9 +38,14 @@
                     {% for connection in connections %}
                     <div class="pure-u-1-2 pure-u-md-1-4">
                         <div class="node-box">
+                            {% if (connection.creator_id == sub_id) or (sub_id == node_owner_id) %}
+                            <!-- Allow close ONLY if user is curr node owner or creation of the connection -->
+                            <button class="close" id="delete-node" onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</button>
+                            {% endif %}
                             <button class="pure-button node-card" onclick="window.location.href='{{connection.link}}';">
                                 <img class="connection-img" src="{{connection.img_url}}">
-                                <p class="line-clamp">{{connection.node_title}}</p>
+                                <p class="line-clamp">{{connection.node_title}}
+                                </p> 
                             </button>
                         </div>
                     </div>
@@ -64,7 +69,7 @@
         {%if loggedin%}
         <div id="connectNodeModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" id="close-modal">&times;</span>
             <!-- Borrow landing tabs -->
             <div class="connection-tabs" id="connection-tabs">
                     <input type="radio" name="tabs" id="tab-one" checked>

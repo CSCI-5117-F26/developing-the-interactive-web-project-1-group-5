@@ -316,7 +316,7 @@ def delete_notif(notif_id):
 
     if (user_sub_id == notif['recipient']):
         database.delete_notif(notif_id)
-    # else: message? You cant delete this node? Or?
+    # else: message? You cant delete this notif? Or?
 
     return redirect(url_for("notifs"))
 
@@ -331,7 +331,7 @@ def disconnect(node_id1,node_id2):
     if (user_sub_id == node1['subid'] or user_sub_id == node2['subid']):
             database.delete_connection(node_id1, node_id2)
 
-    #TODO: how to redirect to where the request came from ?
+    
     return redirect(url_for("notifs"))
 
 

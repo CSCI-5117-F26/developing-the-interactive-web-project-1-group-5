@@ -258,31 +258,36 @@ def add_to_saved_nodes(subId, nodeid):
 def add_to_recent_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            num_history = 10
-            cur.execute(
-                """select count(subid) from recentNodes where subid = %s""", (subId,)
-            )
-            count = cur.fetchone()
+            cur.execute('''select * from recentNodes where subId = %s and nodeId = %s;''', (subId, nodeid))
+            exists = cur.fetchone()
+            print(exists)
 
-            # remove oldest node in the history
-            if count.get("count") == num_history:
+            if exists:
+                num_history = 10
                 cur.execute(
-                    """select * from recentNodes where subid = %s order by timestamp;""",
-                    (subId,),
+                    """select count(subid) from recentNodes where subid = %s""", (subId,)
                 )
-                recents = cur.fetchall()
-                to_delete = recents[0].get("nodeid")
-                cur.execute(
-                    """delete from recentNodes where subid = %s and nodeId = %s""",
-                    (subId, to_delete),
-                )
+                count = cur.fetchone()
 
-            timestamp = datetime.datetime.now()
-            cur.execute(
-                """insert into recentNodes (subId, nodeId, timestamp)
-                            values (%s, %s, %s);""",
-                (subId, nodeid, timestamp),
-            )
+                # remove oldest node in the history
+                if count.get("count") == num_history:
+                    cur.execute(
+                        """select * from recentNodes where subid = %s order by timestamp;""",
+                        (subId,),
+                    )
+                    recents = cur.fetchall()
+                    to_delete = recents[0].get("nodeid")
+                    cur.execute(
+                        """delete from recentNodes where subid = %s and nodeId = %s""",
+                        (subId, to_delete),
+                    )
+
+                timestamp = datetime.datetime.now()
+                cur.execute(
+                    """insert into recentNodes (subId, nodeId, timestamp)
+                                values (%s, %s, %s);""",
+                    (subId, nodeid, timestamp),
+                )
 
 
 # Putting an uploaded file into the images table. Returns imageId (or none)

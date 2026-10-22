@@ -12,18 +12,13 @@
         <h2> We'll pick for you!</h2>
     </div>
     <div>
-        <form action="{{url_for('landing')}}" method="post" class="pure-form" id="randomize-btn-div"
+        <form action="{{random_node.link}}" method="get" class="pure-form" id="randomize-btn-div"
             style="padding:1em 1em;">
-            <button type="button" class="pure-button pure-button-primary profile-buttons" id="randomize-button">
-                <h2>Surprise me!</h2>
-            </button>
+            <button type="submit" class="pure-button landing-button" id="randomize-button">Randomize!</button>
         </form>
     </div>
 </div>
-<div class="pure-g center-text">
-    <form action="{{random_node.link}}" method="get" class="pure-form" id="randomize-btn-div" style="padding:1em 1em;">
-        <button type="submit" class="pure-button landing-button" id="randomize-button">Randomize!</button>
-    </form>
+
 
 
 <div class="pure-u-1">

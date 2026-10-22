@@ -334,9 +334,8 @@ def edit_node(nodeid, title=None, image=None, desc=None):
 
             cur.execute(
                 """update nodes 
-                            set title = %s, img = %s, description = %s""",
-                (title, image, desc),
-            )
+                            set title = %s, img = %s, description = %s
+                            where nodeid = %s;""", (title, image, desc, nodeid))
 
 
 # update a user with new values
@@ -345,9 +344,8 @@ def edit_user(subid, name=None, bio=None, pic=None):
         with conn.cursor() as cur:
             cur.execute(
                 """update users 
-                            set username = %s, bio = %s, profPic = %s""",
-                (name, bio, pic),
-            )
+                            set username = %s, bio = %s, profPic = %s
+                            where subid = %s;""", (name, bio, pic, subid))
 
 
 # ---------------- DELETE ----------------

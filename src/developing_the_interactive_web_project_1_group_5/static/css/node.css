@@ -108,7 +108,7 @@ body, a {
 .modal {
     display: none; 
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     padding-top: 100px; 
     left: 0;
     top: 0;
@@ -142,6 +142,13 @@ body, a {
     cursor: pointer;
 }
 
+#delete-node{
+    background-color:red;
+    z-index: 2;
+    position: absolute;
+    font-size: 300%;
+}
+
 /* Modal tab system, using landing page method */
 #connection-tabs input[type="radio"] {
   position: absolute;
@@ -162,7 +169,7 @@ body, a {
     position: sticky;
     bottom: 0;
     width: 100%;
-    z-index: 2;
+    z-index: 4;
     background-color:white;
     padding: 0.5em 0.5em;
     text-align: right;

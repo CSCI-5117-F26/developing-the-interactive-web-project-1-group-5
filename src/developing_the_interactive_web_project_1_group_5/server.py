@@ -417,7 +417,8 @@ def notifs():
         else:
             timestamps[notif["notifid"]] = None
 
-    return render_template("notifications.html", notifs=notifs, dates=timestamps, loggedin=check_signin())
+    user = get_user_profile()
+    return render_template("notifications.html", user=user, notifs=notifs, dates=timestamps, loggedin=check_signin())
 
 
 @app.route("/delete-notif/<int:notif_id>", methods=('POST',))

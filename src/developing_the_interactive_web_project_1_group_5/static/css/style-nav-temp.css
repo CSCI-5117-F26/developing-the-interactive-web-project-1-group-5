@@ -1,6 +1,6 @@
 :root {
     --text-color: #1F1C1B;
-    --background-color: #ffffff;
+    --background-color: white;
     --sub-background-color: #f1f1f1;
     --secondary-text-color: #747474;
     --accent-color: #FABC05;
@@ -15,9 +15,12 @@
 .corner-profile {
     border-radius: 50%;
     /* margin: 0.4rem; */
-    padding: 0.5rem;
-    place-items: center;
-    max-width: 32px;
+    /* padding: 0.5rem; */
+    align-items: center;
+    justify-content: center;
+    max-height: 2rem;
+    aspect-ratio: 1 / 1;
+    background-color: #ea9400;
 }
 
 /* https://developers.google.com/fonts/docs/material_icons */

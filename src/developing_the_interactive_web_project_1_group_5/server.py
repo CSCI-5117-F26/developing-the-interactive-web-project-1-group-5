@@ -61,6 +61,17 @@ oauth.register(
 def check_signin():
     return "sub_id" in session
 
+def get_user_profile():
+    if (session.get("sub_id")):
+        db_user = database.get_user(session.get("sub_id"))
+        user = {
+            "name": db_user["username"],
+            "bio": db_user.get("bio"),
+            "profpicid": db_user.get("profpicid")
+        }
+        return user
+    else:
+        return None
 
 def login_required(f):
     @wraps(f)
@@ -72,35 +83,44 @@ def login_required(f):
 
     return decorated
 
-
 @app.route("/")
 def landing():
 
     categories = format_node_display(database.get_all_categories())
     popular_nodes = format_node_display(get_popular_nodes())
-    recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
-    # new_nodes = format_node_display(database.get_new_nodes(session.get("sub_id")))
-
     all_nodes = format_node_display(fulltext.view())
     random_node = random.choice(all_nodes)
-    print(random_node)
+
+    user = get_user_profile()
+
+    if (user):
+        recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
+        # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
+        return render_template(
+            "landing.html",
+            user=user,
+            categories=categories,
+            popular_nodes=popular_nodes,
+            recent_nodes=recent_nodes,
+            random_node=random_node,
+            # new_nodes = new_nodes,
+            loggedin=check_signin(),
+        )
     return render_template(
-        "landing.html",
+        "landing.html",  
         categories=categories,
-        popular_nodes=popular_nodes,
-        recent_nodes=recent_nodes,
-        # new_nodes=new_nodes,
+        popular_nodes=popular_nodes, 
         random_node=random_node,
         loggedin=check_signin(),
     )
 
 
 @app.route("/search", methods=["POST"])
-@login_required
 def search():
     query = request.form["search"]
     parse_query = format_node_display(fulltext.full_text_search(query))
-    return render_template("search.html", show=parse_query)
+    user = get_user_profile()
+    return render_template("search.html", user=user, show=parse_query, loggedin=check_signin())
 
 
 @app.route("/callback", methods=["GET", "POST"])
@@ -123,13 +143,9 @@ def login():
 
 
 # TODO: Change this to JS modal instead of Jinja template
-
-
-# TODO: Change this to JS modal instead of Jinja template
 @app.route("/login")
 def login_overlay():
     return render_template("login.html")
-
 
 @app.route("/set-username")
 @login_required
@@ -179,7 +195,29 @@ def view_node(node_id):
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
-    return render_template(
+    user = get_user_profile()
+
+    if(user):
+        recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
+        # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
+        return render_template(
+            "node_parent.html",
+            user=user,
+            node_title=dict_get(node, "title", "Untitled"),
+            node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+            # fix this line
+            node_owner=(
+                database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
+            ),
+            node_description=dict_get(node, "description", "None"),
+            connections=connections,
+            saved_nodes=saved_nodes,
+            recent_nodes=recent_nodes,
+            created_nodes=created_nodes,
+            loggedin=check_signin(),
+        )
+    else: 
+        return render_template(
         "node_parent.html",
         node_title=dict_get(node, "title", "Untitled"),
         node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
@@ -194,7 +232,6 @@ def view_node(node_id):
         created_nodes=created_nodes,
         loggedin=check_signin(),
     )
-
 
 @app.route("/edit-node/<int:node_id>")
 @login_required
@@ -287,11 +324,11 @@ def view_settings():
     return render_template("settings.html", user=user, loggedin=check_signin())
 
 
-# TODO: authorization
-@app.route("/notifications/<int:user_id>")
-# @login_required
-def notifications(user_id):
-    notifs = database.get_notifs(user_id)
+@app.route("/notifs")
+@login_required
+def notifs():
+    user_sub_id = session.get("sub_id")
+    notifs = database.get_notifs(user_sub_id)
 
     # format dates
     timestamps = {}
@@ -308,13 +345,31 @@ def notifications(user_id):
     return render_template("notifications.html", notifs=notifs, dates=timestamps)
 
 
-# TODO: authorization
-@app.route("/delete-notif/<int:notif_id>", methods=("POST",))
-# @login_required
+@app.route("/delete-notif/<int:notif_id>", methods=('POST',))
+@login_required
 def delete_notif(notif_id):
-    userid = database.get_notif_recipient(notif_id)
-    database.delete_notif(notif_id)
-    return redirect(url_for("notifications", user_id=userid["recipient"]))
+    user_sub_id = session.get("sub_id")
+    notif = database.get_notif(notif_id)
+
+    if (user_sub_id == notif['recipient']):
+        database.delete_notif(notif_id)
+    # else: message? You cant delete this notif? Or?
+
+    return redirect(url_for("notifs"))
+
+
+@app.route("/disconnect/<int:node_id1>/<int:node_id2>", methods=('POST',))
+@login_required
+def disconnect(node_id1,node_id2):
+    user_sub_id = session.get("sub_id")
+    node1 = database.get_node(node_id1)
+    node2 = database.get_node(node_id2)
+
+    if (user_sub_id == node1['subid'] or user_sub_id == node2['subid']):
+            database.delete_connection(node_id1, node_id2)
+
+    
+    return redirect(url_for("notifs"))
 
 
 # this threw errors soo

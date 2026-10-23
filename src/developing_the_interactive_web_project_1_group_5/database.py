@@ -160,6 +160,12 @@ def get_notif(notif_id):
             cur.execute('''select * from notifications where notifId = %s;''', (notif_id,))
             return cur.fetchone()
 
+def get_image(image_id):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''SELECT data, mimetype FROM images WHERE imageId = %s;''', (image_id,))
+            return cur.fetchone()
+
 
 def get_image(image_id):
     with pool.connection() as conn:
@@ -314,21 +320,14 @@ def save_image(cur, picture):
         return None
     if not picture.mimetype.startswith("image/"):
         return None
-    cur.execute(
-        """INSERT INTO images (filename, mimetype, data) VALUES (%s, %s, %s) RETURNING imageId""",
-        (secure_filename(picture.filename), picture.mimetype, picture.read()),
+    cur.execute('''INSERT INTO images (filename, mimetype, data) VALUES (%s, %s, %s) RETURNING imageId''',
+                (secure_filename(picture.filename), picture.mimetype, picture.read()),
     )
     return cur.fetchone()["imageid"]
 
-
-# removes image from image table. duh.
+#removes image from image table. duh.
 def delete_image(cur, image_id):
-    cur.execute("""DELETE FROM images WHERE imageId = %s;""", (image_id,))
-    # cur.execute(
-    #     """insert into recentNodes (subId, nodeId, timestamp)
-    #                 values (%s, %s, %s);""",
-    #     (subId, nodeid, timestamp),
-    # )
+    cur.execute('''DELETE FROM images WHERE imageId = %s;''', (image_id,))
 
 
 # ---------------- UPDATE ----------------
@@ -351,15 +350,23 @@ def edit_node(nodeid, title=None, image=None, desc=None):
 
 
 # update a user with new values
-def edit_user(subid, name=None, bio=None, pic=None):
+def edit_user(subId, username, bio, picture):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(
-                """update users 
-                            set username = %s, bio = %s, profPic = %s""",
-                (name, bio, pic),
-            )
+            cur.execute('''update users 
+                            set username = %s, bio = %s where subId = %s''', (username, bio, subId))
+            
+            image_id = save_image(cur, picture)
 
+            if image_id:
+                #image switch: store old profpicid before replacing it
+                cur.execute('''select profpicid from users where subId = %s''', (subId,))
+                old_id = cur.fetchone()["profpicid"]
+                # ye update
+                cur.execute('''update users 
+                            set profpicid = %s where subId = %s''', (image_id, subId))
+                if old_id:
+                    delete_image(cur, old_id)
 
 # ---------------- DELETE ----------------
 

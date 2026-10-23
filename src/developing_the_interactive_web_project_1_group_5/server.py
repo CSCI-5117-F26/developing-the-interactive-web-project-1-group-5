@@ -35,9 +35,7 @@ import developing_the_interactive_web_project_1_group_5.database as database
 
 app = Flask(__name__)
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
-app.config["MAX_CONTENT_LENGTH"] = (
-    5 * 1000 * 1000
-)  # Rejects any kinda upload that'll exceed 5MB. Taken from Flask documentation (Uploading Files, 'Improving Uploads')
+app.config["MAX_CONTENT_LENGTH"] = 5 * 1000 * 1000 # Rejects any kinda upload that'll exceed 5MB. Taken from Flask documentation (Uploading Files, 'Improving Uploads')
 
 oauth = OAuth(app)
 csrf = CSRFProtect(app)
@@ -349,11 +347,11 @@ def view_profile():
     user = {
         "name": db_user["username"],
         "bio": db_user.get("bio"),
-        "profpicid": db_user.get("profpicid"),
+        "profpicid": db_user.get("profpicid")
     }
-
-    saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
-    created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
+    
+    saved_nodes = format_node_display(database.get_saved_nodes(session.get('sub_id')))
+    created_nodes = format_node_display(database.get_user_nodes(session.get('sub_id')))
     return render_template(
         "profile.html",
         user=user,
@@ -372,10 +370,10 @@ def view_settings():
     if request.method == "POST":
         print("FORM:", request.form)
         print("FILES:", request.files)
-        username = request.form.get("username", "").strip()
-        bio = request.form.get("bio", "").strip()
+        username = request.form.get("username", "").strip() 
+        bio = request.form.get("bio", "").strip() 
 
-        # in case of empty input, keep whatever was there
+        #in case of empty input, keep whatever was there
         if username == "":
             username = db_user["username"]
         if bio == "":
@@ -385,9 +383,9 @@ def view_settings():
         return redirect(url_for("view_profile"))
 
     user = {
-        "name": db_user["username"],
-        "bio": db_user.get("bio"),
-        "profpicid": db_user.get("profpicid"),
+            "name": db_user["username"],
+            "bio": db_user.get("bio"),
+            "profpicid": db_user.get("profpicid")
     }
     return render_template("settings.html", user=user, loggedin=check_signin())
 

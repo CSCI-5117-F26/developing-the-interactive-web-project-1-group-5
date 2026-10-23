@@ -6,41 +6,30 @@
 {% endblock %}
 {% block body %}
 
+
+{% if loggedin %}
+<div id="landing-hero-section">
+    <div>
+        <h1> A community-based algorithm.</h1>
+        <h2> Image reccomendations tailored by people for people.</h2>
+        <a id="login-button" class="pure-button pure-button-primary landing-button"
+            href="{{url_for('login')}}">Start quilting!</a>
+    </div>
+</div>
+{% endif %}
+
 <div id="kickstart-section">
     <div>
         <h1> Can't decide where to start?</h1>
         <h2> We'll pick for you!</h2>
     </div>
     <div>
-        <form action="{{random_node.link}}" method="get" class="pure-form" id="randomize-btn-div"
-            style="padding:1em 1em;">
-            <button type="submit" class="pure-button landing-button" id="randomize-button">Randomize!</button>
+        <form action="{{random_node.link}}" method="get" class="pure-form" id="randomize-btn-div">
+            <button type="submit" class="pure-button pure-button-primary landing-button">Surprise Me!</button>
         </form>
     </div>
 </div>
 
-
-<div id="kickstart-section">
-    <div>
-        <h1> Can't decide where to start?</h1>
-        <h2> We'll pick for you!</h2>
-    </div>
-    <div>
-        <form action="{{random_node.link}}" method="get" class="pure-form" id="randomize-btn-div"
-            style="padding:1em 1em;">
-            <button type="submit" class="pure-button landing-button" id="randomize-button">Randomize!</button>
-        </form>
-    </div>
-</div>
-
-
-
-<div class="pure-u-1">
-    <div class="profile-tabs">
-
-        <input class="radiotab" type="radio" name="tabs" id="tab-two" checked>
-        <label class="pure-u-1-4 tab-label" for="tab-two">All Patches</label>
-        <div class="panel" id="panel-two">
 <div class="pure-u-1">
     <div class="profile-tabs">
 
@@ -52,32 +41,17 @@
                 <div class="pure-u-1-2 pure-u-md-1-4">
                     <div class="node-box">
                         <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
-                            <img class="pure-img connection-img" src="{{node.img_url}}">
-                            <p class="center-text line-clamp">{{node.node_title}}</p>
-                        </button>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+                            {% if node.image_id %}
+                            <img class="pure-img connection-img"
+                                src="{{ url_for('get_image', image_id=node.image_id) }}">
+                            {% else %}
+                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                            {% endif %}
+                            <div class="node-info">
+                                <h2 class="line-clamp">{{node.node_title}}</h2>
+                                <p class="line-clamp">{{node.node_description}}</p>
+                            </div>
 
-        <input class="radiotab" type="radio" name="tabs" id="tab-four">
-        <label class="pure-u-1-4 tab-label" for="tab-four" {%if loggedin is not true%} hidden {%endif%}>New
-            Connections</label>
-        <div class="panel" id="panel-four">
-            <div></div>
-        </div>
-
-        <input class="radiotab" type="radio" name="tabs" id="tab-one">
-        <label class="pure-u-1-4 tab-label" for="tab-one">Categories</label>
-        <div class="panel" id="panel-one">
-            <div class="pure-g">
-                {% for category in categories%}
-                <div class="pure-u-1-2 pure-u-md-1-4">
-                    <div class="node-box">
-                        <button class="pure-button node-card" onclick="window.location.href='{{category.link}}';">
-                            <img class="pure-img connection-img" src="{{category.img_url}}">
-                            <p class="center-text line-clamp">{{category.node_title}}</p>
                         </button>
                     </div>
                 </div>
@@ -101,10 +75,11 @@
                     <div class="node-box">
                         <button class="pure-button node-card" onclick="window.location.href='{{category.link}}';">
                             {% if category.image_id %}
-                            <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=category.image_id) }}">
+                            <img class="pure-img connection-img"
+                                src="{{ url_for('get_image', image_id=category.image_id) }}">
                             {% else %}
                             <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
-                            {% endif %}                             <p class="center-text line-clamp">{{category.node_title}}</p>
+                            {% endif %} <p class="center-text line-clamp">{{category.node_title}}</p>
                         </button>
                     </div>
                 </div>

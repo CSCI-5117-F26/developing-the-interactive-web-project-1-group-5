@@ -192,7 +192,14 @@ def view_node(node_id):
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
-    return render_template(
+    # database.add_to_recent_nodes(session.get("sub_id"), node_id)
+    for l in [saved_nodes, recent_nodes, created_nodes]:
+        l = filter_connecting_nodes(l, node_id)
+
+    user = get_user_profile()
+
+    if(user):
+        return render_template(
         "node_parent.html",
         user=user,
         node_title=dict_get(node, "title", "Untitled"),
@@ -226,8 +233,8 @@ def view_node(node_id):
         loggedin=check_signin(),
     )
 
-
-@app.route("/edit-node/<int:node_id>")
+# TODO: FORM CRAP
+@app.route("/edit-node/<int:node_id>", methods=["GET", "POST"])
 @login_required
 def edit_node(node_id):
     node = database.get_node(node_id)

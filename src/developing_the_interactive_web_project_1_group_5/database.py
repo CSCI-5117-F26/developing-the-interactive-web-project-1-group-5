@@ -160,12 +160,6 @@ def get_notif(notif_id):
             cur.execute('''select * from notifications where notifId = %s;''', (notif_id,))
             return cur.fetchone()
 
-def get_image(image_id):
-    with pool.connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute('''SELECT data, mimetype FROM images WHERE imageId = %s;''', (image_id,))
-            return cur.fetchone()
-
 
 def get_image(image_id):
     with pool.connection() as conn:
@@ -197,9 +191,11 @@ def add_node(
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''insert into nodes (title, imgId, description, subId, topic)
-                            values (%s, %s, %s, %s, %s) returning nodeId;''', (title, image, desc, creatorId, topic))
-            return cur.fetchone()
+            cur.execute('''insert into nodes (title, description, subId, topic)
+                            values (%s, %s, %s, %s) returning nodeId;''', (title, desc, creatorId, topic))
+            node_id = cur.fetchone()
+            save_image(cur, image)
+            return node_id
 
 # add a user
 def add_user(subId, username, bio=None, profilepic=None):
@@ -327,7 +323,21 @@ def save_image(cur, picture):
 
 #removes image from image table. duh.
 def delete_image(cur, image_id):
-    cur.execute('''DELETE FROM images WHERE imageId = %s;''', (image_id,))
+    # only delete if there are <2 nodes + users using the img
+    cur.execute(
+        '''SELECT
+               (SELECT COUNT(*) FROM nodes WHERE imgId = %s) +
+               (SELECT COUNT(*) FROM users WHERE profPicId = %s)
+               AS count;''',
+        (image_id, image_id)
+    )
+    count = cur.fetchone()["count"]
+
+    if count < 2:
+        cur.execute(
+            '''DELETE FROM images WHERE imageId = %s;''',
+            (image_id,)
+        )
 
 
 # ---------------- UPDATE ----------------
@@ -343,10 +353,19 @@ def edit_node(nodeid, title=None, image=None, desc=None):
         with conn.cursor() as cur:
 
             cur.execute(
-                """update nodes 
-                            set title = %s, img = %s, description = %s""",
-                (title, image, desc),
+                """update nodes set title = %s, description = %s where nodeId = %s""",
+                (title, desc, nodeid),
             )
+            image_id = save_image(cur, image)
+            if image_id:
+                #image switch: store old imgId before replacing it
+                cur.execute('''select * from nodes where nodeId = %s''', (str(nodeid),))
+                old_id = cur.fetchone()["imgid"]
+                # ye update
+                cur.execute('''update nodes 
+                            set imgId = %s where nodeId = %s''', (image_id, str(nodeid)))
+                if old_id:
+                    delete_image(cur, old_id)
 
 
 # update a user with new values

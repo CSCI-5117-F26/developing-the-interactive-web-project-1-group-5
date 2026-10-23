@@ -2,10 +2,7 @@ CREATE table nodes (
     nodeId serial PRIMARY KEY,
     title varchar(100) NOT NULL,
     imgId int,
-    imgId int,
     description varchar(250),
-    --creatorId int,
-    subId varchar(255),
     --creatorId int,
     subId varchar(255),
     topic varchar(100),
@@ -42,7 +39,6 @@ CREATE table connections (
 -- TODO: auth0 stuff
 CREATE table users (
     userId serial PRIMARY KEY,
-    subId varchar(250) NOT NULL UNIQUE,
     subId varchar(250) NOT NULL UNIQUE,
     username varchar(15) NOT NULL,
     bio varchar(250),

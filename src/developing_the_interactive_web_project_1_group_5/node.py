@@ -11,7 +11,7 @@ def format_node_display(query=[]):
     for node in query:
         connections.append (
             {
-            "img_url": dict_get(node, "img", "../static/img/temp_chungus.png"),
+            "image_id": dict_get(node, "imgid", None),
             "node_title": dict_get(node, "title", "Untitled"),
             "link": "/node/" + str(dict_get(node, "nodeid", "doesnotexist")),
             "node_id": str(dict_get(node, "nodeid", "doesnotexist")),

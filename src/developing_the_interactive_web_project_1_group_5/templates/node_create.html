@@ -12,9 +12,9 @@
 {% block node_info %}
     <form class="pure-form pure-form-stacked"
           method="POST"
-          action="{{ url_for('create_node') }}">
+          action="{{ url_for('create_node') }}"  enctype="multipart/form-data">
 
-
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="node_title"><h1>Title</h1></label>
         <!-- Do we want input invalidation? Feels like there's a lot more options here -->
         <input type="text" id="node_title" name="node_title" placeholder="Title" minLength="1" maxLength="60" required="">
@@ -25,7 +25,8 @@
         <textarea id="node_description"
                   name="node_description"
                   rows="5" maxLength="600" style="width:100%;"></textarea>
-
+        <label for="picture">Image</label>
+        <input id="picture" name="picture" type="file" accept="image/*">
         <button type="submit" class="pure-button pure-button-primary">
             Create Node
         </button>

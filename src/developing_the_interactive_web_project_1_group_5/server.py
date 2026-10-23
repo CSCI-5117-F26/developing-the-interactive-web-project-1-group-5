@@ -203,7 +203,7 @@ def view_node(node_id):
         "node_parent.html",
         user=user,
         node_title=dict_get(node, "title", "Untitled"),
-        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+        image_id=dict_get(node, "imgid", None),
         node_owner=(
             database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
@@ -222,7 +222,7 @@ def view_node(node_id):
         return render_template(
         "node_parent.html",
         node_title=dict_get(node, "title", "Untitled"),
-        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+        image_id=dict_get(node, "imgid", None),
         node_owner=(
             database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
@@ -233,7 +233,8 @@ def view_node(node_id):
         loggedin=check_signin(),
     )
 
-@app.route("/edit-node/<int:node_id>")
+# TODO: FORM CRAP
+@app.route("/edit-node/<int:node_id>", methods=["GET", "POST"])
 @login_required
 def edit_node(node_id):
     node = database.get_node(node_id)
@@ -243,6 +244,15 @@ def edit_node(node_id):
     # ensure user has edit permissions
     if (session.get("sub_id") != dict_get(node, "subid", "noid")):
         abort(404)
+
+    if request.method == 'POST':
+        title = request.form.get('node_title') 
+        description = request.form.get('node_description')
+        image = request.files.get("picture")
+        sub_id = session.get("sub_id")
+        # TODO: what's topic?
+        database.edit_node(node_id, title, image, description)
+        return redirect("/node/" + str(node_id))
 
     connections = format_node_display(database.get_node_connections(node_id))
 
@@ -257,7 +267,7 @@ def edit_node(node_id):
         "node_edit.html",
         user=user,
         node_title=dict_get(node, "title", "Untitled"),
-        node_img_url=dict_get(node, "img", "../static/img/temp_chungus.png"),
+        image_id=dict_get(node, "imgid", None),
         node_owner=(
             database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
         ),
@@ -281,11 +291,10 @@ def create_node():
     if request.method == 'POST':
         title = request.form.get('node_title') 
         description = request.form.get('node_description')
-        # TODO: how to do this img stuff?
-        img_id = request.form.get('img_id')
+        image = request.files.get("picture")
         sub_id = session.get("sub_id")
         # TODO: what's topic?
-        node_id = database.add_node(sub_id, title, img_id, description)
+        node_id = database.add_node(sub_id, title, image, description)
         return redirect("/node/" + str(node_id))
 
     

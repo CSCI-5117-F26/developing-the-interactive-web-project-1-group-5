@@ -12,7 +12,11 @@
             <div class="pure-u-1 pure-u-md-1-3">
                 <div class="node-box">
                     {% block main_image %}
-                        <img class="pure-img node-img" src="{{node_img_url}}" id="nodeImg">
+                        {% if image_id %}
+                        <img class="pure-img node-img" src="{{ url_for('get_image', image_id=image_id) }}" id="nodeImg">
+                        {% else %}
+                        <img class="pure-img node-img" src="../static/img/temp_chungus.png" id="nodeImg">
+                        {% endif %}
                     {% endblock %}
                 </div>
             </div>
@@ -58,8 +62,11 @@
                             <button class="close" id="delete-node" onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</button>
                             {% endif %}
                             <button class="pure-button node-card" onclick="window.location.href='{{connection.link}}';">
-                                <img class="connection-img" src="{{connection.img_url}}">
-                                <p class="line-clamp">{{connection.node_title}}
+                                {% if connection.image_id %}
+                                <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=connection.image_id) }}">
+                                {% else %}
+                                <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                {% endif %}                                 <p class="line-clamp">{{connection.node_title}}
                                 </p> 
                             </button>
                         </div>
@@ -103,8 +110,11 @@
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this, "{{saved.node_id}}")'>
-                                        <img class="pure-img connection-img" src="{{saved.img_url}}">
-                                    </button>
+                                        {% if saved.image_id %}
+                                        <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=saved.image_id) }}">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                        {% endif %}                                     </button>
                                     <p class="center-text">{{saved.node_title}}</p>
                                 </div>
                             </div>
@@ -118,8 +128,11 @@
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this, "{{recent.node_id}}")'>
-                                        <img class="pure-img connection-img" src="{{recent.img_url}}">
-                                    </button>
+                                        {% if recent.image_id %}
+                                        <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=recent.image_id) }}">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                        {% endif %}                                     </button>
                                     <p class="center-text">{{recent.node_title}}</p>
                                 </div>
                             </div>
@@ -133,8 +146,11 @@
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
                                     <button class="pure-button connection-img" onclick='selectConnection(this, "{{created.node_id}}")'>
-                                        <img class="pure-img connection-img" src="{{created.img_url}}">
-                                    </button>
+                                        {% if created.image_id %}
+                                        <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=created.image_id) }}">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                        {% endif %}                                     </button>
                                     <p class="center-text">{{created.node_title}}</p>
                                 </div>
                             </div>

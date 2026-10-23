@@ -5,26 +5,31 @@
 <!-- TODO: none of this works yet -->
     <form class="pure-form pure-form-stacked"
           method="POST"
-          action="{{ url_for('create_node') }}">
-
+          action="{{ url_for('edit_node', node_id=node_id) }}"  enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
         <label for="node_title"><strong>New Title: </strong></label>
         <!-- Do we want input validation? Feels like there's a lot more options here -->
-        <input type="text" id="node_title" name="node_title" placeholder="{{node_title}}" minLength="1" maxLength="60">
+        <input type="text" id="node_title" name="node_title" value="{{node_title}}" placeholder="Title" minLength="1" maxLength="60">
 
-        <!-- TODO: Ability to insert and check account (like %if user_id==owner% or in server.py)-->
-        <p><strong>Owner: You</strong></p>
+        <p><strong>Owner: You ({{node_owner}})</strong></p>
         <label for="node_description"><strong>Description:</strong></label>
         <!-- Maybe: add a char counter -->
         <textarea id="node_description"
                   name="node_description"
-                  rows="5" maxLength="600" style="width:100%;" placeholder="{{node_description}}"></textarea>
+                  rows="5" maxLength="600" style="width:100%;" placeholder="Description">{{node_description}}</textarea>
+        
+        <label for="picture">Image</label>
+        <input id="picture" name="picture" type="file" accept="image/*">
 
-        <button class="pure-button" href="#">
+        <a style="background-color: red" href="{{url_for('delete_node', node_id=node_id)}}" class="pure-button">
+            Delete
+        </a>
+        <a class="pure-button" href="{{ url_for('view_node', node_id=node_id) }}">
             Cancel
-        </button>
+        </a>
         <button type="submit" class="pure-button pure-button-primary">
-            Save
+            Update
         </button>
         
     </form>

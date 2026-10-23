@@ -1,7 +1,8 @@
 {% extends "parent.html" %}
 {% block head %}
-<link rel="stylesheet" href="../static/css/node.css">
+<link rel="stylesheet" href="../static/css/og_node_TEMP.css">
 <script src="https://kit.fontawesome.com/25f4f0a920.js" crossorigin="anonymous"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
 
 {% block title %} {{node_title}} {% endblock %}
@@ -11,7 +12,11 @@
             <div class="pure-u-1 pure-u-md-1-3">
                 <div class="node-box">
                     {% block main_image %}
-                        <img class="pure-img node-img" src="{{node_img_url}}" id="nodeImg">
+                        {% if image_id %}
+                        <img class="pure-img node-img" src="{{ url_for('get_image', image_id=image_id) }}" id="nodeImg">
+                        {% else %}
+                        <img class="pure-img node-img" src="../static/img/temp_chungus.png" id="nodeImg">
+                        {% endif %}
                     {% endblock %}
                 </div>
             </div>
@@ -25,10 +30,28 @@
                         <p><strong>Owner: {{node_owner}}</strong></p>
                         <p><strong>Description:</strong></p>
                         <p>{{node_description}}</p>
+                        <div class="pure-g">
+                            <div class="pure-u-1-6">
+                                    {% if is_saved %}
+                                        <button style="background-color: red" onclick="window.location.href='{{url_for('unsave_node', node_id=node_id)}}'" class="pure-button">Unsave</button>
+                                    {% else %}
+                                        <button onclick="window.location.href='{{url_for('save_node', node_id=node_id)}}'" class="pure-button">Save</button>
+                                    {% endif %}
+                            </div>
+                            <div class="pure-u-1-6">
+                                {% if (sub_id == node_owner_id) %}
+                                    <button onclick="window.location.href='{{url_for('edit_node', node_id=node_id)}}'" class="pure-button">Edit</button>
+                                {% endif %}
+                            </div>
+                        </div>
+
                     {% endblock %}
                 </div>
             </div>
             <div class="pure-u-1">
+            {% if node_id %}
+            <!-- ^ NOTE: this prevents it from displaying on the create-node page since there's a more 
+             complicated issue with adding connections when a node_id doesn't exist yet -->
                 <div class="format-box">
                     <hr>
                     <h1>Connections</h1>
@@ -37,9 +60,17 @@
                     {% for connection in connections %}
                     <div class="pure-u-1-2 pure-u-md-1-4">
                         <div class="node-box">
+                            {% if (connection.creator_id == sub_id) or (sub_id == node_owner_id) %}
+                            <!-- Allow close ONLY if user is curr node owner or creation of the connection -->
+                            <button class="close" id="delete-node" onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</button>
+                            {% endif %}
                             <button class="pure-button node-card" onclick="window.location.href='{{connection.link}}';">
-                                <img class="connection-img" src="{{connection.img_url}}">
-                                <p class="line-clamp">{{connection.node_title}}</p>
+                                {% if connection.image_id %}
+                                <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=connection.image_id) }}">
+                                {% else %}
+                                <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                {% endif %}                                 <p class="line-clamp">{{connection.node_title}}
+                                </p> 
                             </button>
                         </div>
                     </div>
@@ -56,14 +87,15 @@
                     </div>
                     {%endif%}
                 </div>
-            
+            {% endif %}
             </div>
         </div>
 
+        {% if node_id %}
         {%if loggedin%}
         <div id="connectNodeModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" id="close-modal">&times;</span>
             <!-- Borrow landing tabs -->
             <div class="connection-tabs" id="connection-tabs">
                     <input type="radio" name="tabs" id="tab-one" checked>
@@ -81,10 +113,13 @@
                             {% for saved in saved_nodes%}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
-                                    <button class="pure-button connection-img" onclick='selectConnection(this)'>
-                                        <img class="pure-img connection-img" src="{{saved.img_url}}">
-                                    </button>
-                                    <p class="center-text line-clamp">{{saved.node_title}}</p>
+                                    <button class="pure-button connection-img" onclick='selectConnection(this, "{{saved.node_id}}")'>
+                                        {% if saved.image_id %}
+                                        <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=saved.image_id) }}">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                        {% endif %}                                     </button>
+                                    <p class="center-text">{{saved.node_title}}</p>
                                 </div>
                             </div>
                             {% endfor %} 
@@ -96,10 +131,13 @@
                             {% for recent in recent_nodes %}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
-                                    <button class="pure-button connection-img" onclick='selectConnection(this)'>
-                                        <img class="pure-img connection-img" src="{{recent.img_url}}">
-                                    </button>
-                                    <p class="center-text line-clamp">{{recent.node_title}}</p>
+                                    <button class="pure-button connection-img" onclick='selectConnection(this, "{{recent.node_id}}")'>
+                                        {% if recent.image_id %}
+                                        <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=recent.image_id) }}">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                        {% endif %}                                     </button>
+                                    <p class="center-text">{{recent.node_title}}</p>
                                 </div>
                             </div>
                             {% endfor %} 
@@ -111,9 +149,12 @@
                             {% for created in created_nodes%}
                             <div class="pure-u-1-2 pure-u-md-1-4">
                                 <div class="node-box">
-                                    <button class="pure-button connection-img" onclick='selectConnection(this)'>
-                                        <img class="pure-img connection-img" src="{{created.img_url}}">
-                                    </button>
+                                    <button class="pure-button connection-img" onclick='selectConnection(this, "{{created.node_id}}")'>
+                                        {% if created.image_id %}
+                                        <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=created.image_id) }}">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                        {% endif %}                                     </button>
                                     <p class="center-text">{{created.node_title}}</p>
                                 </div>
                             </div>
@@ -123,16 +164,17 @@
 
                     <!-- TODO: Maybe add a panel 4 with search, once we get that set up -->
         </div>
-        <!-- TODO: add actual functionality to add connection! Also, make clear button actually clear! -->
          <div class="pure-g">
             <div class="pure-u-1 add-connection-footer">
-                <button class="pure-button">Clear</button>
-                <button class="pure-button pure-button-primary">Add</button>
+                <button class="pure-button" onclick="clearSelections()">Clear</button>
+                <button class="pure-button pure-button-primary" id="add_selection" onclick="addSelections({{node_id}})">Add</button>
             </div>
          </div>
-        {%endif%}
-
+        
     </div>
+    </div>
+    {% endif %}
+    {% endif %}
 
     <script src="../static/js/node_pages.js"></script>
 

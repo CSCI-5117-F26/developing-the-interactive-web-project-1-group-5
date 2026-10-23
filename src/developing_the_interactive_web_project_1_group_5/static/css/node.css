@@ -116,17 +116,17 @@ a {
 /* Connect node modal */
 /* Referenced from https://www.w3schools.com/howto/howto_css_modals.asp example 1 */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
+    display: none; 
+    position: fixed;
+    z-index: 3;
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
 }
 
 .modal-content {
@@ -150,6 +150,13 @@ a {
   color: var(--primary-color);
   text-decoration: none;
   cursor: pointer;
+}
+
+#delete-node{
+    background-color:red;
+    z-index: 2;
+    position: absolute;
+    font-size: 300%;
 }
 
 /* Modal tab system, using landing page method */
@@ -202,12 +209,12 @@ a {
   border-style: solid;
 }
 
-.add-connection-footer {
-  position: sticky;
-  bottom: 0;
-  width: 100%;
-  z-index: 2;
-  background-color: white;
-  padding: 0.5em 0.5em;
-  text-align: right;
+.add-connection-footer{
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    z-index: 4;
+    background-color:white;
+    padding: 0.5em 0.5em;
+    text-align: right;
 }

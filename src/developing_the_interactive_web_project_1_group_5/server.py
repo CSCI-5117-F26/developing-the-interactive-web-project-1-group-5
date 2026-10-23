@@ -205,7 +205,7 @@ def view_node(node_id):
         node_title=dict_get(node, "title", "Untitled"),
         image_id=dict_get(node, "imgid", None),
         node_owner=(
-            database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
+            (database.get_user(dict_get(node, "subid", "noid")) or {}).get("username") or "Quilt"
         ),
         node_owner_id=dict_get(node, "subid", "noid"),
         node_description=dict_get(node, "description", "None"),
@@ -224,7 +224,7 @@ def view_node(node_id):
         node_title=dict_get(node, "title", "Untitled"),
         image_id=dict_get(node, "imgid", None),
         node_owner=(
-            database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
+            (database.get_user(dict_get(node, "subid", "noid")) or {}).get("username") or "Quilt"
         ),
         node_owner_id=dict_get(node, "subid", "noid"),
         node_description=dict_get(node, "description", "None"),
@@ -269,7 +269,7 @@ def edit_node(node_id):
         node_title=dict_get(node, "title", "Untitled"),
         image_id=dict_get(node, "imgid", None),
         node_owner=(
-            database.get_user(dict_get(node, "subid", "noid"))["username"] or "Quilt"
+            (database.get_user(dict_get(node, "subid", "noid")) or {}).get("username") or "Quilt"
         ),
         node_owner_id=(
             dict_get(node, "subid", "noid")
@@ -335,9 +335,9 @@ def delete_node(node_id):
     if node == None:
         abort(404)
     # Check delete permission
-    if (session.get("sub_id") == dict_get(node, "subid")):
+    if (session.get("sub_id") == dict_get(node, "subid", 1)):
         database.delete_node(node_id)
-    return redirect("/node/" + str(node_id))
+    return redirect("/profile")
 
 # End node stuff -------------------------------------
 

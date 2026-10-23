@@ -49,6 +49,9 @@
                 </div>
             </div>
             <div class="pure-u-1">
+            {% if node_id %}
+            <!-- ^ NOTE: this prevents it from displaying on the create-node page since there's a more 
+             complicated issue with adding connections when a node_id doesn't exist yet -->
                 <div class="format-box">
                     <hr>
                     <h1>Connections</h1>
@@ -84,10 +87,11 @@
                     </div>
                     {%endif%}
                 </div>
-            
+            {% endif %}
             </div>
         </div>
 
+        {% if node_id %}
         {%if loggedin%}
         <div id="connectNodeModal" class="modal">
         <div class="modal-content">
@@ -166,9 +170,11 @@
                 <button class="pure-button pure-button-primary" id="add_selection" onclick="addSelections({{node_id}})">Add</button>
             </div>
          </div>
-        {%endif%}
-
+        
     </div>
+    </div>
+    {% endif %}
+    {% endif %}
 
     <script src="../static/js/node_pages.js"></script>
 

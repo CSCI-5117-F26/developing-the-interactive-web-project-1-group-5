@@ -22,9 +22,9 @@
         <label for="picture">Image</label>
         <input id="picture" name="picture" type="file" accept="image/*">
 
-        <button style="background-color: red" onclick="window.location.href='{{url_for('delete_node', node_id=node_id)}}'" class="pure-button">
+        <a style="background-color: red" href="{{url_for('delete_node', node_id=node_id)}}" class="pure-button">
             Delete
-        </button>
+        </a>
         <a class="pure-button" href="{{ url_for('view_node', node_id=node_id) }}">
             Cancel
         </a>

@@ -83,9 +83,9 @@ CREATE table notifications (
     FOREIGN KEY (connectingNode) REFERENCES nodes
 );
 
-insert into users (username, bio) values ('chungus', 'I am chungus');
+-- insert into users (username, bio) values ('chungus', 'I am chungus');
 
-insert into nodes (title, description, creatorId) values ('cool dog', 'my dog is cool', 1);
-insert into nodes (title, description, creatorId) values ('demure cat', 'this cat so demure', 1);
+-- insert into nodes (title, description, creatorId) values ('cool dog', 'my dog is cool', 1);
+-- insert into nodes (title, description, creatorId) values ('demure cat', 'this cat so demure', 1);
 
-insert into connections (nodeId1, nodeId2, connectorId) values (1, 2, 1);
+-- insert into connections (nodeId1, nodeId2, connectorId) values (1, 2, 1);

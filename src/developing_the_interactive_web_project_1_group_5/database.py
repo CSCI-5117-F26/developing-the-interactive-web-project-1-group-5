@@ -193,8 +193,10 @@ def add_node(
         with conn.cursor() as cur:
             cur.execute('''insert into nodes (title, description, subId, topic)
                             values (%s, %s, %s, %s) returning nodeId;''', (title, desc, creatorId, topic))
-            node_id = cur.fetchone()
-            save_image(cur, image)
+            node_id = cur.fetchone()["nodeid"]
+            image_id = save_image(cur, image)
+            cur.execute('''update nodes 
+                        set imgId = %s where nodeId = %s''', (image_id, node_id))
             return node_id
 
 # add a user

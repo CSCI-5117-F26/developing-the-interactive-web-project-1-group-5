@@ -95,3 +95,13 @@ function deleteConnection(nodeid1, nodeid2){
       console.error(error.message);
   });
 }
+
+// Edit/create node specific
+// From https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
+var picture = document.getElementById("picture");
+picture.onchange = function(event) {
+  const [file] = picture.files;
+  if (file) {
+    document.getElementById('nodeImg').src = URL.createObjectURL(file);
+  }
+}

@@ -72,13 +72,18 @@ def get_node_connections(nodeid):
             )
             return cur.fetchall()
 
+
 # get node connection
 def get_node_connection(node1, node2):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''select * from connections where ((nodeid1, nodeid2) = (%s, %s) 
-                        or (nodeid2, nodeid1) = (%s, %s));''', (node1, node2, node1, node2))
+            cur.execute(
+                """select * from connections where ((nodeid1, nodeid2) = (%s, %s) 
+                        or (nodeid2, nodeid1) = (%s, %s));""",
+                (node1, node2, node1, node2),
+            )
             return cur.fetchone()
+
 
 # get all nodes with a certain topic
 def get_nodes_by_topic(topic):
@@ -140,7 +145,8 @@ def get_recent_nodes(subId):
 def get_notifs(subid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''
+            cur.execute(
+                """
             select U1.username, U1.profPicId, N1.nodeId as userNode, N1.title as userTitle, 
                 N2.nodeId as connectingNode, N2.title as connectingTitle, notif.timestamp, 
                 notif.notifid, notif.deleted
@@ -149,15 +155,20 @@ def get_notifs(subid):
                 U1.subId = notif.connector and
                 N1.nodeId = notif.usersNode and
                 N2.nodeId = notif.connectingNode
-            order by timestamp desc;''', (subid,))
+            order by timestamp desc;""",
+                (subid,),
+            )
 
             return cur.fetchall()
             # [{'username': 'Samantha', 'profpic': None, 'usernode': 5, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:47:51.285334'}, {'username': 'Samantha', 'profpic': None, 'usernode': 4, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:49:25.671458'}]
 
+
 def get_notif(notif_id):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''select * from notifications where notifId = %s;''', (notif_id,))
+            cur.execute(
+                """select * from notifications where notifId = %s;""", (notif_id,)
+            )
             return cur.fetchone()
 
 
@@ -170,13 +181,15 @@ def get_image(image_id):
             return cur.fetchone()
 
 
-
 # check if existing username
 def check_username_taken(username):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''select count(1) from users where username = %s''', (username,)) 
+            cur.execute(
+                """select count(1) from users where username = %s""", (username,)
+            )
             return cur.fetchone()
+
 
 # ---------------- CREATE ----------------
 
@@ -191,13 +204,20 @@ def add_node(
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''insert into nodes (title, description, subId, topic)
-                            values (%s, %s, %s, %s) returning nodeId;''', (title, desc, creatorId, topic))
+            cur.execute(
+                """insert into nodes (title, description, subId, topic)
+                            values (%s, %s, %s, %s) returning nodeId;""",
+                (title, desc, creatorId, topic),
+            )
             node_id = cur.fetchone()["nodeid"]
             image_id = save_image(cur, image)
-            cur.execute('''update nodes 
-                        set imgId = %s where nodeId = %s''', (image_id, node_id))
+            cur.execute(
+                """update nodes 
+                        set imgId = %s where nodeId = %s""",
+                (image_id, node_id),
+            )
             return node_id
+
 
 # add a user
 def add_user(subId, username, bio=None, profilepic=None):
@@ -263,12 +283,15 @@ def add_notification(node1, node2, connector):
 def add_to_saved_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''select * from savedNodes where subId = %s and nodeId = %s;''', (subId, nodeid))
+            cur.execute(
+                """select * from savedNodes where subId = %s and nodeId = %s;""",
+                (subId, nodeid),
+            )
             exists = cur.fetchone()
 
             if exists:
                 return
-            
+
             cur.execute(
                 """insert into savedNodes (subId, nodeId)
                             values (%s, %s);""",
@@ -280,14 +303,18 @@ def add_to_saved_nodes(subId, nodeid):
 def add_to_recent_nodes(subId, nodeid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''select * from recentNodes where subId = %s and nodeId = %s;''', (subId, nodeid))
+            cur.execute(
+                """select * from recentNodes where subId = %s and nodeId = %s;""",
+                (subId, nodeid),
+            )
             exists = cur.fetchone()
             print(exists)
 
             if exists:
                 num_history = 10
                 cur.execute(
-                    """select count(subid) from recentNodes where subid = %s""", (subId,)
+                    """select count(subid) from recentNodes where subid = %s""",
+                    (subId,),
                 )
                 count = cur.fetchone()
 
@@ -318,28 +345,27 @@ def save_image(cur, picture):
         return None
     if not picture.mimetype.startswith("image/"):
         return None
-    cur.execute('''INSERT INTO images (filename, mimetype, data) VALUES (%s, %s, %s) RETURNING imageId''',
-                (secure_filename(picture.filename), picture.mimetype, picture.read()),
+    cur.execute(
+        """INSERT INTO images (filename, mimetype, data) VALUES (%s, %s, %s) RETURNING imageId""",
+        (secure_filename(picture.filename), picture.mimetype, picture.read()),
     )
     return cur.fetchone()["imageid"]
 
-#removes image from image table. duh.
+
+# removes image from image table. duh.
 def delete_image(cur, image_id):
     # only delete if there are <2 nodes + users using the img
     cur.execute(
-        '''SELECT
+        """SELECT
                (SELECT COUNT(*) FROM nodes WHERE imgId = %s) +
                (SELECT COUNT(*) FROM users WHERE profPicId = %s)
-               AS count;''',
-        (image_id, image_id)
+               AS count;""",
+        (image_id, image_id),
     )
     count = cur.fetchone()["count"]
 
     if count < 2:
-        cur.execute(
-            '''DELETE FROM images WHERE imageId = %s;''',
-            (image_id,)
-        )
+        cur.execute("""DELETE FROM images WHERE imageId = %s;""", (image_id,))
 
 
 # ---------------- UPDATE ----------------
@@ -360,12 +386,15 @@ def edit_node(nodeid, title=None, image=None, desc=None):
             )
             image_id = save_image(cur, image)
             if image_id:
-                #image switch: store old imgId before replacing it
-                cur.execute('''select * from nodes where nodeId = %s''', (str(nodeid),))
+                # image switch: store old imgId before replacing it
+                cur.execute("""select * from nodes where nodeId = %s""", (str(nodeid),))
                 old_id = cur.fetchone()["imgid"]
                 # ye update
-                cur.execute('''update nodes 
-                            set imgId = %s where nodeId = %s''', (image_id, str(nodeid)))
+                cur.execute(
+                    """update nodes 
+                            set imgId = %s where nodeId = %s""",
+                    (image_id, str(nodeid)),
+                )
                 if old_id:
                     delete_image(cur, old_id)
 
@@ -374,20 +403,29 @@ def edit_node(nodeid, title=None, image=None, desc=None):
 def edit_user(subId, username, bio, picture):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''update users 
-                            set username = %s, bio = %s where subId = %s''', (username, bio, subId))
-            
+            cur.execute(
+                """update users 
+                            set username = %s, bio = %s where subId = %s""",
+                (username, bio, subId),
+            )
+
             image_id = save_image(cur, picture)
 
             if image_id:
-                #image switch: store old profpicid before replacing it
-                cur.execute('''select profpicid from users where subId = %s''', (subId,))
+                # image switch: store old profpicid before replacing it
+                cur.execute(
+                    """select profpicid from users where subId = %s""", (subId,)
+                )
                 old_id = cur.fetchone()["profpicid"]
                 # ye update
-                cur.execute('''update users 
-                            set profpicid = %s where subId = %s''', (image_id, subId))
+                cur.execute(
+                    """update users 
+                            set profpicid = %s where subId = %s""",
+                    (image_id, subId),
+                )
                 if old_id:
                     delete_image(cur, old_id)
+
 
 # ---------------- DELETE ----------------
 
@@ -411,18 +449,18 @@ def delete_connection(nodeid1, nodeid2):
                 (nodeid2, nodeid1),
             )
 
-            #update notifications
+            # update notifications
             cur.execute(
-                '''update notifications 
+                """update notifications 
                     set deleted = TRUE 
-                    where usersNode = %s and connectingNode = %s''',
-                    (nodeid1, nodeid2)
+                    where usersNode = %s and connectingNode = %s""",
+                (nodeid1, nodeid2),
             )
             cur.execute(
-                '''update notifications 
+                """update notifications 
                     set deleted = TRUE
-                    where usersNode = %s and connectingNode = %s''',
-                    (nodeid2, nodeid1)
+                    where usersNode = %s and connectingNode = %s""",
+                (nodeid2, nodeid1),
             )
 
 
@@ -445,20 +483,91 @@ def delete_notif(notifid):
 def remove_from_recent():
     return
 
+
 # CHECK EXISTENCE
 def connects(node1, node2):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''select count(1) from connections where ((nodeid1, nodeid2) = (%s, %s) 
-                        or (nodeid2, nodeid1) = (%s, %s));''', (node1, node2, node1, node2))
+            cur.execute(
+                """select count(1) from connections where ((nodeid1, nodeid2) = (%s, %s) 
+                        or (nodeid2, nodeid1) = (%s, %s));""",
+                (node1, node2, node1, node2),
+            )
             count = cur.fetchone()
-            if count.get('count') == 0: return False
+            if count.get("count") == 0:
+                return False
             return True
+
 
 def is_saved(sub_id, node_id):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('''select count(1) from savedNodes where ((subid, nodeid) = (%s, %s));''', (sub_id, node_id))
+            cur.execute(
+                """select count(1) from savedNodes where ((subid, nodeid) = (%s, %s));""",
+                (sub_id, node_id),
+            )
             count = cur.fetchone()
-            if count.get('count') == 0: return False
+            if count.get("count") == 0:
+                return False
             return True
+
+
+# def view():
+#     with pool.connection() as conn:
+#         with conn.cursor() as cur:
+#             cur.execute("""SELECT
+#                * FROM nodes
+#             """)
+#             a = cur.fetchall()
+
+#             for i in a:
+#                 print(i)
+#             return cur.fetchall()
+
+
+# def setup_text_search():
+#     with pool.connection() as conn:
+#         with conn.cursor() as cur:
+#             cur.execute("""
+#                 ALTER TABLE nodes
+#                 ADD COLUMN IF NOT EXISTS "textSearch" tsvector
+#                 GENERATED ALWAYS AS (
+#                     setweight(
+#                         to_tsvector('english', coalesce(title, '')), 'A'
+#                     ) ||
+#                     setweight(
+#                         to_tsvector('english', coalesce(description, '')), 'B'
+#                     )
+#                 ) STORED;
+#             """)
+
+#             cur.execute("""
+#                 CREATE INDEX IF NOT EXISTS "textSearch_idx"
+#                 ON nodes USING GIN ("textSearch");
+#             """)
+
+
+# def view_indexes():
+#     with pool.connection() as conn:
+#         with conn.cursor() as cur:
+#             cur.execute("""
+#                 SELECT indexname, indexdef
+#                 FROM pg_indexes
+#                 WHERE schemaname = 'public'
+#                   AND tablename = 'nodes';
+#             """)
+
+#             indexes = cur.fetchall()
+
+#             for i in indexes:
+#                 print(i)
+
+
+# def main():
+#     # setup_text_search()
+#     view()
+#     view_indexes()
+
+
+# if __name__ == "__main__":
+#     main()

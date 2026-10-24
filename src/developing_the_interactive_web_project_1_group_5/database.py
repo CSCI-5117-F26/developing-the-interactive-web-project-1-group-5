@@ -152,7 +152,7 @@ def get_notifs(subid):
             order by timestamp desc;''', (subid,))
 
             return cur.fetchall()
-            # [{'username': 'Samantha', 'profpic': None, 'usernode': 5, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:47:51.285334'}, {'username': 'Samantha', 'profpic': None, 'usernode': 4, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:49:25.671458'}]
+
 
 def get_notif(notif_id):
     with pool.connection() as conn:
@@ -170,7 +170,6 @@ def get_image(image_id):
             return cur.fetchone()
 
 
-
 # check if existing username
 def check_username_taken(username):
     with pool.connection() as conn:
@@ -182,8 +181,6 @@ def check_username_taken(username):
 
 
 # add a node to the node table
-
-
 def add_node(
     creatorId, title, image, desc=None, topic=None
 ):  # which ones are required?
@@ -345,10 +342,6 @@ def delete_image(cur, image_id):
 # ---------------- UPDATE ----------------
 
 
-# NOTE: Can you change a node's topic?
-
-
-# NOTE: Can you change a node's topic?
 # update a node with new values
 def edit_node(nodeid, title=None, image=None, desc=None):
     with pool.connection() as conn:

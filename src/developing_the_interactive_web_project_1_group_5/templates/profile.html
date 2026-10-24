@@ -37,10 +37,15 @@
                     <div class="node-box">
                         <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
                             {% if node.image_id %}
-                            <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=node.image_id) }}">
+                            <img class="pure-img connection-img"
+                                src="{{ url_for('get_image', image_id=node.image_id) }}">
                             {% else %}
                             <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
-                            {% endif %}                             <p class="line-clamp">{{node.node_title}}</p>
+                            {% endif %}
+                            <div class="node-info">
+                                <h2 class="line-clamp">{{node.node_title}}</h2>
+                                <p class="line-clamp">{{node.node_description}}</p>
+                            </div>
                         </button>
                     </div>
                 </div>
@@ -62,10 +67,15 @@
                     <div class="node-box">
                         <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
                             {% if node.image_id %}
-                            <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=node.image_id) }}">
+                            <img class="pure-img connection-img"
+                                src="{{ url_for('get_image', image_id=node.image_id) }}">
                             {% else %}
                             <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
-                            {% endif %}                             <p class="line-clamp">{{node.node_title}}</p>
+                            {% endif %}
+                            <div class="node-info">
+                                <h2 class="line-clamp">{{node.node_title}}</h2>
+                                <p class="line-clamp">{{node.node_description}}</p>
+                            </div>
                         </button>
                     </div>
                 </div>

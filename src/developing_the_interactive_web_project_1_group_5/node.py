@@ -13,6 +13,7 @@ def format_node_display(query=[]):
             {
             "image_id": dict_get(node, "imgid", None),
             "node_title": dict_get(node, "title", "Untitled"),
+            "node_description": dict_get(node, "description", ""),
             "link": "/node/" + str(dict_get(node, "nodeid", "doesnotexist")),
             "node_id": str(dict_get(node, "nodeid", "doesnotexist")),
             "creator_id": str(dict_get(node, "subid", 1))

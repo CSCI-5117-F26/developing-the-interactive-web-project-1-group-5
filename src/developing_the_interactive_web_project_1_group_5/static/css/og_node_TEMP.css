@@ -1,31 +1,5 @@
 /* overall formatting */
-:root {
-    --primary-color: #0a1836;
-    --secondary-color: white;
-    --accent-color2: #d7d7d7;
-}
 
-* {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 500;
-    color: var(--primary-color);
-}
-
-.pure-button {
-    padding: 0.75rem 1.5rem;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    border-radius: 1.5rem;
-}
-
-.secondary-button {
-    background-color: inherit;
-    color: var(--primary-color);
-}
-
-.secondary-button:hover {
-    color: var(--primary-color);
-}
 
 
 body, a {
@@ -33,34 +7,34 @@ body, a {
     font-size: 1em;
 }
 
-.l-box {
+/* .l-box {
     padding: 1em 4em;
-}
+} */
 
-.format-box{
+/* .format-box{
     padding: 0.5em 2em;
-}
+} */
 
-.node-box{
+/* .node-box{
     padding: 1em 2em;
 }
 
 .node-box:hover {
     text-decoration: underline;
     font-weight: strong;
-}
+} */
 
-.node-card{
+/* .node-card{
     object-position: center;
     width: 100%;
     min-height: 220px;
     min-width: 200px;
     background-color: var(--accent-color2);
     padding: 0;
-}
+} */
 
 /* images */
-.node-img {
+/* .node-img {
     width: 100%;
     min-height: 200px;
     min-width: 200px;
@@ -70,9 +44,9 @@ body, a {
     background-color: var(--accent-color2);
     color: var(--primary-color);
     border-radius: 1.5rem;
-}
+} */
 
-.connection-img{
+/* .connection-img{
     display: block;
     width: 100%;
     min-height: 100px;
@@ -83,25 +57,25 @@ body, a {
     padding: 0;
     background-color: var(--accent-color2);
     border-radius: 1.5rem 1.5rem 0rem 0rem;
-}
+} */
 
-.node-card:hover{
+/* .node-card:hover{
     filter: brightness(0.8); 
     color:var(--primary-color);
 }
 
 .center-text {
   text-align: center;
-}
+} */
 
 
 /* From https://css-tricks.com/almanac/properties/l/line-clamp/ */
-.line-clamp {
+/* .line-clamp {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;  
   overflow: hidden;
-}
+} */
 
 /* Connect node modal */
 /* Referenced from https://www.w3schools.com/howto/howto_css_modals.asp example 1 */
@@ -169,25 +143,6 @@ body, a {
   background: #eaeaea;
 }
 
-.panel {
-  display: none;
-  width: 100%;
-}
-
-#tab-one:checked ~ #panel-one,
-#tab-two:checked ~ #panel-two,
-#tab-three:checked ~ #panel-three,
-#tab-four:checked ~ #panel-four  {
-  display: block;
-  background: #eaeaea;
-}
-
-#tab-one:not(:checked) ~ #panel-one,
-#tab-two:not(:checked) ~ #panel-two,
-#tab-three:not(:checked) ~ #panel-three,
-#tab-four:not(:checked) ~ #panel-four {
-  display: none;
-}
 
 .scroll-box{
     overflow: auto;

@@ -7,7 +7,7 @@ CREATE table nodes (
     subId varchar(255),
     topic varchar(100),
     category boolean DEFAULT false, 
-    FOREIGN KEY (creatorId) REFERENCES users,
+    FOREIGN KEY (subId) REFERENCES users,
     FOREIGN KEY (imgId) REFERENCES images,
     textSearch tsvector GENERATED ALWAYS AS    
     (setweight(to_tsvector('title', coalesce(title, '')), 'A') ||
@@ -29,14 +29,12 @@ CREATE table connections (
     nodeId1 int NOT NULL,
     nodeId2 int NOT NULL,
     connectorId varchar(255) NOT NULL,
-    connectorId varchar(255) NOT NULL,
     PRIMARY KEY (nodeId1, nodeId2),
     FOREIGN KEY (nodeId1) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (nodeId2) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (connectorId) REFERENCES users
 );
 
--- TODO: auth0 stuff
 CREATE table users (
     userId serial PRIMARY KEY,
     subId varchar(250) NOT NULL UNIQUE,
@@ -44,26 +42,24 @@ CREATE table users (
     bio varchar(250),
     profPicId int,
     FOREIGN KEY (profPic) REFERENCES images
-    profPicId int,
-    FOREIGN KEY (profPic) REFERENCES images
 );
 
 CREATE table savedNodes (
-    userId int,
+    --userId int,
     nodeId int NOT NULL,
     subId varchar(255),
-    FOREIGN KEY (userId) REFERENCES users,
+    --FOREIGN KEY (userId) REFERENCES users,
     FOREIGN KEY (nodeId) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (subId) REFERENCES users(subId),
     PRIMARY KEY (subid, nodeId)
 );
 
 CREATE table recentNodes (
-    userId int,
+    --userId int,
     nodeId int NOT NULL,
     subId varchar(255),
     timestamp varchar(50),
-    FOREIGN KEY (userId) REFERENCES users,
+    --FOREIGN KEY (userId) REFERENCES users,
     FOREIGN KEY (nodeId) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (subId) REFERENCES users(subId),
     PRIMARY KEY (subId, nodeId)

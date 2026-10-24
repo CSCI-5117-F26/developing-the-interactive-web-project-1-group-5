@@ -1,11 +1,11 @@
 /* ALl PAGES */
 :root {
     --text-color: #4F4A44;
-    --background-color: #faf8f5;
+    --background-color: #f4f3f2;
     --sub-background-color: #eae8e2;
     --secondary-text-color: #b2adaa;
-    --accent-color: #887B68;
-    --accent-color2: #403825;
+    --accent-color: #df9842;
+    --accent-color2: #c37f2d;
 }
 
 * {
@@ -28,11 +28,15 @@
 h1 {
     font-size: 1.5rem;
     background-color: transparent;
+    font-family: 'Gaegu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.non-style {
+    font-family: 'Line Seed JP', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h2 {
     font-size: 1rem;
-    background-color: transparent;
 }
 
 p {
@@ -86,10 +90,16 @@ nav {
 }
 
 .pure-form input[type="search"] {
+    padding: 0.75rem 1rem 0.75rem 3rem !important;
+}
+
+.pure-form input[type="search"],
+.pure-form input[type="text"],
+.pure-form textarea {
     box-shadow: none;
     border: none;
     background-color: var(--sub-background-color);
-    padding: 0.75rem 1rem 0.75rem 3rem;
+    padding: 1rem;
     border-radius: 0.75rem;
 }
 
@@ -180,6 +190,11 @@ nav {
     line-height: 4rem;
 }
 
+#landing-hero-section span {
+    font-family: 'Gaegu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--accent-color);
+}
+
 .landing-button {
     margin: 2rem;
     padding: 1rem 2.5rem;
@@ -196,10 +211,6 @@ nav {
     z-index: 800;
     border: 0.1rem solid var(--sub-background-color);
     margin-bottom: 2rem;
-}
-
-#kickstart-section h1 {
-    font-weight: normal;
 }
 
 
@@ -266,8 +277,9 @@ nav {
     z-index: 0;
     margin: 0.1rem;
     background-color: transparent;
-    border-radius: 2rem;
+    /* border-radius: 2rem; */
 }
+
 
 .node-card {
     object-position: center;
@@ -276,7 +288,7 @@ nav {
     min-width: 200px;
     padding: 0;
     overflow: hidden;
-    border-radius: 2rem;
+    /* border-radius: 2rem; */
     background-color: transparent;
     border: none !important;
 }
@@ -294,7 +306,7 @@ nav {
     object-fit: cover;
     object-position: center;
     color: var(--primary-color);
-    border-radius: 2rem;
+    /* border-radius: 2rem; */
     overflow: hidden;
     background-color: var(--background-color);
 }
@@ -331,12 +343,11 @@ nav {
 }
 
 .pfp {
-    width: 200px;
-    height: 200px;
     max-width: 100%;
     border-radius: 50%;
     object-fit: cover;
     margin: 1em auto;
+    aspect-ratio: 1 / 1;
 }
 
 .pure-button {
@@ -347,7 +358,6 @@ nav {
 
 .sidebar-box {
     margin: 2rem;
-    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -370,6 +380,10 @@ nav {
     padding: 0.75rem 2rem;
     width: 100%;
     margin-top: auto;
+}
+
+.profile-bio {
+    margin: 0;
 }
 
 .pure-menu-list {
@@ -480,4 +494,34 @@ textarea {
 
 .node-box-single {
     aspect-ratio: 1 / 1;
+    background-color: var(--sub-background-color);
+    margin: 3rem;
+    border-radius: 2rem;
+}
+
+.l-box {
+    width: 100%;
+}
+
+.format-box {
+    padding: 3rem;
+}
+
+.pure-form {
+    width: 100%;
+}
+
+.pure-button::file-selector-button {
+    background-color: var(--sub-background-color);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1rem 2rem;
+}
+
+.file-input {
+    margin: 0;
+    padding: 0;
+    border-radius: 0.75rem;
+    border: var(--secondary-text-color);
+    border-style: 0.1rem dashed var(--secondary-text-color);
 }

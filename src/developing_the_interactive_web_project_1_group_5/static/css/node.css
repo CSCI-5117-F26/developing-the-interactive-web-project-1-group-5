@@ -18,17 +18,17 @@
     border-radius: 1.5rem;
 } */
 
-.secondary-button {
+/* .secondary-button {
     background-color: inherit;
     color: var(--primary-color);
 }
 
 .secondary-button:hover {
     color: var(--primary-color);
-}
+} */
 
 
-body,
+/* body,
 a {
     line-height: 1.5em;
     font-size: 1em;
@@ -36,16 +36,16 @@ a {
 
 .format-box {
     padding: 0.5em 2em;
-}
+} */
 
 /* .node-box{
     padding: 1em 2em;
 } */
 
-.node-box:hover {
+/* .node-box:hover {
     text-decoration: underline;
     font-weight: strong;
-}
+} */
 
 /* .node-card{
     object-position: center;

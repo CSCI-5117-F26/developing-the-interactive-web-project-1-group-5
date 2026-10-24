@@ -7,16 +7,27 @@ CREATE table nodes (
     subId varchar(255),
     topic varchar(100),
     category boolean DEFAULT false, 
-    FOREIGN KEY (subId) REFERENCES users,
+    FOREIGN KEY (subId) REFERENCES users(subId),
     FOREIGN KEY (imgId) REFERENCES images,
     textSearch tsvector GENERATED ALWAYS AS    
     (setweight(to_tsvector('title', coalesce(title, '')), 'A') ||
-    setweight(to_tsvector('description', coalesce(description, '')), 'B')) STORED,
-
+    setweight(to_tsvector('description', coalesce(description, '')), 'B')) STORED
 );
 -- cannot create index within table most be made outside. this is for full text search
 CREATE INDEX textSearch_idx
 ON nodes USING GIN (textSearch);
+
+-- CREATE table nodes (
+--     nodeId serial PRIMARY KEY,
+--     title varchar(100) NOT NULL,
+--     imgId int,
+--     description varchar(250),
+--     subId varchar(255),
+--     topic varchar(100),
+--     category boolean DEFAULT false, 
+--     FOREIGN KEY (subId) REFERENCES users(subId),
+--     FOREIGN KEY (imgId) REFERENCES images
+-- );
 
 CREATE TABLE images (
     imageId serial PRIMARY KEY,
@@ -32,7 +43,7 @@ CREATE table connections (
     PRIMARY KEY (nodeId1, nodeId2),
     FOREIGN KEY (nodeId1) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (nodeId2) REFERENCES nodes ON DELETE CASCADE,
-    FOREIGN KEY (connectorId) REFERENCES users
+    FOREIGN KEY (connectorId) REFERENCES users(subId)
 );
 
 CREATE table users (
@@ -41,7 +52,7 @@ CREATE table users (
     username varchar(15) NOT NULL,
     bio varchar(250),
     profPicId int,
-    FOREIGN KEY (profPic) REFERENCES images
+    FOREIGN KEY (profPicId) REFERENCES images
 );
 
 CREATE table savedNodes (

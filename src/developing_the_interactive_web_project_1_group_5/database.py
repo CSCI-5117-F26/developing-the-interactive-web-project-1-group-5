@@ -216,7 +216,6 @@ def add_user(subId, username, bio=None, profilepic=None):
 def add_connection(node1, node2, connector):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            print(node1, node2, connector)
 
             cur.execute(
                 """select * from connections 
@@ -225,7 +224,6 @@ def add_connection(node1, node2, connector):
             )
             exists = cur.fetchone()
             if not exists:
-                print("connection does not exist")
                 cur.execute(
                     """insert into connections (nodeId1, nodeId2, connectorId)
                                 values (%s, %s, %s);""",

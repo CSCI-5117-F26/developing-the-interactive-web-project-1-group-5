@@ -216,14 +216,16 @@ def add_user(subId, username, bio=None, profilepic=None):
 def add_connection(node1, node2, connector):
     with pool.connection() as conn:
         with conn.cursor() as cur:
+            print(node1, node2, connector)
 
             cur.execute(
-                """insert into connections (nodeId1, nodeId2, connectorId)
-                                    values (%s, %s, %s) returning (nodeId1, nodeId2);""",
+                """select * from connections 
+                    where nodeId1 = %s and nodeId2 = %s and connectorId = %s;""",
                 (node1, node2, connector),
             )
             exists = cur.fetchone()
             if not exists:
+                print("connection does not exist")
                 cur.execute(
                     """insert into connections (nodeId1, nodeId2, connectorId)
                                 values (%s, %s, %s);""",
@@ -238,10 +240,10 @@ def add_connection(node1, node2, connector):
 def add_notification(node1, node2, connector):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("""select subId from nodes where nodeid = %s;""", (node1))
-            node1user = cur.fetchone()
-            cur.execute("""select subId from nodes where nodeid = %s;""", (node2))
-            node2user = cur.fetchone()
+            cur.execute("""select subId from nodes where nodeid = %s;""", (node1,))
+            node1user = cur.fetchone()['subid']
+            cur.execute("""select subId from nodes where nodeid = %s;""", (node2,))
+            node2user = cur.fetchone()['subid']
 
             timestamp = datetime.datetime.now()
 

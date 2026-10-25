@@ -31,8 +31,8 @@
                 {% endblock %}
 
                 <div class="user-pfp">
-                    {% if user.profpicid %}
-                    <img class="corner-profile" src="{{ url_for('get_image', image_id=user.profpicid) }}" alt="ye pfp">
+                    {% if node_owner_pfp %}
+                    <img class="corner-profile" src="{{ url_for('get_image', image_id=node_owner_pfp) }}" alt="ye pfp">
                     {% else %}
                     <img class="corner-profile" src="{{ url_for('static', filename ='img/temp_chungus.png') }}"
                         alt="ye pfp">
@@ -224,6 +224,7 @@
     {% endif %}
 
     <script src="../static/js/node_pages.js"></script>
+    <script src="../static/js/utils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
         integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
         crossorigin="anonymous"></script>

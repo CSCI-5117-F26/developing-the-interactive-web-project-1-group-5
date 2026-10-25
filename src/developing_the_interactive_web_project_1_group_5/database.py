@@ -179,6 +179,22 @@ def get_image(image_id):
                 """SELECT data, mimetype FROM images WHERE imageId = %s;""", (image_id,)
             )
             return cur.fetchone()
+        
+def get_user_pfp(subId):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """select profPicId
+                   from users
+                   where subId = %s;""",
+                (subId,),
+            )
+            user = cur.fetchone()
+            if (user and user["profpicid"]):
+                return user["profpicid"]
+            return None
+
+            
 
 
 # check if existing username
@@ -352,7 +368,7 @@ def save_image(cur, picture):
 
 # removes image from image table. duh.
 def delete_image(cur, image_id):
-    # only delete if there are <2 nodes + users using the img
+    # only delete if there are no nodes + users using the img
     cur.execute(
         """SELECT
                (SELECT COUNT(*) FROM nodes WHERE imgId = %s) +
@@ -362,7 +378,7 @@ def delete_image(cur, image_id):
     )
     count = cur.fetchone()["count"]
 
-    if count < 2:
+    if count == 0:
         cur.execute("""DELETE FROM images WHERE imageId = %s;""", (image_id,))
 
 

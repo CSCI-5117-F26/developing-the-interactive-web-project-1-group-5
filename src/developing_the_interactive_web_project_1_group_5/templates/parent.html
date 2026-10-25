@@ -59,7 +59,7 @@
                             notifications
                         </span></a>
                     <a class="icon-link" aria-hidden="true" href="{{url_for('view_profile')}}">
-                        {% if user.profpicid %}
+                        {% if user and user.profpicid %}
                         <img class="corner-profile" src="{{ url_for('get_image', image_id=user.profpicid) }}"
                             alt="ye pfp">
                         {% else %}
@@ -79,6 +79,5 @@
         {% endblock %}
     </div>
 </body>
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </html>

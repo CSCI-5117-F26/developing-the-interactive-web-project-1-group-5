@@ -32,9 +32,9 @@
                         <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
                             {% if node.image_id %}
                             <img class="pure-img connection-img"
-                                src="{{ url_for('get_image', image_id=node.image_id) }}">
+                                src="{{ url_for('get_image', image_id=node.image_id) }}"  loading="lazy">
                             {% else %}
-                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png"  loading="lazy">
                             {% endif %}
                             <div class="node-info">
                                 <h2 class="line-clamp">{{node.node_title}}</h2>

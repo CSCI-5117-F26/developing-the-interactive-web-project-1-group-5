@@ -17,13 +17,19 @@ def view():
 
 # get nodes for full tech search
 def full_text_search(keyword):
-    queryCheck = keyword.replace(" ", " & ")
-    print(queryCheck)
+    keyword = keyword.strip()
+
+    if not keyword:
+        return []
+
     with database.pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                """SELECT * FROM nodes WHERE "textSearch" @@ to_tsquery('english', %s ) ORDER BY ts_rank("textSearch", to_tsquery(%s)) DESC;""",
-                (queryCheck, queryCheck),
+                """SELECT * FROM nodes WHERE "textSearch" @@ plainto_tsquery('english', %s ) ORDER BY ts_rank(
+                    "textSearch",
+                    plainto_tsquery('english', %s)
+                )  DESC;""",
+                (keyword, keyword),
             )
 
             return cur.fetchall()

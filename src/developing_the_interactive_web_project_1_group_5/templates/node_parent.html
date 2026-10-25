@@ -193,8 +193,8 @@
                             <search>
                                 <form class="pure-form" id="div-search" hx-post="{{ url_for('search_node') }}"
                                     hx-trigger="input changed from:#search" hx-target="#search-results"
-                                    hx-swap="innerHTML">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                    hx-swap="innerHTML" hx-on="keydown[key=='Enter'] prevent">
+                                    <input type=" hidden" name="csrf_token" value="{{ csrf_token() }}" hidden />
                                     <div class="input-group">
                                         <span class="material-symbols-outlined">
                                             search
@@ -224,11 +224,10 @@
     {% endif %}
 
     <script src="../static/js/node_pages.js"></script>
-    <<<<<<< HEAD=======<script src="../static/js/utils.js">
-        </script>
-        >>>>>>> 4ee980cce3d51d29f8646e6ec53be2fc1046b588
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
-            integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
-            crossorigin="anonymous"></script>
+    <script src="../static/js/utils.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
+        integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
+        crossorigin="anonymous"></script>
 
-        {% endblock %}
+    {% endblock %}

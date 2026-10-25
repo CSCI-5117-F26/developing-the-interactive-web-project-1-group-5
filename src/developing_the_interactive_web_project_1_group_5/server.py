@@ -158,7 +158,6 @@ def login():
 def login_overlay():
     return render_template("login.html")
 
-
 @app.route("/set-username")
 @login_required
 def set_username():
@@ -196,7 +195,6 @@ def logout():
             quote_via=quote_plus,
         )
     )
-
 
 # Node stuff -------------------------------------
 @app.route("/node/<int:node_id>")
@@ -256,7 +254,6 @@ def view_node(node_id):
             connections=connections,
             loggedin=check_signin(),
         )
-
 
 # TODO: FORM CRAP
 @app.route("/edit-node/<int:node_id>", methods=["GET", "POST"])
@@ -348,7 +345,6 @@ def delete_connections():
 def save_node(node_id):
     database.add_to_saved_nodes(session.get("sub_id"), node_id)
     return redirect("/node/" + str(node_id))
-
 
 @app.route("/unsave-node/<int:node_id>")
 @login_required

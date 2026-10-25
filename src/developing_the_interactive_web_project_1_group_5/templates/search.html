@@ -18,8 +18,14 @@
                 <p class="center-text line-clamp">{{node.node_title}}</p>
             </button>
         </div>
+
     </div>
-    {% endfor %}
+    {% else %}
+    <div class="node-box"> </div>
+    <p>no nodes match your search!</p>
+</div>
+
+{% endfor %}
 </div>
 
 {% endblock %}

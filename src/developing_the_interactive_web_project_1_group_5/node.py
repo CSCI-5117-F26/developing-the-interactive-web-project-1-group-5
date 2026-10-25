@@ -63,6 +63,7 @@ def get_new_connections(subid, n=30):
             # Don't add duplicates or your saved/created nodes
             if (connected not in new_connections) and (connected not in my_nodes):
                 connected['timestamp'] = (database.get_node_connection(node["nodeid"], connected["nodeid"])["timestamp"])
-                new_connections.append(connected)
+                if (connected['timestamp'] != None):
+                    new_connections.append(connected)
     new_connections.sort(key=lambda x: x["timestamp"], reverse=True)
     return new_connections[:n]

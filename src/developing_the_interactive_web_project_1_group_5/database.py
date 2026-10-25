@@ -281,7 +281,7 @@ def add_to_recent_nodes(subId, nodeid):
             exists = cur.fetchone()
             print(exists)
 
-            if exists:
+            if not exists:
                 num_history = 10
                 cur.execute(
                     """select count(subid) from recentNodes where subid = %s""", (subId,)
@@ -289,7 +289,7 @@ def add_to_recent_nodes(subId, nodeid):
                 count = cur.fetchone()
 
                 # remove oldest node in the history
-                if count.get("count") == num_history:
+                if count.get("count") >= num_history:
                     cur.execute(
                         """select * from recentNodes where subid = %s order by timestamp;""",
                         (subId,),
@@ -297,7 +297,7 @@ def add_to_recent_nodes(subId, nodeid):
                     recents = cur.fetchall()
                     to_delete = recents[0].get("nodeid")
                     cur.execute(
-                        """delete from recentNodes where subid = %s and nodeId = %s""",
+                        """delete from recentNodes where subid = %s and nodeId = %s;""",
                         (subId, to_delete),
                     )
 

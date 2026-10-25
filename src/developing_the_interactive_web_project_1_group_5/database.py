@@ -55,23 +55,38 @@ def get_user(subId):
 
 
 # get all nodeids connected to a node
-def get_node_connections(nodeid):
+def get_node_connections(nodeid, subid=None):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(
-                """select * 
-                            from nodes
-                            where nodeId in (
-                                select nodeId2 
-                                from connections 
-                                where nodeId1 = %s) or nodeId in (
-                                                    select nodeId1
-                                                    from connections
-                                                    where nodeId2 = %s);""",
-                (nodeid, nodeid),
-            )
+            if subid:
+                cur.execute(
+                    """select * 
+                                from nodes
+                                where nodeId in (
+                                    select nodeId2 
+                                    from connections 
+                                    where nodeId1 = %s
+                                    and connectorId != %s) or nodeId in (
+                                                        select nodeId1
+                                                        from connections
+                                                        where nodeId2 = %s
+                                                        and connectorId != %s);""",
+                    (nodeid, subid, nodeid, subid),
+                )
+            else:
+                cur.execute(
+                    """select * 
+                                from nodes
+                                where nodeId in (
+                                    select nodeId2 
+                                    from connections 
+                                    where nodeId1 = %s) or nodeId in (
+                                                        select nodeId1
+                                                        from connections
+                                                        where nodeId2 = %s);""",
+                    (nodeid, nodeid),
+                )
             return cur.fetchall()
-
 
 # get node connection
 def get_node_connection(node1, node2):
@@ -83,7 +98,6 @@ def get_node_connection(node1, node2):
                 (node1, node2, node1, node2),
             )
             return cur.fetchone()
-
 
 # get all nodes with a certain topic
 def get_nodes_by_topic(topic):
@@ -160,8 +174,6 @@ def get_notifs(subid):
             )
 
             return cur.fetchall()
-            # [{'username': 'Samantha', 'profpic': None, 'usernode': 5, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:47:51.285334'}, {'username': 'Samantha', 'profpic': None, 'usernode': 4, 'title': 'Plates', 'connectingnode': 6, 'timestamp': '2026-10-17 10:49:25.671458'}]
-
 
 def get_notif(notif_id):
     with pool.connection() as conn:
@@ -171,7 +183,6 @@ def get_notif(notif_id):
             )
             return cur.fetchone()
 
-
 def get_image(image_id):
     with pool.connection() as conn:
         with conn.cursor() as cur:
@@ -179,6 +190,22 @@ def get_image(image_id):
                 """SELECT data, mimetype FROM images WHERE imageId = %s;""", (image_id,)
             )
             return cur.fetchone()
+        
+def get_user_pfp(subId):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """select profPicId
+                   from users
+                   where subId = %s;""",
+                (subId,),
+            )
+            user = cur.fetchone()
+            if (user and user["profpicid"]):
+                return user["profpicid"]
+            return None
+
+            
 
 
 # check if existing username
@@ -190,13 +217,10 @@ def check_username_taken(username):
             )
             return cur.fetchone()
 
-
 # ---------------- CREATE ----------------
 
 
 # add a node to the node table
-
-
 def add_node(
     creatorId, title, image, desc=None, topic=None
 ):  # which ones are required?
@@ -217,7 +241,6 @@ def add_node(
                 (image_id, node_id),
             )
             return node_id
-
 
 # add a user
 def add_user(subId, username, bio=None, profilepic=None):
@@ -244,10 +267,11 @@ def add_connection(node1, node2, connector):
             )
             exists = cur.fetchone()
             if not exists:
+                timestamp = datetime.datetime.now()
                 cur.execute(
-                    """insert into connections (nodeId1, nodeId2, connectorId)
-                                values (%s, %s, %s);""",
-                    (node1, node2, connector),
+                    """insert into connections (nodeId1, nodeId2, connectorId, timestamp)
+                                values (%s, %s, %s, %s);""",
+                    (node1, node2, connector, timestamp),
                 )
 
                 # also insert into the notification table
@@ -291,7 +315,7 @@ def add_to_saved_nodes(subId, nodeid):
 
             if exists:
                 return
-
+            
             cur.execute(
                 """insert into savedNodes (subId, nodeId)
                             values (%s, %s);""",
@@ -310,7 +334,7 @@ def add_to_recent_nodes(subId, nodeid):
             exists = cur.fetchone()
             print(exists)
 
-            if exists:
+            if not exists:
                 num_history = 10
                 cur.execute(
                     """select count(subid) from recentNodes where subid = %s""",
@@ -319,7 +343,7 @@ def add_to_recent_nodes(subId, nodeid):
                 count = cur.fetchone()
 
                 # remove oldest node in the history
-                if count.get("count") == num_history:
+                if count.get("count") >= num_history:
                     cur.execute(
                         """select * from recentNodes where subid = %s order by timestamp;""",
                         (subId,),
@@ -327,7 +351,7 @@ def add_to_recent_nodes(subId, nodeid):
                     recents = cur.fetchall()
                     to_delete = recents[0].get("nodeid")
                     cur.execute(
-                        """delete from recentNodes where subid = %s and nodeId = %s""",
+                        """delete from recentNodes where subid = %s and nodeId = %s;""",
                         (subId, to_delete),
                     )
 
@@ -354,7 +378,7 @@ def save_image(cur, picture):
 
 # removes image from image table. duh.
 def delete_image(cur, image_id):
-    # only delete if there are <2 nodes + users using the img
+    # only delete if there are no nodes + users using the img
     cur.execute(
         """SELECT
                (SELECT COUNT(*) FROM nodes WHERE imgId = %s) +
@@ -364,17 +388,13 @@ def delete_image(cur, image_id):
     )
     count = cur.fetchone()["count"]
 
-    if count < 2:
+    if count == 0:
         cur.execute("""DELETE FROM images WHERE imageId = %s;""", (image_id,))
 
 
 # ---------------- UPDATE ----------------
 
 
-# NOTE: Can you change a node's topic?
-
-
-# NOTE: Can you change a node's topic?
 # update a node with new values
 def edit_node(nodeid, title=None, image=None, desc=None):
     with pool.connection() as conn:
@@ -425,7 +445,6 @@ def edit_user(subId, username, bio, picture):
                 )
                 if old_id:
                     delete_image(cur, old_id)
-
 
 # ---------------- DELETE ----------------
 
@@ -483,7 +502,6 @@ def delete_notif(notifid):
 def remove_from_recent():
     return
 
-
 # CHECK EXISTENCE
 def connects(node1, node2):
     with pool.connection() as conn:
@@ -497,7 +515,6 @@ def connects(node1, node2):
             if count.get("count") == 0:
                 return False
             return True
-
 
 def is_saved(sub_id, node_id):
     with pool.connection() as conn:

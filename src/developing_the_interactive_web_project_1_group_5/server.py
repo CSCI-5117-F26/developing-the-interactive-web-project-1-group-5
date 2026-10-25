@@ -21,6 +21,7 @@ from developing_the_interactive_web_project_1_group_5.node import (
     get_popular_nodes,
     add_selections,
     filter_connecting_nodes,
+    get_new_connections,
 )
 
 from psycopg import errors
@@ -98,7 +99,7 @@ def landing():
         recent_nodes = format_node_display(
             database.get_recent_nodes(session.get("sub_id"))
         )
-        # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
+        new_connected_nodes = format_node_display(get_new_connections(session.get("sub_id")))
         return render_template(
             "landing.html",
             user=user,
@@ -106,7 +107,7 @@ def landing():
             popular_nodes=popular_nodes,
             recent_nodes=recent_nodes,
             random_node=random_node,
-            # new_nodes = new_nodes,
+            new_connected_nodes = new_connected_nodes,
             loggedin=check_signin(),
         )
     return render_template(
@@ -153,12 +154,9 @@ def login():
         redirect_uri=url_for("callback", _external=True)
     )
 
-
-# TODO: Change this to JS modal instead of Jinja template
 @app.route("/login")
 def login_overlay():
     return render_template("login.html")
-
 
 @app.route("/set-username")
 @login_required
@@ -198,7 +196,6 @@ def logout():
         )
     )
 
-
 # Node stuff -------------------------------------
 @app.route("/node/<int:node_id>")
 def view_node(node_id):
@@ -209,7 +206,7 @@ def view_node(node_id):
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
-    # database.add_to_recent_nodes(session.get("sub_id"), node_id)
+    database.add_to_recent_nodes(session.get("sub_id"), node_id)
     for l in [saved_nodes, recent_nodes, created_nodes]:
         l = filter_connecting_nodes(l, node_id)
 
@@ -228,6 +225,7 @@ def view_node(node_id):
                 or "Quilt"
             ),
             node_owner_id=dict_get(node, "subid", "noid"),
+            node_owner_pfp=database.get_user_pfp(dict_get(node, "subid", "noid")),
             node_description=dict_get(node, "description", "None"),
             node_id=node_id,
             connections=connections,
@@ -255,7 +253,6 @@ def view_node(node_id):
             connections=connections,
             loggedin=check_signin(),
         )
-
 
 # TODO: FORM CRAP
 @app.route("/edit-node/<int:node_id>", methods=["GET", "POST"])
@@ -348,7 +345,6 @@ def save_node(node_id):
     database.add_to_saved_nodes(session.get("sub_id"), node_id)
     return redirect("/node/" + str(node_id))
 
-
 @app.route("/unsave-node/<int:node_id>")
 @login_required
 def unsave_node(node_id):
@@ -397,7 +393,7 @@ def view_profile():
         saved_nodes=saved_nodes,
         created_nodes=created_nodes,
         loggedin=check_signin(),
-    )
+)
 
 
 @app.route("/settings", methods=["GET", "POST"])

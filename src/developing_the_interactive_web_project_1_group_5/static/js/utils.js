@@ -22,10 +22,12 @@ if (picture){
 const textToCount = document.getElementById("node_description") || document.getElementById("bio");
 const charCount = document.getElementById("char_count");
 
-function updateCharCount() {
-    charCount.textContent = `${textToCount.value.length} / 250`;
+if (textToCount){
+    function updateCharCount() {
+        charCount.textContent = `${textToCount.value.length} / 240`;
+    }
+
+    textToCount.addEventListener("input", updateCharCount);
+
+    updateCharCount();
 }
-
-textToCount.addEventListener("input", updateCharCount);
-
-updateCharCount();

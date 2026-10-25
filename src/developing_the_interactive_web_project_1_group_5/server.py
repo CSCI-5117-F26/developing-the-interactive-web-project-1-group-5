@@ -21,6 +21,7 @@ from developing_the_interactive_web_project_1_group_5.node import (
     get_popular_nodes,
     add_selections,
     filter_connecting_nodes,
+    get_new_connections,
 )
 
 from psycopg import errors
@@ -98,7 +99,7 @@ def landing():
         recent_nodes = format_node_display(
             database.get_recent_nodes(session.get("sub_id"))
         )
-        # new_nodes = format_node_display(database.get_new_nodes??(session.get('sub_id')))
+        new_connected_nodes = format_node_display(get_new_connections(session.get("sub_id")))
         return render_template(
             "landing.html",
             user=user,
@@ -106,7 +107,7 @@ def landing():
             popular_nodes=popular_nodes,
             recent_nodes=recent_nodes,
             random_node=random_node,
-            # new_nodes = new_nodes,
+            new_connected_nodes = new_connected_nodes,
             loggedin=check_signin(),
         )
     return render_template(

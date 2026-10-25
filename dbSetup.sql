@@ -5,7 +5,6 @@ CREATE table nodes (
     description varchar(250),
     --creatorId int,
     subId varchar(255),
-    topic varchar(100),
     category boolean DEFAULT false, 
     FOREIGN KEY (subId) REFERENCES users(subId),
     FOREIGN KEY (imgId) REFERENCES images,

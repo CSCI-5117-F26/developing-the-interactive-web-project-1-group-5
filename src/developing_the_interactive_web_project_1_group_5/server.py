@@ -174,7 +174,8 @@ def username_setup():
     if database.get_user(session.get("sub_id")) == None:
         # TODO: Validate username here
         username = request.form.get("username")
-        database.add_user(subId=session.get("sub_id"), username=username)
+        if (database.add_user(subId=session.get("sub_id"), username=username)) == None:
+            abort(404)
     return redirect("/")
 
 
@@ -275,7 +276,6 @@ def edit_node(node_id):
         description = request.form.get("node_description")
         image = request.files.get("picture")
         sub_id = session.get("sub_id")
-        # TODO: what's topic?
         database.edit_node(node_id, title, image, description)
         return redirect("/node/" + str(node_id))
 
@@ -317,8 +317,9 @@ def create_node():
         description = request.form.get("node_description")
         image = request.files.get("picture")
         sub_id = session.get("sub_id")
-        # TODO: what's topic?
         node_id = database.add_node(sub_id, title, image, description)
+        if node_id == None:
+            abort(404)
         return redirect("/node/" + str(node_id))
 
     user = get_user_profile()

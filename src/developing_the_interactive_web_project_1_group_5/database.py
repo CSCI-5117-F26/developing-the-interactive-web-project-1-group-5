@@ -225,16 +225,24 @@ def check_username_taken(username):
 
 # add a node to the node table
 def add_node(
-    creatorId, title, image, desc=None, topic=None
-):  # which ones are required?
-    # TODO: input validation??
+    creatorId, title, image, desc=None
+):  
+    # Input validation
+    if len(title) > 50 or len(title) < 1 or title == None:
+        return None
+
+    if len(desc) > 240:
+        return None
+
+    if creatorId == None:
+        return None
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                """insert into nodes (title, description, subId, topic)
-                            values (%s, %s, %s, %s) returning nodeId;""",
-                (title, desc, creatorId, topic),
+                """insert into nodes (title, description, subId)
+                            values (%s, %s, %s) returning nodeId;""",
+                (title, desc, creatorId),
             )
             node_id = cur.fetchone()["nodeid"]
             image_id = save_image(cur, image)
@@ -247,16 +255,19 @@ def add_node(
 
 
 # add a user
-def add_user(subId, username, bio=None, profilepic=None):
-    # TODO: input validation??
+def add_user(subId, username):
+    # Input validation
+    if username == None or len(username) > 15 or len(username) < 3:
+        return None
 
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                """insert into users (subId, username, bio, profPicId)
-                            values (%s, %s, %s, %s);""",
-                (subId, username, bio, profilepic),
+                """insert into users (subId, username)
+                            values (%s, %s);""",
+                (subId, username),
             )
+    return True
 
 
 # add a connection between two nodes to the connections table
@@ -401,6 +412,13 @@ def delete_image(cur, image_id):
 
 # update a node with new values
 def edit_node(nodeid, title=None, image=None, desc=None):
+    # Input validation
+    if len(title) > 50 or len(title) < 1 or title == None:
+        return None
+
+    if len(desc) > 240:
+        return None
+        
     with pool.connection() as conn:
         with conn.cursor() as cur:
 
@@ -425,6 +443,10 @@ def edit_node(nodeid, title=None, image=None, desc=None):
 
 # update a user with new values
 def edit_user(subId, username, bio, picture):
+    if username == None or len(username) > 15 or len(username) < 3:
+            return None
+    if bio and len(bio) > 240:
+        return None
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(

@@ -18,14 +18,15 @@
                 <label for="username">
                     <h2>Edit Name</h2>
                 </label>
-                <input class="pure-u-1" id="username" name="username" type="text" placeholder="{{user.name}}">
+                    <input class="pure-u-1" name="username" id="username" type="text" minlength="3" maxlength="15"
+                    pattern="^[a-zA-Z0-9]+$" value="{{user.name}}" placeholder="Username" required>
             </div>
 
             <div class="field">
                 <label for="bio">
-                    <h2>Edit Bio</h2>
+                    <h2>Edit Bio <span id="char_count" class="p"></span></h2>
                 </label>
-                <textarea class="pure-u-1" id="bio" name="bio" rows="4" placeholder="{{ user.bio}}"></textarea>
+                <textarea class="pure-u-1" id="bio" name="bio" rows="4" placeholder="Bio" maxlength="250">{{ user.bio}}</textarea>
             </div>
 
             <div class="field">
@@ -42,5 +43,5 @@
 
 
 
-<script src="../static/js/edit_profile.js"></script>
+<script src="../static/js/utils.js"></script>
 {% endblock %}

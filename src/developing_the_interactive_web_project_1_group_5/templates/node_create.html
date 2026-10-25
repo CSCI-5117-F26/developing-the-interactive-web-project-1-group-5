@@ -4,9 +4,7 @@
 
 <!-- TODO: Allow file upload by clicking img - NOT DOING THIS FOR NOW -->
 {% block main_image %}
-<button disabled="true" class="pure-button node-img" id="tempImg" style="font-size: 500%;">
-    <!-- <i class="fa-solid fa-upload"></i> -->
-</button>
+<img class="pure-img node-img" id="nodeImg">
 {% endblock %}
 {% block node_info %}
 
@@ -18,18 +16,16 @@
         <label for="node_title">
             <h2 class="non-style">Title</h2>
         </label>
-        <!-- Do we want input invalidation? Feels like there's a lot more options here -->
         <input class="pure-u-1" type="text" id="node_title" name="node_title" placeholder="What do we have here?"
-            minLength="1" maxLength="60" required="">
+            minLength="1" maxLength="50" required="">
     </div>
 
 
     <div class="field">
         <label for="node_description">
-            <h2>Description</h2>
+            <h2>Description <span id="char_count" class="p"></span></h2>
         </label>
-        <!-- Maybe: add a char counter -->
-        <textarea class="pure-u-1" id="node_description" name="node_description" rows="5" maxLength="600"
+        <textarea class="pure-u-1" id="node_description" name="node_description" rows="5" maxLength="250"
             style="width:100%;" placeholder="Tell us about your patch!"></textarea>
     </div>
 

@@ -40,7 +40,7 @@ h2 {
     background-color: transparent;
 }
 
-p {
+p, .p {
   font-size: 0.8rem;
   color: var(--secondary-text-color);
   background-color: transparent;

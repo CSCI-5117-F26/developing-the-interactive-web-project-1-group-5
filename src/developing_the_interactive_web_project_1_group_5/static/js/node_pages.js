@@ -5,20 +5,25 @@ var btn = document.getElementById("addNode");
 
 var span = document.getElementById("close-modal");
 
-btn.onclick = function() {
+if (btn){
+  btn.onclick = function() {
   modal.style.display = "block";
 }
+}
 
+if (span){
 span.onclick = function() {
   modal.style.display = "none";
 }
+}
 
+if (window){
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
 }
-
+}
 // connect node modal, here we need to keep track of the selected node types so we can add to list later
 let selected_nodes = [];
 function selectConnection(button, node_id){
@@ -94,14 +99,4 @@ function deleteConnection(nodeid1, nodeid2){
   .catch(error => {
       console.error(error.message);
   });
-}
-
-// Edit/create node specific
-// From https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
-var picture = document.getElementById("picture");
-picture.onchange = function(event) {
-  const [file] = picture.files;
-  if (file) {
-    document.getElementById('nodeImg').src = URL.createObjectURL(file);
-  }
 }

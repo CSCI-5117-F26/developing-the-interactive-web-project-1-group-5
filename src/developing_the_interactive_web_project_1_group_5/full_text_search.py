@@ -22,7 +22,7 @@ def full_text_search(keyword):
     with database.pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
-                """SELECT * FROM nodes WHERE textSearch @@ to_tsquery('english', %s ) ORDER BY ts_rank(textSearch, to_tsquery(%s)) DESC;""",
+                """SELECT * FROM nodes WHERE "textSearch" @@ to_tsquery('english', %s ) ORDER BY ts_rank("textSearch", to_tsquery(%s)) DESC;""",
                 (queryCheck, queryCheck),
             )
 

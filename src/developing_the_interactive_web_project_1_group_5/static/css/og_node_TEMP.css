@@ -1,10 +1,9 @@
 /* overall formatting */
 
-
-
-body, a {
-    line-height: 1.5em;
-    font-size: 1em;
+body,
+a {
+  line-height: 1.5em;
+  font-size: 1em;
 }
 
 /* .l-box {
@@ -15,10 +14,10 @@ body, a {
     padding: 0.5em 2em;
 } */
 
-/* .node-box{
-    padding: 1em 2em;
+.node-box {
+  padding: 1em 2em;
 }
-
+/* 
 .node-box:hover {
     text-decoration: underline;
     font-weight: strong;
@@ -68,7 +67,6 @@ body, a {
   text-align: center;
 } */
 
-
 /* From https://css-tricks.com/almanac/properties/l/line-clamp/ */
 /* .line-clamp {
   display: -webkit-box;
@@ -80,47 +78,47 @@ body, a {
 /* Connect node modal */
 /* Referenced from https://www.w3schools.com/howto/howto_css_modals.asp example 1 */
 .modal {
-    display: none; 
-    position: fixed;
-    z-index: 3;
-    padding-top: 100px; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
+  display: none;
+  position: fixed;
+  z-index: 3;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid var(--accent-color2);
-    width: 80%;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid var(--accent-color2);
+  width: 80%;
 }
 
 .close {
-    color: var(--accent-color);
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    text-align:right;
+  color: var(--accent-color);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: right;
 }
 
 .close:hover,
 .close:focus {
-    color: var(--primary-color);
-    text-decoration: none;
-    cursor: pointer;
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
 }
 
-#delete-node{
-    background-color:red;
-    z-index: 2;
-    position: absolute;
-    font-size: 300%;
+#delete-node {
+  background-color: red;
+  z-index: 2;
+  position: absolute;
+  font-size: 300%;
 }
 
 /* Modal tab system, using landing page method */
@@ -136,32 +134,38 @@ body, a {
   text-align: center;
   margin: 0;
 }
-#tab-one:checked ~ .pure-g label[for="tab-one"],
-#tab-two:checked ~ .pure-g label[for="tab-two"],
-#tab-three:checked ~ .pure-g label[for="tab-three"],
-#tab-four:checked ~ .pure-g label[for="tab-four"]{
-  background: #eaeaea;
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has */
+#connection-tabs:has(#tab-one:checked) #panel-one,
+#connection-tabs:has(#tab-two:checked) #panel-two,
+#connection-tabs:has(#tab-three:checked) #panel-three,
+#connection-tabs:has(#tab-four:checked) #panel-four {
+  display: flex;
 }
 
-
-.scroll-box{
-    overflow: auto;
-    height: 280px;
+#connection-tabs .scroll-box {
+  display: none;
+  overflow: auto;
+  height: 280px;
+  width: 100%;
 }
 
-.selected-node{
-    box-shadow: 10px 10px;
-    border: 5px green;
-    border-style: solid;
-    z-index: 5;
+.selected-node {
+  box-shadow: 10px 10px;
+  border: 5px green;
+  border-style: solid;
+  z-index: 5;
 }
 
-.add-connection-footer{
-    position: sticky;
-    bottom: 0;
-    width: 100%;
-    z-index: 4;
-    background-color:white;
-    padding: 0.5em 0.5em;
-    text-align: right;
+.add-connection-footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 4;
+  background-color: white;
+  padding: 0.5em 0.5em;
+  text-align: right;
+}
+
+.node-search-container {
+  margin: 1rem;
 }

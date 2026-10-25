@@ -1,20 +1,16 @@
 {% extends "parent.html" %}
 
 {% block title %}Profile{% endblock %}
-{% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/node.css') }}">
-{% endblock %}
 {% block body %}
 
-
-<div class="pure-u-1 pure-u-md-1-4 profile-sidebar">
+<div class="pure-u-1 pure-u-md-1-1 pure-u-lg-1-4 profile-sidebar">
     <div class="sidebar-box">
-        {% if user.profpicid %}
+        {% if user and user.profpicid %}
         <img class="pfp pure-img" src="{{ url_for('get_image', image_id=user.profpicid) }}" alt="ye pfp">
         {% else %}
         <img class="pfp pure-img" src="{{ url_for('static', filename ='img/temp_chungus.png') }}" alt="ye pfp">
         {% endif %}
-        <h1 class="profile-name">{{ user.name }}</h1>
+        <h1 class="profile-name non-style">{{ user.name }}</h1>
         <p class="profile-bio">{{ user.bio or "Empty bio"}}</p>
         <div class="button-container">
             <a id="edit-settings" class="pure-button profile-buttons" href="{{url_for('view_settings')}}">Edit
@@ -25,7 +21,8 @@
     </div>
 </div>
 
-<div class="pure-u-1 pure-u-md-3-4">
+{% block panel %}
+<div class="pure-u-1 pure-u-md-1 pure-u-lg-3-4">
     <div class="profile-tabs">
         <input class="radiotab" type="radio" name="prof-tabs" id="profile-saved" checked>
         <label class="tab-label" for="profile-saved">Saved Patches</label>
@@ -52,10 +49,13 @@
                 {% endfor %}
             </div>
             {% else %}
-            <p>You've got no saved nodes. Go find some here</p>
-            <button class="pure-button">[add a button or somethn to explore page]</button>
+            <div class="empty-scene-panel">
+                <h2>You've got no saved patches. Go find some here!</h2>
+                <a href="{{url_for('landing')}}" class="pure-button pure-button-primary landing-button">Explore Patches</a>
+            </div>
             {% endif %}
         </div>
+
 
         <input class="radiotab" type="radio" name="prof-tabs" id="profile-yours">
         <label class="tab-label" for="profile-yours">Your Patches</label>
@@ -82,13 +82,17 @@
                 {% endfor %}
             </div>
             {% else %}
-            <p>You've got no nodes. Make one here</p>
-            <button class="pure-button">[add a button or somethn to create node page]</button>
+            <div class="empty-scene-panel">
+                <h2>You've got no nodes. Make one here!</h2>
+                <a href="{{url_for('create_node')}}" class="pure-button pure-button-primary landing-button">Create Patch</a>
+            </div>
             {% endif %}
         </div>
-    </div>
 
+    </div>
 </div>
 
+</div>
+{% endblock %}
 
 {% endblock %}

@@ -210,7 +210,6 @@ def get_user_pfp(subId):
 
             
 
-
 # check if existing username
 def check_username_taken(username):
     with pool.connection() as conn:

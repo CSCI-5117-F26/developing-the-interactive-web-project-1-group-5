@@ -78,9 +78,9 @@
                         <button class="pure-button node-card" onclick="window.location.href='{{connection.link}}';">
                             {% if connection.image_id %}
                             <img class="pure-img connection-img"
-                                src="{{ url_for('get_image', image_id=connection.image_id) }}">
+                                src="{{ url_for('get_image', image_id=connection.image_id) }}" loading="lazy">
                             {% else %}
-                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
                             {% endif %} <div class="node-info">
                                 <h2 class="line-clamp">{{connection.node_title}}</h2>
                                 <p class="line-clamp">{{connection.node_description}}</p>
@@ -135,9 +135,9 @@
                                     onclick='selectConnection(this, "{{saved.node_id}}")'>
                                     {% if saved.image_id %}
                                     <img class="pure-img connection-img"
-                                        src="{{ url_for('get_image', image_id=saved.image_id) }}">
+                                        src="{{ url_for('get_image', image_id=saved.image_id) }}" loading="lazy">
                                     {% else %}
-                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
                                     {% endif %} </button>
                                 <p class="center-text">{{saved.node_title}}</p>
                             </div>
@@ -155,9 +155,9 @@
                                     onclick='selectConnection(this, "{{recent.node_id}}")'>
                                     {% if recent.image_id %}
                                     <img class="pure-img connection-img"
-                                        src="{{ url_for('get_image', image_id=recent.image_id) }}">
+                                        src="{{ url_for('get_image', image_id=recent.image_id) }}" loading="lazy">
                                     {% else %}
-                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
                                     {% endif %} </button>
                                 <p class="center-text">{{recent.node_title}}</p>
                             </div>
@@ -175,9 +175,9 @@
                                     onclick='selectConnection(this, "{{created.node_id}}")'>
                                     {% if created.image_id %}
                                     <img class="pure-img connection-img"
-                                        src="{{ url_for('get_image', image_id=created.image_id) }}">
+                                        src="{{ url_for('get_image', image_id=created.image_id) }}" loading="lazy">
                                     {% else %}
-                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
                                     {% endif %} </button>
                                 <p class="center-text">{{created.node_title}}</p>
                             </div>
@@ -186,7 +186,6 @@
                     </div>
                 </div>
 
-                <!-- TODO: Maybe add a panel 4 with search, once we get that set up -->
                 <div class="pure-g scroll-box" id="panel-four">
                     <div class="pure-g  node-search-container">
                         <div id="search-container">

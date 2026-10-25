@@ -1,11 +1,13 @@
 /* ALl PAGES */
 :root {
     --text-color: #4F4A44;
-    --background-color: #f4f3f2;
+    --background-color: #fdfcfc;
     --sub-background-color: #eae8e2;
-    --secondary-text-color: #b2adaa;
-    --accent-color: #df9842;
+    --secondary-text-color: #979292;
+    --light-accent: #f9edd4;
+    --accent-color: #e39e36;
     --accent-color2: #c37f2d;
+    --warning-color: #c81e46;
 }
 
 * {
@@ -37,6 +39,7 @@ h1 {
 
 h2 {
     font-size: 1rem;
+    background-color: transparent;
 }
 
 p {
@@ -45,6 +48,9 @@ p {
     background-color: transparent;
 }
 
+#randomize-btn-div {
+    background-color: inherit;
+}
 
 /* NAVIGATION BAR */
 nav {
@@ -98,7 +104,8 @@ nav {
 .pure-form textarea {
     box-shadow: none;
     border: none;
-    background-color: var(--sub-background-color);
+    background-color: var(--background-color);
+    border: 0.2rem dashed var(--sub-background-color);
     padding: 1rem;
     border-radius: 0.75rem;
 }
@@ -167,6 +174,8 @@ nav {
 /* NAVIGATION BAR END */
 
 
+/* LANDING PAGE */
+
 #landing-hero-section {
     padding: 5rem 3rem;
     min-height: 50vh;
@@ -174,8 +183,6 @@ nav {
     align-content: center;
     justify-content: center;
     display: block;
-    /* background-image: url(../img/Hero-img.png);
-    background-size: cover; */
     width: 100%;
 }
 
@@ -209,11 +216,13 @@ nav {
     padding: 1rem 3rem;
     border-radius: 1.5rem;
     z-index: 800;
-    border: 0.1rem solid var(--sub-background-color);
+    border: 0.2rem dashed var(--sub-background-color);
     margin-bottom: 2rem;
 }
 
-
+#kickstart-section div{
+    background-color: inherit;
+}
 .pure-button:hover {
     text-decoration: none;
     background-image: none;
@@ -275,9 +284,8 @@ nav {
 
 .node-box {
     z-index: 0;
-    margin: 0.1rem;
     background-color: transparent;
-    /* border-radius: 2rem; */
+    border-radius: 2rem;
 }
 
 
@@ -286,7 +294,7 @@ nav {
     width: 100%;
     min-height: 220px;
     min-width: 200px;
-    padding: 0;
+    padding: 0.1rem;
     overflow: hidden;
     /* border-radius: 2rem; */
     background-color: transparent;
@@ -314,7 +322,7 @@ nav {
 .node-info {
     margin: 0;
     text-align: left;
-    padding: 1rem 2rem 1rem 1rem;
+    padding: 1rem 0.5rem;
 }
 
 /* From https://css-tricks.com/almanac/properties/l/line-clamp/ */
@@ -336,14 +344,14 @@ nav {
 /* Profile + Landing */
 
 .profile-sidebar {
+    padding: 1rem;
     position: sticky;
-    height: 90vh;
     box-sizing: border-box;
     z-index: 900;
 }
 
 .pfp {
-    max-width: 100%;
+    max-width: 60%;
     border-radius: 50%;
     object-fit: cover;
     margin: 1em auto;
@@ -352,8 +360,14 @@ nav {
 
 .pure-button {
     background-color: var(--background-color);
-    color: var(--secondary-text-color);
-    border: 0.1rem solid var(--secondary-text-color);
+    color: var(--accent-color);
+    border: 0.1rem solid var(--accent-color);
+}
+
+.pure-button:hover {
+    text-decoration: none;
+    background-image: none;
+    color: var(--background-color);
 }
 
 .sidebar-box {
@@ -371,6 +385,7 @@ nav {
 
 .pure-button.pure-button-primary:hover {
     background-color: var(--accent-color2);
+    color: var(--background-color);
 }
 
 
@@ -380,6 +395,11 @@ nav {
     padding: 0.75rem 2rem;
     width: 100%;
     margin-top: auto;
+}
+
+.profile-buttons:hover {
+    background-color: var(--light-accent);
+    color: var(--accent-color);
 }
 
 .profile-bio {
@@ -405,6 +425,7 @@ nav {
     flex-wrap: wrap;
     overflow: hidden;
     z-index: 9999;
+    width: 100%;
 }
 
 .radiotab {
@@ -427,12 +448,13 @@ nav {
     width: 100%;
     order: 99;
     z-index: 0;
+    padding-top: 0.1rem;
     padding-bottom: 5rem;
     background-color: transparent;
 }
 
 .radiotab:checked+.tab-label {
-    box-shadow: 0rem 0.1rem var(--text-color);
+    box-shadow: 0rem 0.1rem var(--accent-color);
 }
 
 .radiotab:checked+.tab-label+.panel {
@@ -471,32 +493,23 @@ nav {
     border-radius: 5px;
 }
 
-
-.settings-box {
-    margin: 100px;
-    gap: 10px;
-}
-
-.settings-box h1 {
-    font-size: 3rem;
-}
-
-.settings-line {
-    width: 75%;
-    display: block;
-    border-bottom: 2px solid var(--accent-color2);
-    margin: 30px 0 30px 0;
-}
-
-textarea {
-    width: 45vw;
+.node-img {
+    border-radius: 1.5rem;
+    max-width: 100%;
+    height: auto;
 }
 
 .node-box-single {
-    aspect-ratio: 1 / 1;
     background-color: var(--sub-background-color);
-    margin: 3rem;
+    margin: 3rem 1rem;
     border-radius: 2rem;
+    display: flex;
+    height: auto;
+}
+
+.img-section {
+    display: block;
+    margin: auto;
 }
 
 .l-box {
@@ -512,16 +525,84 @@ textarea {
 }
 
 .pure-button::file-selector-button {
-    background-color: var(--sub-background-color);
-    border: none;
+    background-color: var(--background-color);
+    color: var(--accent-color);
+    border: 0.1rem solid var(--accent-color);
     border-radius: 0.75rem;
-    padding: 1rem 2rem;
+    padding: 0.75rem 2rem;
+}
+
+.pure-button::file-selector-button:hover{
+    background-color: var(--light-accent);
 }
 
 .file-input {
     margin: 0;
-    padding: 0;
+    padding: 0.2rem 0;
     border-radius: 0.75rem;
     border: var(--secondary-text-color);
-    border-style: 0.1rem dashed var(--secondary-text-color);
+    border-style: 0.2rem dashed var(--secondary-text-color);
+    color: var(--secondary-text-color)
+}
+
+.file-input:hover {
+    color: var(--secondary-text-color);
+}
+
+
+.user-pfp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-pfp .corner-profile {
+    padding: 0rem;
+}
+
+.user-pfp p {
+    padding-left: 1rem;
+}
+
+.field {
+    margin: auto;
+    padding-bottom: 0.5rem;
+    width: 80%;
+}
+
+.node-buttons {
+    display: flex;
+    justify-content: right;
+    padding: 2rem 0rem;
+}
+
+.node-buttons a, .node-buttons button {
+    margin: 0.5rem;
+}
+
+
+.empty-scene-panel {
+    align-items: center;
+    text-align: center;
+    padding: 5rem;
+}
+
+.connection-section {
+    box-shadow: 0rem -0.1rem var(--sub-background-color);
+    padding-bottom: 5rem;
+}
+
+.img-section {
+    width: 100%;
+}
+
+#tempImg {
+    width: 100%;
+    height: 500px;
+}
+
+.pure-button-warning {
+    background-color: var(--warning-color);
+    color: var(--background-color);
+    border: none;
 }

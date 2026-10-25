@@ -1,56 +1,46 @@
-{% extends "parent.html" %}
+{% extends "profile.html" %}
 {% block title %}Settings{% endblock %}
-{% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/profile-styles.css') }}">
-{% endblock %}
-{% block body %}
+{% block panel %}
 
-<div class="pure-g">
-    <div class="pure-u-1-4 profile-sidebar">
-        <div class="sidebar-box">
-            {% if user.profpicid %}
-                <img class="pfp" src="{{ url_for('get_image', image_id=user.profpicid) }}" alt="ye pfp">
-            {% else %}
-                <img class="pfp" src="{{ url_for('static', filename ='img/temp_chungus.png') }}" alt="ye pfp">
-            {% endif %}
-            <h1 class="profile-name"></h1>
-            <h1 class="profile-name">{{ user.name }}</h1>
-            <p class="profile-bio">{{ user.bio or "Empty bio"}}</p>
-            <a class="pure-button" href="{{url_for('view_settings')}}">Settings</a>
-            <a class="pure-button" href="">Logout</a>
-        </div>
+<div class="pure-u-1 pure-u-md-1 pure-u-lg-3-4">
+    <div class="format-box">
+        <form class="pure-form pure-form-stacked" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="field">
+                <h1 class="non-style">Edit Profile Settings</h1>
+                <label for="picture">Upload Image (optional) </label>
+                <input id="picture" class="pure-button file-input" name="picture" type="file" accept="image/*">
+            </div>
+
+
+            <div class="field">
+                <label for="username">
+                    <h2>Edit Name</h2>
+                </label>
+                <input class="pure-u-1" id="username" name="username" type="text" placeholder="{{user.name}}">
+            </div>
+
+            <div class="field">
+                <label for="bio">
+                    <h2>Edit Bio</h2>
+                </label>
+                <textarea class="pure-u-1" id="bio" name="bio" rows="4" placeholder="{{ user.bio}}"></textarea>
+            </div>
+
+            <div class="field">
+                <!-- just something that'll redirect them to profile.html if a user changes their mind -->
+                <div class="node-buttons">
+                    <a class="pure-button profile-buttons" href="{{ url_for('view_profile') }}">Cancel</a>
+                    <button type="submit" class="pure-button pure-button-primary profile-buttons">Save</button>
+                </div>
+            </div>
+
+        </form>
     </div>
-    <div class="pure-u-3-4">
-        <div class="settings-box">
-
-            <form class="pure-form pure-form-stacked" method="POST" enctype="multipart/form-data">
-                <h1>Edit Profile Settings</h1>
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <fieldset>
-                    <span class="settings-line"></span>
-                    <label for="picture">Profile picture (optional)</label>
-                    <input id="picture" name="picture" type="file" accept="image/*">
-                    <span class="settings-line"></span>
-
-                    <label for="username"><h2>Edit Name</h2></label>
-                    <input id="username" name="username" type="text" placeholder="Enter new name here">
-                    <span class="settings-line"></span>
-
-                    <label for="bio"><h2>Edit Bio</h2></label>
-                    <textarea id="bio" name="bio" rows="4" placeholder="Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats. And rats make me crazy."></textarea>
-
-                    <!-- Wanted space between the buttons and edit bio and I'm too lazy to css it -->
-                    <h1></h1>
-
-                    <button type="submit" class="pure-button">Save</button>
-                    <!-- just something that'll redirect them to profile.html if a user changes their mind -->
-                    <a class="pure-button" href="{{ url_for('view_profile') }}">Cancel</a>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-
-
 </div>
+
+
+
 <script src="../static/js/edit_profile.js"></script>
 {% endblock %}

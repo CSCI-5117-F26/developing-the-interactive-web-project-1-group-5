@@ -372,6 +372,7 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow-wrap: break-word;
 }
 
 .pure-button.pure-button-primary {
@@ -491,8 +492,10 @@ nav {
 
 .node-img {
     border-radius: 1.5rem;
-    max-width: 100%;
+    width: 100%;
     height: auto;
+    object-fit: cover;
+
 }
 .node-box-single {
     background-color: var(--sub-background-color);
@@ -513,6 +516,7 @@ nav {
 
 .format-box {
   padding: 3rem;
+  overflow-wrap: break-word;
 }
 
 .pure-form {

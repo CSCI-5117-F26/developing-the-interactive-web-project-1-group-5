@@ -52,14 +52,14 @@ p {
 
 /* NAVIGATION BAR */
 nav {
-  padding: 1rem 0rem;
-  background-color: var(--background-color);
-  align-items: center;
-  box-shadow: 0rem 0.1rem var(--sub-background-color);
-  z-index: 99999;
-  position: sticky;
-  top: 0;
-  left: 0;
+    padding: 1rem 0rem;
+    background-color: var(--background-color);
+    align-items: center;
+    /* box-shadow: 0rem 0.1rem var(--sub-background-color); */
+    z-index: 99999;
+    position: sticky;
+    top: 0;
+    left: 0;
 }
 
 #nav-container {
@@ -204,6 +204,8 @@ nav {
   border-radius: 0.75rem;
 }
 
+
+
 #kickstart-section {
     display: flex;
     width: 100%;
@@ -213,7 +215,7 @@ nav {
     border-radius: 1.5rem;
     z-index: 800;
     border: 0.2rem dashed var(--sub-background-color);
-    margin-bottom: 2rem;
+    margin: 2rem 0;
 }
 
 #kickstart-section div{

@@ -12,8 +12,8 @@
     <div>
         <h1> A <span>community-based</span> algorithm.</h1>
         <h2> An internet tailored by people for people.</h2>
-        <a id="login-button" class="pure-button pure-button-primary landing-button"
-            href="{{url_for('login')}}">Start quilting!</a>
+        <a id="login-button" class="pure-button pure-button-primary landing-button" href="{{url_for('login')}}">Start
+            quilting!</a>
     </div>
 </div>
 {% endif %}
@@ -37,6 +37,7 @@
         <label class="pure-u-1-4 tab-label" for="tab-two">All Patches</label>
         <div class="panel" id="panel-two">
             <div class="pure-g">
+                {% if popular_nodes %}
                 {% for node in popular_nodes%}
                 <div class="pure-u-1-2 pure-u-md-1-4">
                     <div class="node-box">
@@ -56,6 +57,11 @@
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="empty-scene-panel">
+                    <h1> Patches will show up here.</h1>
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -63,13 +69,22 @@
         <label class="pure-u-1-4 tab-label" for="tab-four" {%if loggedin is not true%} hidden {%endif%}>New
             Connections</label>
         <div class="panel" id="panel-four">
+            {% if connections %}
+
+            {% else %}
+            <div class="empty-scene-panel">
+                <h1> Patches connected to your saved and created will show up here.</h1>
+            </div>
+            {% endif %}
             <div></div>
         </div>
 
         <input class="radiotab" type="radio" name="tabs" id="tab-one">
         <label class="pure-u-1-4 tab-label" for="tab-one">Categories</label>
         <div class="panel" id="panel-one">
+            {% if categories %}
             <div class="pure-g">
+
                 {% for category in categories%}
                 <div class="pure-u-1-2 pure-u-md-1-4">
                     <div class="node-box">
@@ -84,7 +99,13 @@
                     </div>
                 </div>
                 {% endfor %}
+
             </div>
+            {% else %}
+            <div class="empty-scene-panel">
+                <h1> Patches will show up here.</h1>
+            </div>
+            {% endif %}
         </div>
 
         <input class="radiotab" type="radio" name="tabs" id="tab-three">
@@ -92,7 +113,16 @@
             Viewed</label>
 
         <div class="panel" id="panel-three">
-            <div class="pure-u-1-3" id="display-node"></div>
+            {% if recent_nodes %}
+
+            {% else %}
+            <div class="empty-scene-panel">
+                <h1> Recently viewed patches will show up here.</h1>
+            </div>
+            {% endif %}
+            <div class="pure-u-1-3" id="display-node">
+
+            </div>
         </div>
 
     </div>

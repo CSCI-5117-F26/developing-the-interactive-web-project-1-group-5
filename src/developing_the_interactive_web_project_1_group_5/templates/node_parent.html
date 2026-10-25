@@ -1,6 +1,7 @@
 {% extends "parent.html" %}
 {% block head %}
 <link rel="stylesheet" href="../static/css/og_node_TEMP.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing-style.css') }}">
 <script src="https://kit.fontawesome.com/25f4f0a920.js" crossorigin="anonymous"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
@@ -115,11 +116,14 @@
                 <input type="radio" name="tabs" id="tab-one" checked>
                 <input type="radio" name="tabs" id="tab-two">
                 <input type="radio" name="tabs" id="tab-three">
+                <input type="radio" name="tabs" id="tab-four">
+
 
                 <div class="pure-g">
                     <label class="pure-u-1-4 label" for="tab-one">Saved</label>
                     <label class="pure-u-1-4 label" for="tab-two">Recently Viewed</label>
                     <label class="pure-u-1-4 label" for="tab-three">Created</label>
+                    <label class="pure-u-1-4 label" for="tab-four">Search</label>
                 </div>
 
                 <div class="pure-g scroll-box" id="panel-one">
@@ -183,6 +187,28 @@
                 </div>
 
                 <!-- TODO: Maybe add a panel 4 with search, once we get that set up -->
+                <div class="pure-g scroll-box" id="panel-four">
+                    <div class="pure-g  node-search-container">
+                        <div id="search-container">
+                            <search>
+                                <form class="pure-form" id="div-search" hx-post="{{ url_for('search_node') }}"
+                                    hx-trigger="input changed delay:300ms from:#search" hx-target="#search-results"
+                                    hx-swap="innerHTML">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                    <div class="input-group">
+                                        <span class="material-symbols-outlined">
+                                            search
+                                        </span>
+                                        <input id="search" class="pure-input-1 input-field" type="search" name="search"
+                                            placeholder="Search patch">
+                                    </div>
+                                </form>
+                            </search>
+                        </div>
+                        <div id="search-results"></div>
+
+                    </div>
+                </div>
             </div>
             <div class="pure-g">
                 <div class="pure-u-1 add-connection-footer">
@@ -198,5 +224,8 @@
     {% endif %}
 
     <script src="../static/js/node_pages.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
+        integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
+        crossorigin="anonymous"></script>
 
     {% endblock %}

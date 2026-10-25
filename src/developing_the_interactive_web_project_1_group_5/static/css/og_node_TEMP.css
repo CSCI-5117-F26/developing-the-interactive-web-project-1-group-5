@@ -14,10 +14,10 @@ a {
     padding: 0.5em 2em;
 } */
 
-/* .node-box{
-    padding: 1em 2em;
+.node-box {
+  padding: 1em 2em;
 }
-
+/* 
 .node-box:hover {
     text-decoration: underline;
     font-weight: strong;
@@ -164,4 +164,8 @@ a {
   background-color: white;
   padding: 0.5em 0.5em;
   text-align: right;
+}
+
+.node-search-container {
+  margin: 1rem;
 }

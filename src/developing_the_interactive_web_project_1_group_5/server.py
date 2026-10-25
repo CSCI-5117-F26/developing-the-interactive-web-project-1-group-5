@@ -132,8 +132,6 @@ def search():
 def search_node():
     query = request.form["search"]
     parse_query = format_node_display(fulltext.full_text_search(query))
-    print(parse_query)
-
     return render_template("/node_search.html", show=parse_query)
 
 

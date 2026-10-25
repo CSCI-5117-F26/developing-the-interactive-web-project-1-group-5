@@ -51,7 +51,7 @@
             {% else %}
             <div class="empty-scene-panel">
                 <h2>You've got no saved patches. Go find some here!</h2>
-                <button class="pure-button pure-button-primary landing-button">Explore Patches</button>
+                <a href="{{url_for('landing')}}" class="pure-button pure-button-primary landing-button">Explore Patches</a>
             </div>
             {% endif %}
         </div>
@@ -84,7 +84,7 @@
             {% else %}
             <div class="empty-scene-panel">
                 <h2>You've got no nodes. Make one here!</h2>
-                <button class="pure-button pure-button-primary landing-button">Create Patch</button>
+                <a href="{{url_for('create_node')}}" class="pure-button pure-button-primary landing-button">Create Patch</a>
             </div>
             {% endif %}
         </div>

@@ -55,21 +55,37 @@ def get_user(subId):
 
 
 # get all nodeids connected to a node
-def get_node_connections(nodeid):
+def get_node_connections(nodeid, subid=None):
     with pool.connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(
-                """select * 
-                            from nodes
-                            where nodeId in (
-                                select nodeId2 
-                                from connections 
-                                where nodeId1 = %s) or nodeId in (
-                                                    select nodeId1
-                                                    from connections
-                                                    where nodeId2 = %s);""",
-                (nodeid, nodeid),
-            )
+            if subid:
+                cur.execute(
+                    """select * 
+                                from nodes
+                                where nodeId in (
+                                    select nodeId2 
+                                    from connections 
+                                    where nodeId1 = %s
+                                    and connectorId != %s) or nodeId in (
+                                                        select nodeId1
+                                                        from connections
+                                                        where nodeId2 = %s
+                                                        and connectorId != %s);""",
+                    (nodeid, subid, nodeid, subid),
+                )
+            else:
+                cur.execute(
+                    """select * 
+                                from nodes
+                                where nodeId in (
+                                    select nodeId2 
+                                    from connections 
+                                    where nodeId1 = %s) or nodeId in (
+                                                        select nodeId1
+                                                        from connections
+                                                        where nodeId2 = %s);""",
+                    (nodeid, nodeid),
+                )
             return cur.fetchall()
 
 
@@ -162,7 +178,6 @@ def get_notifs(subid):
             return cur.fetchall()
 
 
-
 def get_notif(notif_id):
     with pool.connection() as conn:
         with conn.cursor() as cur:
@@ -170,7 +185,6 @@ def get_notif(notif_id):
                 """select * from notifications where notifId = %s;""", (notif_id,)
             )
             return cur.fetchone()
-
 
 def get_image(image_id):
     with pool.connection() as conn:
@@ -258,10 +272,11 @@ def add_connection(node1, node2, connector):
             )
             exists = cur.fetchone()
             if not exists:
+                timestamp = datetime.datetime.now()
                 cur.execute(
-                    """insert into connections (nodeId1, nodeId2, connectorId)
-                                values (%s, %s, %s);""",
-                    (node1, node2, connector),
+                    """insert into connections (nodeId1, nodeId2, connectorId, timestamp)
+                                values (%s, %s, %s, %s);""",
+                    (node1, node2, connector, timestamp),
                 )
 
                 # also insert into the notification table

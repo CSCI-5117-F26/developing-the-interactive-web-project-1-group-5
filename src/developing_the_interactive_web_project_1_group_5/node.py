@@ -24,9 +24,9 @@ def dict_get(dict, key, default):
     # Fetch value of key from dictionary, return default if none
     return (dict.get(key) or default)
 
-# NOTE: I would like it if we could return all of the nodes but just ordered and have some pagination in the popular nodes page, but only if we have time
-def get_popular_nodes(n=30):
+def get_popular_nodes():
     # Order by number of connections and return n nodes
+    # NOTE: removed n nodes, we are returning them all
     all_nodes = database.get_all_nodes()
     popularities = []
     for node in all_nodes:
@@ -35,7 +35,7 @@ def get_popular_nodes(n=30):
         node["connection_count"] = connection_count
         popularities.append(node)
     popularities.sort(key=lambda x: x["connection_count"], reverse=True)
-    return popularities[0:n]
+    return popularities
 
 def add_selections(subid, newConnections=[]):
     for node_id in newConnections:
@@ -47,3 +47,22 @@ def filter_connecting_nodes(node_list, curr_node_id):
         if ((int(node.get("node_id")) == int(curr_node_id)) or (database.connects(node.get("node_id"), curr_node_id))):
             node_list.remove(node)
     return node_list
+
+# retrieve n nodes recently connected to saved and created nodes
+def get_new_connections(subid, n=30):
+    my_nodes = database.get_user_nodes(subid)
+    my_nodes += database.get_saved_nodes(subid)
+
+    new_connections = []
+
+    for node in my_nodes:
+        # Don't add the connections you yourself added
+        connected_nodes = database.get_node_connections(node["nodeid"], subid)
+
+        for connected in connected_nodes:
+            # Don't add duplicates or your saved/created nodes
+            if (connected not in new_connections) and (connected not in my_nodes):
+                connected['timestamp'] = (database.get_node_connection(node["nodeid"], connected["nodeid"])["timestamp"])
+                new_connections.append(connected)
+    new_connections.sort(key=lambda x: x["timestamp"], reverse=True)
+    return new_connections[:n]

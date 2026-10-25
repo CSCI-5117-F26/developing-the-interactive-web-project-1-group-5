@@ -40,6 +40,7 @@ CREATE table connections (
     nodeId1 int NOT NULL,
     nodeId2 int NOT NULL,
     connectorId varchar(255) NOT NULL,
+    timestamp varchar(50),
     PRIMARY KEY (nodeId1, nodeId2),
     FOREIGN KEY (nodeId1) REFERENCES nodes ON DELETE CASCADE,
     FOREIGN KEY (nodeId2) REFERENCES nodes ON DELETE CASCADE,

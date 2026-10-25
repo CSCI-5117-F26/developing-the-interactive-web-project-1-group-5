@@ -153,8 +153,6 @@ def login():
         redirect_uri=url_for("callback", _external=True)
     )
 
-
-# TODO: Change this to JS modal instead of Jinja template
 @app.route("/login")
 def login_overlay():
     return render_template("login.html")
@@ -397,7 +395,7 @@ def view_profile():
         saved_nodes=saved_nodes,
         created_nodes=created_nodes,
         loggedin=check_signin(),
-    )
+)
 
 
 @app.route("/settings", methods=["GET", "POST"])

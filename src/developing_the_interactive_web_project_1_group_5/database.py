@@ -93,7 +93,6 @@ def get_node_connections(nodeid, subid=None):
                 )
             return cur.fetchall()
 
-
 # get node connection
 def get_node_connection(node1, node2):
     with pool.connection() as conn:
@@ -104,7 +103,6 @@ def get_node_connection(node1, node2):
                 (node1, node2, node1, node2),
             )
             return cur.fetchone()
-
 
 # get all nodes with a certain topic
 def get_nodes_by_topic(topic):
@@ -180,7 +178,6 @@ def get_notifs(subid):
 
             return cur.fetchall()
 
-
 def get_notif(notif_id):
     with pool.connection() as conn:
         with conn.cursor() as cur:
@@ -222,7 +219,6 @@ def check_username_taken(username):
             )
             return cur.fetchone()
 
-
 # ---------------- CREATE ----------------
 
 
@@ -255,7 +251,6 @@ def add_node(
                 (image_id, node_id),
             )
             return node_id
-
 
 # add a user
 def add_user(subId, username):
@@ -333,7 +328,7 @@ def add_to_saved_nodes(subId, nodeid):
 
             if exists:
                 return
-
+            
             cur.execute(
                 """insert into savedNodes (subId, nodeId)
                             values (%s, %s);""",
@@ -481,7 +476,6 @@ def edit_user(subId, username, bio, picture):
                 if old_id:
                     delete_image(cur, old_id)
 
-
 # ---------------- DELETE ----------------
 
 
@@ -548,7 +542,6 @@ def connects(node1, node2):
             if count.get("count") == 0:
                 return False
             return True
-
 
 def is_saved(sub_id, node_id):
     with pool.connection() as conn:

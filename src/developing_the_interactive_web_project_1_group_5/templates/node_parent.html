@@ -63,25 +63,26 @@
         </div>
         {% if node_id %}
         <div class="pure-u-1 connection-section">
-            <!-- ^ NOTE: this prevents it from displaying on the create-node page since there's a more 
-             complicated issue with adding connections when a node_id doesn't exist yet -->
             <h1>Connections</h1>
             <div class="pure-g center-text">
                 {% for connection in connections %}
                 <div class="pure-u-1-2 pure-u-md-1-4">
                     <div class="node-box">
-                        {% if (connection.creator_id == sub_id) or (sub_id == node_owner_id) %}
-                        <!-- Allow close ONLY if user is curr node owner or creation of the connection -->
-                        <button class="close" id="delete-node"
-                            onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</button>
-                        {% endif %}
                         <button class="pure-button node-card" onclick="window.location.href='{{connection.link}}';">
                             {% if connection.image_id %}
                             <img class="pure-img connection-img"
                                 src="{{ url_for('get_image', image_id=connection.image_id) }}" loading="lazy">
                             {% else %}
                             <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
-                            {% endif %} <div class="node-info">
+                            {% endif %} 
+                            <div class="node-info">
+
+                            {% if (connection.creator_id == sub_id) or (sub_id == node_owner_id) %}
+                            <!-- Allow close ONLY if user is curr node owner or creation of the connection -->
+                            <div style="position:relative;"><span id="delete-node"
+                                onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</span></div>
+                            {% endif %}
+
                                 <h2 class="line-clamp">{{connection.node_title}}</h2>
                                 <p class="line-clamp">{{connection.node_description}}</p>
                             </div>
@@ -134,12 +135,12 @@
                                 <button class="pure-button connection-img"
                                     onclick='selectConnection(this, "{{saved.node_id}}")'>
                                     {% if saved.image_id %}
-                                    <img class="pure-img connection-img"
+                                    <img class="pure-img modal-img"
                                         src="{{ url_for('get_image', image_id=saved.image_id) }}" loading="lazy">
                                     {% else %}
-                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
+                                    <img class="pure-img modal-img" src="../static/img/temp_chungus.png" loading="lazy">
                                     {% endif %} </button>
-                                <p class="center-text">{{saved.node_title}}</p>
+                                <p class="center-text line-clamp">{{saved.node_title}}</p>
                             </div>
                         </div>
                         {% endfor %}
@@ -154,12 +155,12 @@
                                 <button class="pure-button connection-img"
                                     onclick='selectConnection(this, "{{recent.node_id}}")'>
                                     {% if recent.image_id %}
-                                    <img class="pure-img connection-img"
+                                    <img class="pure-img modal-img"
                                         src="{{ url_for('get_image', image_id=recent.image_id) }}" loading="lazy">
                                     {% else %}
-                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
+                                    <img class="pure-img modal-img" src="../static/img/temp_chungus.png" loading="lazy">
                                     {% endif %} </button>
-                                <p class="center-text">{{recent.node_title}}</p>
+                                <p class="center-text line-clamp">{{recent.node_title}}</p>
                             </div>
                         </div>
                         {% endfor %}
@@ -174,12 +175,12 @@
                                 <button class="pure-button connection-img"
                                     onclick='selectConnection(this, "{{created.node_id}}")'>
                                     {% if created.image_id %}
-                                    <img class="pure-img connection-img"
+                                    <img class="pure-img modal-img"
                                         src="{{ url_for('get_image', image_id=created.image_id) }}" loading="lazy">
                                     {% else %}
-                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
+                                    <img class="pure-img modal-img" src="../static/img/temp_chungus.png" loading="lazy">
                                     {% endif %} </button>
-                                <p class="center-text">{{created.node_title}}</p>
+                                <p class="center-text line-clamp">{{created.node_title}}</p>
                             </div>
                         </div>
                         {% endfor %}
@@ -191,9 +192,9 @@
                         <div id="search-container">
                             <search>
                                 <form class="pure-form" id="div-search" hx-post="{{ url_for('search_node') }}"
-                                    hx-trigger="input changed delay:300ms from:#search" hx-target="#search-results"
-                                    hx-swap="innerHTML">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                    hx-trigger="input changed from:#search" hx-target="#search-results"
+                                    hx-swap="innerHTML" hx-on="keydown[key=='Enter'] prevent">
+                                    <input type=" hidden" name="csrf_token" value="{{ csrf_token() }}" hidden />
                                     <div class="input-group">
                                         <span class="material-symbols-outlined">
                                             search
@@ -223,7 +224,8 @@
     {% endif %}
 
     <script src="../static/js/node_pages.js"></script>
-    <script src="../static/js/utils.js"></script>
+    <script src="../static/js/utils.js">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
         integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
         crossorigin="anonymous"></script>

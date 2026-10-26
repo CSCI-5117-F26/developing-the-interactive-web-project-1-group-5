@@ -56,7 +56,7 @@ nav {
     background-color: var(--background-color);
     align-items: center;
     /* box-shadow: 0rem 0.1rem var(--sub-background-color); */
-    z-index: 99999;
+    z-index: 99999; 
     position: sticky;
     top: 0;
     left: 0;
@@ -269,7 +269,7 @@ nav {
 }
 
 #full-overlay {
-  z-index: 1000;
+  z-index: 100000;
   position: fixed;
   place-items: center;
   top: 0;
@@ -372,6 +372,7 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow-wrap: break-word;
 }
 
 .pure-button.pure-button-primary {
@@ -491,10 +492,11 @@ nav {
 
 .node-img {
     border-radius: 1.5rem;
-    max-width: 100%;
+    width: 100%;
     height: auto;
-}
+    object-fit: cover;
 
+}
 .node-box-single {
     background-color: var(--sub-background-color);
     margin: 3rem 1rem;
@@ -514,6 +516,7 @@ nav {
 
 .format-box {
   padding: 3rem;
+  overflow-wrap: break-word;
 }
 
 .pure-form {
@@ -601,4 +604,10 @@ nav {
     background-color: var(--warning-color);
     color: var(--background-color);
     border: none;
+}
+
+#profile-setup-overlay {
+  margin: 10rem;
+  padding: 4rem;
+  border-radius: 5%;
 }

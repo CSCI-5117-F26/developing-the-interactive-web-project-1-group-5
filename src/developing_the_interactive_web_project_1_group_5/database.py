@@ -37,6 +37,17 @@ def get_all_nodes():
             cur.execute("select * from nodes where category = false;")
             return cur.fetchall()
 
+# get nodes sorted by number connections NOT
+def get_landing_nodes(offset):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''select * from nodes
+                            where category = FALSE
+                            order by nodeid desc
+                            limit 8 offset %s;
+                    ''', (offset,))
+            return cur.fetchall()
+
 
 # get every single category in the table
 def get_all_categories():
@@ -143,17 +154,21 @@ def get_recent_nodes(subId):
         with conn.cursor() as cur:
 
             cur.execute(
-                """select * 
-                            from nodes 
-                            where nodeId in (
-                                select nodeId 
-                                from recentNodes 
-                                where subId = %s);""",
+                '''select N.*
+                    from nodes as N, recentNodes as R
+                    where N.nodeId = R.nodeId and R.subId = %s
+                    order by R.timestamp desc;''',
                 (subId,),
             )
 
             return cur.fetchall()
 
+# get random node
+def get_rand_node():
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""select * from nodes order by random() limit 1;""")
+            return cur.fetchall()
 
 # retrieve a user's notifications
 def get_notifs(subid):
@@ -342,9 +357,13 @@ def add_to_recent_nodes(subId, nodeid):
                 (subId, nodeid),
             )
             exists = cur.fetchone()
-            print(exists)
 
-            if not exists:
+            if exists:
+                cur.execute(
+                    """delete from recentNodes where subid = %s and nodeId = %s;""",
+                    (subId, nodeid),
+                )
+            else:
                 num_history = 10
                 cur.execute(
                     """select count(subid) from recentNodes where subid = %s""",
@@ -365,12 +384,12 @@ def add_to_recent_nodes(subId, nodeid):
                         (subId, to_delete),
                     )
 
-                timestamp = datetime.datetime.now()
-                cur.execute(
-                    """insert into recentNodes (subId, nodeId, timestamp)
-                                values (%s, %s, %s);""",
-                    (subId, nodeid, timestamp),
-                )
+            timestamp = datetime.datetime.now()
+            cur.execute(
+                """insert into recentNodes (subId, nodeId, timestamp)
+                            values (%s, %s, %s);""",
+                (subId, nodeid, timestamp),
+            )
 
 
 # Putting an uploaded file into the images table. Returns imageId (or none)
@@ -518,10 +537,6 @@ def delete_notif(notifid):
         with conn.cursor() as cur:
             cur.execute("""delete from notifications where notifId = %s;""", (notifid,))
 
-
-# NOTE: Do we need this?
-def remove_from_recent():
-    return
 
 # CHECK EXISTENCE
 def connects(node1, node2):

@@ -37,24 +37,31 @@
         <label class="pure-u-1-4 tab-label" for="tab-two">All Patches</label>
         <div class="panel" id="panel-two">
             <div class="pure-g">
-                {% if popular_nodes %}
-                {% for node in popular_nodes%}
-                <div class="pure-u-1-2 pure-u-md-1-4">
-                    <div class="node-box">
-                        <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
-                            {% if node.image_id %}
-                            <img class="pure-img connection-img"
-                                src="{{ url_for('get_image', image_id=node.image_id) }}">
-                            {% else %}
-                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
-                            {% endif %}
-                            <div class="node-info">
-                                <h2 class="line-clamp">{{node.node_title}}</h2>
-                                <p class="line-clamp">{{node.node_description}}</p>
-                            </div>
+                {% if landing_nodes %}
+                {% for node in landing_nodes%}
+                    {% if loop.last %}
+                    <div hx-get="/node-page/?page=2"
+                        hx-trigger="revealed"
+                        hx-swap="afterend"
+                        hx-target="this" class="pure-u-1-2 pure-u-md-1-4">
+                    {% else %}
+                    <div class="pure-u-1-2 pure-u-md-1-4">
+                    {% endif %}
+                        <div class="node-box">
+                            <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                                {% if node.image_id %}
+                                <img class="pure-img connection-img"
+                                    src="{{ url_for('get_image', image_id=node.image_id) }}">
+                                {% else %}
+                                <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                {% endif %}
+                                <div class="node-info">
+                                    <h2 class="line-clamp">{{node.node_title}}</h2>
+                                    <p class="line-clamp">{{node.node_description}}</p>
+                                </div>
 
-                        </button>
-                    </div>
+                            </button>
+                        </div>
                 </div>
                 {% endfor %}
                 {% else %}
@@ -168,5 +175,7 @@
         </div>
 
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
+        integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
+        crossorigin="anonymous"></script>
     {% endblock %}

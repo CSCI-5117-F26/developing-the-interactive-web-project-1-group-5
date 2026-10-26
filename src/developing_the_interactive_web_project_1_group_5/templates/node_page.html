@@ -1,0 +1,25 @@
+{% for node in landing_nodes%}
+    {% if loop.last %}
+    <div hx-get="/node-page/?page={{ page + 1 }}"
+        hx-trigger="revealed"
+        hx-swap="afterend" class="pure-u-1-2 pure-u-md-1-4">
+    {% else %}
+    <div class="pure-u-1-2 pure-u-md-1-4">
+    {% endif %}
+        <div class="node-box">
+            <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                {% if node.image_id %}
+                <img class="pure-img connection-img"
+                    src="{{ url_for('get_image', image_id=node.image_id) }}">
+                {% else %}
+                <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                {% endif %}
+                <div class="node-info">
+                    <h2 class="line-clamp">{{node.node_title}}</h2>
+                    <p class="line-clamp">{{node.node_description}}</p>
+                </div>
+
+            </button>
+        </div>
+</div>
+{% endfor %}

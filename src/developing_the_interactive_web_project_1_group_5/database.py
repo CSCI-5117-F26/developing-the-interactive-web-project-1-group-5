@@ -347,13 +347,11 @@ def add_to_recent_nodes(subId, nodeid):
             exists = cur.fetchone()
 
             if exists:
-                print("helloe")
                 cur.execute(
                     """delete from recentNodes where subid = %s and nodeId = %s;""",
                     (subId, nodeid),
                 )
             else:
-                print("fieuyf")
                 num_history = 10
                 cur.execute(
                     """select count(subid) from recentNodes where subid = %s""",

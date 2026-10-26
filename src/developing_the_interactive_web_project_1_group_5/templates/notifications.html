@@ -36,9 +36,11 @@
     <div class="notif-content">
         <div class="pure-u-1-8 notif-pic">
             {% if notif.profpicid %}
-            <img class="pure-img" src="{{ url_for('get_image', image_id=notif.profpicid) }}" alt="profile picture">
+            <img class="pure-img actual-img" src="{{ url_for('get_image', image_id=notif.profpicid) }}"
+                alt="profile picture">
             {% else %}
-            <img class="pure-img" src="{{ url_for('static', filename ='img/temp_chungus.png') }}" alt="profile picture">
+            <img class="pure-img actual-img" src="{{ url_for('static', filename ='img/temp_chungus.png') }}"
+                alt="profile picture">
             {% endif %}
         </div>
         <div class="pure-u-5-8 notif-text">

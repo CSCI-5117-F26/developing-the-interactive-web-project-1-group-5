@@ -605,3 +605,9 @@ nav {
     color: var(--background-color);
     border: none;
 }
+
+#profile-setup-overlay {
+  margin: 10rem;
+  padding: 4rem;
+  border-radius: 5%;
+}

@@ -115,7 +115,7 @@ def landing(page):
         "landing.html",
         categories=categories,
         landing_nodes=landing_nodes,
-        random_node=random_node,
+        random_node=random_node[0],
         loggedin=check_signin(),
     )
 

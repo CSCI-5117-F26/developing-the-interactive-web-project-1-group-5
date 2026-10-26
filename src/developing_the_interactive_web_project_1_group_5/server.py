@@ -289,7 +289,6 @@ def edit_node(node_id):
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
-    # database.add_to_recent_nodes(session.get("sub_id"), node_id)
     for l in [saved_nodes, recent_nodes, created_nodes]:
         l = filter_connecting_nodes(l, node_id)
     user = get_user_profile()

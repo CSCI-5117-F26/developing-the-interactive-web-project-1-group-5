@@ -154,12 +154,12 @@ a {
   cursor: pointer;
 }
 
-#delete-node {
-    background-color: red;
-    z-index: 2;
+/* #delete-node {
+    /* background-color: red; */
+    /* z-index: 2;
     position: absolute;
     font-size: 300%;
-}
+} */ */
 
 /* Modal tab system, using landing page method */
 #connection-tabs input[type="radio"] {

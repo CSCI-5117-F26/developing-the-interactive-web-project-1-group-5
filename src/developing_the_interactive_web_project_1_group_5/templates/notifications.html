@@ -25,11 +25,11 @@
 
     {% for notif in notifs %}
 
-    {% if dates[notif.notifid] %}
-    <div class="pure-u-1">
-        <h2>{{ dates[notif.notifid] }}</h2>
-    </div>
-    {% endif %}
+            {% if dates[notif.notifid] %}
+                <div class="pure-u-1">
+                    <h2>{{ dates[notif.notifid] }}</h2>
+                </div>
+            {% endif %}
 
     <div class="notif-content">
         <div class="pure-u-1-8 notif-pic">

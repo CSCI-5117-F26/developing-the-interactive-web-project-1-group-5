@@ -24,18 +24,6 @@ def dict_get(dict, key, default):
     # Fetch value of key from dictionary, return default if none
     return (dict.get(key) or default)
 
-def get_popular_nodes():
-    # Order by number of connections and return n nodes
-    # NOTE: removed n nodes, we are returning them all
-    all_nodes = database.get_all_nodes()
-    popularities = []
-    for node in all_nodes:
-        nodeid = node.get("nodeid")
-        connection_count = len(database.get_node_connections(nodeid))
-        node["connection_count"] = connection_count
-        popularities.append(node)
-    popularities.sort(key=lambda x: x["connection_count"], reverse=True)
-    return popularities
 
 def add_selections(subid, newConnections=[]):
     for node_id in newConnections:
@@ -61,9 +49,13 @@ def get_new_connections(subid, n=30):
 
         for connected in connected_nodes:
             # Don't add duplicates or your saved/created nodes
-            if (connected not in new_connections) and (connected not in my_nodes):
+            new_connections_ids = [node["nodeid"] for node in new_connections]
+            if (connected["nodeid"] not in new_connections_ids) and (connected not in my_nodes):
                 connected['timestamp'] = (database.get_node_connection(node["nodeid"], connected["nodeid"])["timestamp"])
                 if (connected['timestamp'] != None):
                     new_connections.append(connected)
     new_connections.sort(key=lambda x: x["timestamp"], reverse=True)
     return new_connections[:n]
+
+def generate_node_pages(page=1, page_size=8):
+    return database.get_landing_nodes(page * page_size)

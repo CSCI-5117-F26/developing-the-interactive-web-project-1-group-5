@@ -18,10 +18,10 @@ from urllib.parse import quote_plus, urlencode
 from developing_the_interactive_web_project_1_group_5.node import (
     format_node_display,
     dict_get,
-    get_popular_nodes,
     add_selections,
     filter_connecting_nodes,
     get_new_connections,
+    generate_node_pages
 )
 
 from psycopg import errors
@@ -30,6 +30,7 @@ import io
 import os
 import developing_the_interactive_web_project_1_group_5.full_text_search as fulltext
 import datetime
+import time
 import random
 import developing_the_interactive_web_project_1_group_5.database as database
 
@@ -85,13 +86,12 @@ def login_required(f):
     return decorated
 
 
-@app.route("/")
-def landing():
+@app.route("/", defaults={"page": 1})
+def landing(page):
 
     categories = format_node_display(database.get_all_categories())
-    popular_nodes = format_node_display(get_popular_nodes())
-    all_nodes = format_node_display(fulltext.view())
-    random_node = random.choice(all_nodes)
+    landing_nodes = format_node_display(generate_node_pages(page=page))
+    random_node = format_node_display(database.get_rand_node())
 
     user = get_user_profile()
 
@@ -104,18 +104,28 @@ def landing():
             "landing.html",
             user=user,
             categories=categories,
-            popular_nodes=popular_nodes,
+            landing_nodes=landing_nodes,
             recent_nodes=recent_nodes,
-            random_node=random_node,
+            random_node=random_node[0],
             new_connected_nodes = new_connected_nodes,
+            page=page,
             loggedin=check_signin(),
         )
     return render_template(
         "landing.html",
         categories=categories,
-        popular_nodes=popular_nodes,
-        random_node=random_node,
+        landing_nodes=landing_nodes,
+        random_node=random_node[0],
         loggedin=check_signin(),
+    )
+
+# Referenced https://github.com/Konfuzian/htmx-examples-with-flask/tree/main/src/infinite_scroll/templates/infinite_scroll
+@app.route("/node-page/")
+def node_page():
+    page = int(request.args.get("page", 1))
+    time.sleep(1)
+    return render_template(
+        "node_page.html", landing_nodes=format_node_display(generate_node_pages(page=page)), page=page
     )
 
 
@@ -171,7 +181,6 @@ def set_username():
 @login_required
 def username_setup():
     if database.get_user(session.get("sub_id")) == None:
-        # TODO: Validate username here
         username = request.form.get("username")
         if (database.add_user(subId=session.get("sub_id"), username=username)) == None:
             abort(404)
@@ -256,7 +265,6 @@ def view_node(node_id):
             loggedin=check_signin(),
         )
 
-# TODO: FORM CRAP
 @app.route("/edit-node/<int:node_id>", methods=["GET", "POST"])
 @login_required
 def edit_node(node_id):
@@ -281,7 +289,6 @@ def edit_node(node_id):
     saved_nodes = format_node_display(database.get_saved_nodes(session.get("sub_id")))
     recent_nodes = format_node_display(database.get_recent_nodes(session.get("sub_id")))
     created_nodes = format_node_display(database.get_user_nodes(session.get("sub_id")))
-    # database.add_to_recent_nodes(session.get("sub_id"), node_id)
     for l in [saved_nodes, recent_nodes, created_nodes]:
         l = filter_connecting_nodes(l, node_id)
     user = get_user_profile()
@@ -405,8 +412,8 @@ def view_settings():
     db_user = database.get_user(sub_id)
 
     if request.method == "POST":
-        print("FORM:", request.form)
-        print("FILES:", request.files)
+        # print("FORM:", request.form)
+        # print("FILES:", request.files)
         username = request.form.get("username", "").strip()
         bio = request.form.get("bio", "").strip()
 
@@ -467,13 +474,6 @@ def delete_notif(notif_id):
     database.delete_notif(notif_id)
 
     return redirect(url_for("notifs"))
-
-
-# this threw errors soo
-# @app.route("/edit-profile/<int:session.get('sub_id')>")
-# @login_required
-# def edit_profile():
-#     return
 
 
 # From https://stackoverflow.com/questions/69234307/flask-generate-404-page-if-data-not-found-in-database

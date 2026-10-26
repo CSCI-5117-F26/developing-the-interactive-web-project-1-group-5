@@ -12,12 +12,7 @@ dotenv.load_dotenv()
 
 # set up connection pool
 db_url = os.environ["DATABASE_URL"]
-pool = ConnectionPool(
-    db_url, 
-    open=False, 
-    min_size=4,
-    max_size=20,
-    kwargs={"row_factory": dict_row})
+pool = ConnectionPool(db_url, open=False, kwargs={"row_factory": dict_row})
 atexit.register(pool.close)
 
 is_gunicorn = "gunicorn" in os.environ.get("SERVER_SOFTWARE", "")
@@ -40,6 +35,17 @@ def get_all_nodes():
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute("select * from nodes where category = false;")
+            return cur.fetchall()
+
+# get nodes sorted by number connections NOT
+def get_landing_nodes(offset):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''select * from nodes
+                            where category = FALSE
+                            order by nodeid desc
+                            limit 8 offset %s;
+                    ''', (offset,))
             return cur.fetchall()
 
 
@@ -157,6 +163,12 @@ def get_recent_nodes(subId):
 
             return cur.fetchall()
 
+# get random node
+def get_rand_node():
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""select * from nodes order by random() limit 1;""")
+            return cur.fetchall()
 
 # retrieve a user's notifications
 def get_notifs(subid):
@@ -524,7 +536,6 @@ def delete_notif(notifid):
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""delete from notifications where notifId = %s;""", (notifid,))
-
 
 
 # CHECK EXISTENCE

@@ -80,7 +80,6 @@ function addSelections(node_id){
 }
 
 function deleteConnection(nodeid1, nodeid2){
-  // TODO: add pop-up for a check to delete or not?
   fetch('/delete-connections', {
       method: 'POST',
       headers: {

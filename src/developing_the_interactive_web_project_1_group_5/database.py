@@ -12,7 +12,12 @@ dotenv.load_dotenv()
 
 # set up connection pool
 db_url = os.environ["DATABASE_URL"]
-pool = ConnectionPool(db_url, open=False, kwargs={"row_factory": dict_row})
+pool = ConnectionPool(
+    db_url, 
+    open=False, 
+    min_size=4,
+    max_size=20,
+    kwargs={"row_factory": dict_row})
 atexit.register(pool.close)
 
 is_gunicorn = "gunicorn" in os.environ.get("SERVER_SOFTWARE", "")

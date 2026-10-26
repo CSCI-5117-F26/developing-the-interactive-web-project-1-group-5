@@ -1,0 +1,24 @@
+.notif-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border: 0.2rem solid #eae8e2;
+  border-radius: 8px;
+}
+
+.notif-content > div {
+  box-sizing: border-box;
+  padding: 0 0.5rem;
+}
+
+.notif-content .disconnect-button,
+.notif-content .notif-close {
+  flex: 0 0 auto;
+  width: auto;
+  white-space: nowrap;
+}

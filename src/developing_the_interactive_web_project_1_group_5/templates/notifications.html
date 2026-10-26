@@ -2,65 +2,78 @@
 {% block title %}Notifications{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/notif-style.css') }}">
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
 
 {% block body %}
 
-<div class="pure-g pure-u-1">
-    <div class="pure-u-1"><h1>Notifications</h1></div>
+<div class="pure-g pure-u-1 notif-cont-super-overlord">
 
-    <div class="pure-u-1 pure-u-md-1-5"></div>
 
-    <div class="pure-u-1 pure-u-md-3-5 notif-box" style="background-color: gray;">
-        {% if not notifs %}
-            <div class="pure-u-1">
-                <h2>You have no notifications</h2>
-            </div>
-        {% endif %}
-
-        {% for notif in notifs %}
-
-            {% if dates[notif.notifid] %}
-                <div class="pure-u-1">
-                    <h2>{{ dates[notif.notifid] }}</h2>
-                </div>
-            {% endif %}
-
-            <div class="pure-g notif-content" style="background-color: lightsalmon;">
-                <div class="pure-u-1-8 notif-pic" style="background-color: lightcoral;">
-                    {% if notif.profpicid %}
-                        <img class="pure-img" src="{{ url_for('get_image', image_id=notif.profpicid) }}" alt="profile picture">
-                    {% else %}
-                        <img class="pure-img" src="{{ url_for('static', filename ='img/temp_chungus.png') }}" alt="profile picture">
-                    {% endif %}
-                </div>
-                <div class="pure-u-5-8 notif-text" style="background-color: lightblue;">
-                    {% if notif.deleted %}
-                        <p>The connection between <a href="{{ url_for('view_node', node_id= notif.usernode) }}">{{notif.usertitle}}</a> 
-                            and <a href="{{ url_for('view_node', node_id= notif.connectingnode) }}">{{notif.connectingtitle}}</a> has been removed</p>
-                    {% else %}
-                        <p>{{notif.username}} connected <a href="{{ url_for('view_node', node_id= notif.usernode) }}">{{notif.usertitle}}</a> 
-                            to <a href="{{ url_for('view_node', node_id= notif.connectingnode) }}">{{notif.connectingtitle}}</a></p>
-                    {% endif %}
-                </div>
-                <div class="pure-u-1-8 disconnect-button" style="background-color: lightgreen;">
-                    {% if not notif.deleted %}
-                        <button class="pure-button" onclick="deleteConnection({{notif.usernode}}, {{notif.connectingnode}})">Disconnect</button>
-                    {% endif %}
-                </div>
-                <div class="pure-u-1-8 notif-close" style="background-color: cornsilk;">
-                    <form action="{{ url_for('delete_notif', notif_id= notif.notifid)}}" method="post">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button type="submit" class="pure-button">X</button>
-                    </form>
-                </div>
-            </div>
-
-        {% endfor %}
+    <div class=" notif-cont-overlord">
+        <div class="pure-u-1">
+            <h1>Notifications</h1>
+        </div>
     </div>
 
-    <div class="pure-u-1 pure-u-md-1-5 "></div>
+    <div class="notif-box" ">
+        {% if not notifs %}
+        <div class=" pure-u-1">
+        <h2>You have no notifications</h2>
+    </div>
+    {% endif %}
+
+    {% for notif in notifs %}
+
+    {% if dates[notif.notifid] %}
+    <div class="pure-u-1">
+        <h2>{{ dates[notif.notifid] }}</h2>
+    </div>
+    {% endif %}
+
+    <div class="notif-content">
+        <div class="pure-u-1-8 notif-pic">
+            {% if notif.profpicid %}
+            <img class="pure-img actual-img" src="{{ url_for('get_image', image_id=notif.profpicid) }}"
+                alt="profile picture">
+            {% else %}
+            <img class="pure-img actual-img" src="{{ url_for('static', filename ='img/temp_chungus.png') }}"
+                alt="profile picture">
+            {% endif %}
+        </div>
+        <div class="pure-u-5-8 notif-text">
+            {% if notif.deleted %}
+            <p>The connection between <a
+                    href="{{ url_for('view_node', node_id= notif.usernode) }}">{{notif.usertitle}}</a>
+                and <a href="{{ url_for('view_node', node_id= notif.connectingnode) }}">{{notif.connectingtitle}}</a>
+                has been removed</p>
+            {% else %}
+            <p>{{notif.username}} connected <a
+                    href="{{ url_for('view_node', node_id= notif.usernode) }}">{{notif.usertitle}}</a>
+                to <a href="{{ url_for('view_node', node_id= notif.connectingnode) }}">{{notif.connectingtitle}}</a>
+            </p>
+            {% endif %}
+        </div>
+        <div class="pure-u-1-8 disconnect-button">
+            {% if not notif.deleted %}
+            <button class="pure-button"
+                onclick="deleteConnection({{notif.usernode}}, {{notif.connectingnode}})">Disconnect</button>
+            {% endif %}
+        </div>
+        <div class="pure-u-1-8 notif-close">
+            <form action="{{ url_for('delete_notif', notif_id= notif.notifid)}}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="pure-button">X</button>
+            </form>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+<div class="pure-u-1 pure-u-md-1-5 "></div>
 </div>
 
 <script src="{{ url_for('static', filename='js/notif.js') }}"></script>

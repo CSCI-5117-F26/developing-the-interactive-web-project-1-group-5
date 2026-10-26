@@ -5,7 +5,6 @@ CREATE table nodes (
     description varchar(250),
     --creatorId int,
     subId varchar(255),
-    topic varchar(100),
     category boolean DEFAULT false, 
     FOREIGN KEY (subId) REFERENCES users(subId),
     FOREIGN KEY (imgId) REFERENCES images,
@@ -87,8 +86,8 @@ CREATE table notifications (
     deleted boolean DEFAULT false,
     FOREIGN KEY (recipient) REFERENCES users(subid),
     FOREIGN KEY (connector) REFERENCES users(subid),
-    FOREIGN KEY (usersNode) REFERENCES nodes,
-    FOREIGN KEY (connectingNode) REFERENCES nodes
+    FOREIGN KEY (usersNode) REFERENCES nodes ON DELETE CASCADE,
+    FOREIGN KEY (connectingNode) REFERENCES nodes ON DELETE CASCADE
 );
 
 -- insert into users (username, bio) values ('chungus', 'I am chungus');

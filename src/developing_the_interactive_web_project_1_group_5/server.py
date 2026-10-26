@@ -249,6 +249,7 @@ def view_node(node_id):
                 )
                 or "Quilt"
             ),
+            node_owner_pfp=database.get_user_pfp(dict_get(node, "subid", "noid")),
             node_owner_id=dict_get(node, "subid", "noid"),
             node_description=dict_get(node, "description", "None"),
             node_id=node_id,

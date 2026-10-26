@@ -14,9 +14,9 @@ a {
     padding: 0.5em 2em;
 } */
 
-.node-box {
+/* .node-box {
   padding: 1em 2em;
-}
+} */
 /* 
 .node-box:hover {
     text-decoration: underline;
@@ -77,119 +77,3 @@ a {
 
 /* Connect node modal */
 /* Referenced from https://www.w3schools.com/howto/howto_css_modals.asp example 1 */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 100000;
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid var(--accent-color2);
-  width: 80%;
-}
-
-.modal-img {
-    display: block;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;    
-    object-position: center;  
-    padding: 0;
-}
-.close {
-  color: var(--accent-color);
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  text-align: right;
-}
-
-.close:hover,
-.close:focus {
-  color: var(--primary-color);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#delete-node {
-  /* background-color: rgba(0, 0, 0, 0.377); */
-  z-index: 2;
-  position: absolute;
-  right: 0.1em;
-  font-size: 300%;
-  color: var(--accent-color);
-  font-size: 28px;
-  font-weight: bold;
-  border:rgb(255, 0, 0, 0);
-  /* border-radius: 25%; */
-  padding: 0;
-
-}
-
-#delete-node:hover,
-#delete-node:focus {
-  color: var(--accent-color2);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Modal tab system, using landing page method */
-#connection-tabs input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-}
-
-.label {
-  background: var(--sub-background-color);
-  cursor: pointer;
-  padding: 12px 0;
-  text-align: center;
-  margin: 0;
-}
-
-/* https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has */
-#connection-tabs:has(#tab-one:checked) #panel-one,
-#connection-tabs:has(#tab-two:checked) #panel-two,
-#connection-tabs:has(#tab-three:checked) #panel-three,
-#connection-tabs:has(#tab-four:checked) #panel-four {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-#connection-tabs .scroll-box {
-  display: none;
-  overflow: auto;
-  height: 280px;
-  width: 100%;
-}
-
-.selected-node {
-  box-shadow: 10px 10px;
-  border-style: solid;
-  z-index: 100002;
-}
-
-.add-connection-footer {
-  position: sticky;
-  bottom: 0;
-  width: 100%;
-  z-index: 100001;
-  background-color: white;
-  padding: 0.5em 0.5em;
-  text-align: right;
-}
-
-.node-search-container {
-  margin: 1rem;
-}

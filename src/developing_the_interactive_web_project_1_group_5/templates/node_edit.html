@@ -11,6 +11,11 @@
 
     <div class="field">
         <h1 class="non-style"> Edit Patch </h1>
+        <label for="picture">Upload Image</label>
+        <input id="picture" class="pure-button file-input" name="picture" type="file" accept="image/*">
+    </div>
+
+    <div class="field">
         <label for="node_title">
             <h2 class="non-style">Edit Title</h2>
         </label>
@@ -24,13 +29,8 @@
             <h2>Edit Description <span id="char_count" class="p"></span></h2>
         </label>
         <!-- Maybe: add a char counter -->
-        <textarea class="pure-u-1" id="node_description" name="node_description" rows="5"
-            style="width:100%;" placeholder="Description" maxlength="240">{{node_description}}</textarea>
-    </div>
-
-    <div class="field">
-        <label for="picture">Upload Image</label>
-        <input id="picture" class="pure-button file-input" name="picture" type="file" accept="image/*">
+        <textarea class="pure-u-1" id="node_description" name="node_description" rows="5" style="width:100%;"
+            placeholder="Description" maxlength="240">{{node_description}}</textarea>
     </div>
 
     <div class="field">

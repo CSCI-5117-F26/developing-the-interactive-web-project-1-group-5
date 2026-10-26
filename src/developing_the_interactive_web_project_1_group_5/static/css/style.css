@@ -1,13 +1,13 @@
 /* ALl PAGES */
 :root {
-    --text-color: #4F4A44;
-    --background-color: #fdfcfc;
-    --sub-background-color: #eae8e2;
-    --secondary-text-color: #979292;
-    --light-accent: #f9edd4;
-    --accent-color: #e39e36;
-    --accent-color2: #c37f2d;
-    --warning-color: #c81e46;
+  --text-color: #4F4A44;
+  --background-color: #fdfcfc;
+  --sub-background-color: #eae8e2;
+  --secondary-text-color: #979292;
+  --light-accent: #f9edd4;
+  --accent-color: #e39e36;
+  --accent-color2: #c37f2d;
+  --warning-color: #c81e46;
 }
 
 * {
@@ -21,10 +21,6 @@
   background-color: transparent;
 }
 
-.page-margin {
-  margin: 0 2.5rem;
-}
-
 h1 {
   font-size: 1.5rem;
   background-color: transparent;
@@ -36,34 +32,35 @@ h1 {
 }
 
 h2 {
-    font-size: 1rem;
-    background-color: transparent;
+  font-size: 1rem;
+  background-color: transparent;
 }
 
-p, .p {
+p,
+.p {
   font-size: 0.8rem;
   color: var(--secondary-text-color);
   background-color: transparent;
 }
 
 #randomize-btn-div {
-    background-color: inherit;
+  background-color: inherit;
 }
 
 /* NAVIGATION BAR */
 nav {
-    padding: 1rem 0rem;
-    background-color: var(--background-color);
-    align-items: center;
-    /* box-shadow: 0rem 0.1rem var(--sub-background-color); */
-    z-index: 99999; 
-    position: sticky;
-    top: 0;
-    left: 0;
+  padding: 1rem 0rem;
+  background-color: var(--background-color);
+  align-items: center;
+  /* box-shadow: 0rem 0.1rem var(--sub-background-color); */
+  z-index: 99999;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 
 #nav-container {
-  margin: 0 2.5rem;
+  margin: 0 2rem;
   background-color: var(--background-color);
   display: flex;
   justify-content: space-between;
@@ -100,12 +97,12 @@ nav {
 .pure-form input[type="search"],
 .pure-form input[type="text"],
 .pure-form textarea {
-    box-shadow: none;
-    border: none;
-    background-color: var(--background-color);
-    border: 0.2rem dashed var(--sub-background-color);
-    padding: 1rem;
-    border-radius: 0.75rem;
+  box-shadow: none;
+  border: none;
+  background-color: var(--background-color);
+  border: 0.2rem dashed var(--sub-background-color);
+  padding: 1rem;
+  border-radius: 0.75rem;
 }
 
 .pure-form input[type="search"]::placeholder {
@@ -174,13 +171,13 @@ nav {
 /* LANDING PAGE */
 
 #landing-hero-section {
-    padding: 5rem 3rem;
-    min-height: 50vh;
-    text-align: center;
-    align-content: center;
-    justify-content: center;
-    display: block;
-    width: 100%;
+  padding: 5rem 3rem;
+  min-height: 50vh;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  display: block;
+  width: 100%;
 }
 
 #landing-hero-section div {
@@ -207,20 +204,21 @@ nav {
 
 
 #kickstart-section {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 3rem;
-    border-radius: 1.5rem;
-    z-index: 800;
-    border: 0.2rem dashed var(--sub-background-color);
-    margin: 2rem 0;
+  margin: 1rem 2rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-radius: 1.5rem;
+  z-index: 800;
+  border: 0.2rem dashed var(--sub-background-color);
 }
 
-#kickstart-section div{
-    background-color: inherit;
+#kickstart-section div {
+  background-color: inherit;
 }
+
 .pure-button:hover {
   text-decoration: none;
   background-image: none;
@@ -282,21 +280,21 @@ nav {
 }
 
 .node-box {
-    z-index: 0;
-    background-color: transparent;
-    border-radius: 2rem;
+  z-index: 0;
+  background-color: transparent;
+  border-radius: 2rem;
 }
 
 .node-card {
-    object-position: center;
-    width: 100%;
-    min-height: 220px;
-    min-width: 200px;
-    padding: 0.1rem;
-    overflow: hidden;
-    /* border-radius: 2rem; */
-    background-color: transparent;
-    border: none !important;
+  object-position: center;
+  width: 100%;
+  min-height: 220px;
+  min-width: 200px;
+  padding: 0.1rem;
+  overflow: hidden;
+  /* border-radius: 2rem; */
+  background-color: transparent;
+  border: none !important;
 }
 
 .connection-img:hover {
@@ -312,15 +310,15 @@ nav {
   object-fit: cover;
   object-position: center;
   color: var(--primary-color);
-  /* border-radius: 2rem; */
   overflow: hidden;
   background-color: var(--background-color);
+  /* border-radius: 1.5rem; */
 }
 
 .node-info {
-    margin: 0;
-    text-align: left;
-    padding: 1rem 0.5rem;
+  margin: 0;
+  text-align: left;
+  padding: 1rem 0.5rem;
 }
 
 /* From https://css-tricks.com/almanac/properties/l/line-clamp/ */
@@ -341,34 +339,34 @@ nav {
 /* Profile + Landing */
 
 .profile-sidebar {
-    padding: 1rem;
-    position: sticky;
-    box-sizing: border-box;
-    z-index: 900;
+  padding: 1rem;
+  position: sticky;
+  box-sizing: border-box;
+  z-index: 900;
 }
 
 .pfp {
-    max-width: 60%;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 1em auto;
-    aspect-ratio: 1 / 1;
+  max-width: 60%;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 1em auto;
+  aspect-ratio: 1 / 1;
 }
 
 .pure-button {
-    background-color: var(--background-color);
-    color: var(--accent-color);
-    border: 0.1rem solid var(--accent-color);
+  background-color: var(--background-color);
+  color: var(--accent-color);
+  border: 0.1rem solid var(--accent-color);
 }
 
 .pure-button:hover {
-    text-decoration: none;
-    background-image: none;
-    color: var(--background-color);
+  text-decoration: none;
+  background-image: none;
+  color: var(--background-color);
 }
 
 .sidebar-box {
-  margin: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -382,8 +380,8 @@ nav {
 }
 
 .pure-button.pure-button-primary:hover {
-    background-color: var(--accent-color2);
-    color: var(--background-color);
+  background-color: var(--accent-color2);
+  color: var(--background-color);
 }
 
 .profile-buttons {
@@ -395,8 +393,8 @@ nav {
 }
 
 .profile-buttons:hover {
-    background-color: var(--light-accent);
-    color: var(--accent-color);
+  background-color: var(--light-accent);
+  color: var(--accent-color);
 }
 
 .profile-bio {
@@ -417,17 +415,23 @@ nav {
   margin-top: auto;
 }
 
+.discover-panel {
+  margin: 0 2rem;
+}
+
 .profile-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    overflow: hidden;
-    z-index: 9999;
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  z-index: 9999;
+  width: 100%;
+
 }
 
 .radiotab {
   position: absolute;
   opacity: 0;
+  place-items: center;
 }
 
 .tab-label {
@@ -437,24 +441,26 @@ nav {
   cursor: pointer;
   padding: 1.25rem 0;
   text-align: center;
+  vertical-align: middle;
   z-index: 9999;
+  box-shadow: 0.1rem var(--sub-background-color);
 }
 
 .panel {
-    display: none;
-    width: 100%;
-    order: 99;
-    z-index: 0;
-    padding-top: 0.1rem;
-    padding-bottom: 5rem;
-    background-color: transparent;
+  display: none;
+  width: 100%;
+  order: 99;
+  z-index: 0;
+  padding-top: 0.1rem;
+  padding-bottom: 5rem;
+  background-color: transparent;
 }
 
 .radiotab:checked+.tab-label {
-    box-shadow: 0rem 0.1rem var(--accent-color);
+  box-shadow: 0rem 0.1rem var(--text-color);
 }
 
-.radiotab:checked + .tab-label + .panel {
+.radiotab:checked+.tab-label+.panel {
   display: block;
 }
 
@@ -491,27 +497,33 @@ nav {
 }
 
 .node-img {
-    border-radius: 1.5rem;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+  border-radius: 1.5rem;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 
 }
+
 .node-box-single {
-    background-color: var(--sub-background-color);
-    margin: 3rem 1rem;
-    border-radius: 2rem;
-    display: flex;
-    height: auto;
+  background-color: var(--sub-background-color);
+  margin: 3rem 1rem;
+  border-radius: 2rem;
+  display: flex;
+  height: auto;
 }
 
 .img-section {
-    display: block;
-    margin: auto;
+  display: block;
+  margin: auto;
+}
+
+#addNode {
+  height: 100%;
 }
 
 .l-box {
   width: 100%;
+  margin: 0 2rem;
 }
 
 .format-box {
@@ -524,84 +536,273 @@ nav {
 }
 
 .pure-button::file-selector-button {
-    background-color: var(--background-color);
-    color: var(--accent-color);
-    border: 0.1rem solid var(--accent-color);
-    border-radius: 0.75rem;
-    padding: 0.75rem 2rem;
+  background-color: var(--background-color);
+  color: var(--accent-color);
+  border: 0.1rem solid var(--accent-color);
+  border-radius: 0.75rem;
+  padding: 0.75rem 2rem;
 }
 
-.pure-button::file-selector-button:hover{
-    background-color: var(--light-accent);
+.pure-button::file-selector-button:hover {
+  background-color: var(--light-accent);
 }
 
 .file-input {
-    margin: 0;
-    padding: 0.2rem 0;
-    border-radius: 0.75rem;
-    border: var(--secondary-text-color);
-    border-style: 0.2rem dashed var(--secondary-text-color);
-    color: var(--secondary-text-color)
+  margin: 0.5rem 0 0 0 !important;
+  padding: 0rem 0;
+  border-radius: 0.75rem;
+  border: var(--secondary-text-color);
+  border-style: 0.2rem dashed var(--secondary-text-color);
+  color: var(--secondary-text-color);
+  width: 100%;
+}
+
+.file-input :selected {
+  background-image: none;
 }
 
 .file-input:hover {
-    color: var(--secondary-text-color);
+  color: var(--secondary-text-color);
 }
 
 
 .user-pfp {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .user-pfp .corner-profile {
-    padding: 0rem;
+  padding: 0rem;
 }
 
 .user-pfp p {
-    padding-left: 1rem;
+  padding-left: 1rem;
 }
 
 .field {
-    margin: auto;
-    padding-bottom: 0.5rem;
-    width: 80%;
+  margin: auto;
+  padding-bottom: 0.5rem;
+  width: 80%;
 }
 
 .node-buttons {
-    display: flex;
-    justify-content: right;
-    padding: 2rem 0rem;
+  display: flex;
+  justify-content: right;
+  padding: 2rem 0rem;
 }
 
-.node-buttons a, .node-buttons button {
-    margin: 0.5rem;
+.node-buttons a,
+.node-buttons button {
+  margin: 0.5rem;
 }
 
 
 .empty-scene-panel {
-    align-items: center;
-    text-align: center;
-    padding: 5rem;
+  align-items: center;
+  text-align: center;
+  padding: 5rem;
 }
 
 .connection-section {
-    box-shadow: 0rem -0.1rem var(--sub-background-color);
-    padding-bottom: 5rem;
+  box-shadow: 0rem -0.1rem var(--sub-background-color);
+  padding: 2rem 0;
+  padding-bottom: 5rem;
 }
 
 .img-section {
-    width: 100%;
+  width: 100%;
 }
 
 #tempImg {
-    width: 100%;
-    height: 500px;
+  width: 100%;
+  height: 500px;
+}
+
+#full-profile {
+  width: 100%;
+  margin: 0 2rem;
 }
 
 .pure-button-warning {
-    background-color: var(--warning-color);
-    color: var(--background-color);
-    border: none;
+  background-color: var(--warning-color);
+  color: var(--background-color);
+  border: none;
+}
+
+#add-node {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
+#add-node-img {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+#add-node-icon {
+  display: flex;
+  font-size: 400%;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 10;
+}
+
+#add-node span {
+  font-size: 200%;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100000;
+  padding-top: 3rem;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: var(--background-color);
+  margin: auto;
+  border: none;
+  width: 90%;
+  height: 80vh;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.close {
+  color: var(--accent-color);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: right;
+  padding: 1rem;
+}
+
+.close:hover,
+.close:focus {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#delete-node {
+  /* background-color: rgba(0, 0, 0, 0.377); */
+  z-index: 2;
+  position: absolute;
+  right: 0.1em;
+  font-size: 300%;
+  color: var(--accent-color);
+  font-size: 28px;
+  font-weight: bold;
+  border: rgb(255, 0, 0, 0);
+  /* border-radius: 25%; */
+  padding: 0;
+
+}
+
+#delete-node:hover,
+#delete-node:focus {
+  color: var(--accent-color2);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Modal tab system, using landing page method */
+#connection-tabs input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has */
+#connection-tabs:has(#tab-one:checked) #panel-one,
+#connection-tabs:has(#tab-two:checked) #panel-two,
+#connection-tabs:has(#tab-three:checked) #panel-three,
+#connection-tabs:has(#tab-four:checked) #panel-four {
+  display: inline-block;
+  flex-direction: column;
+}
+
+#connection-tabs .scroll-box {
+  display: none;
+  overflow: auto;
+  height: 200px;
+  width: 100%;
+}
+
+.selected-node {
+  box-shadow: 10px 10px;
+  border-style: solid;
+  z-index: 100002;
+}
+
+.add-connection-footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 100001;
+  background-color: var(--background-color);
+  padding: 2rem;
+  text-align: right;
+}
+
+@media screen and (max-width: 600px) {
+  #kickstart-section {
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  #kickstart-section div {
+    padding-bottom: 0.5rem;
+  }
+
+  #landing-hero-section h1 {
+    font-size: 3rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  .tab-label {
+    font-size: 0.8rem;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .format-box {
+    padding: 2rem 0rem;
+  }
+
+  .node-box-single {
+    margin: 0rem;
+  }
 }

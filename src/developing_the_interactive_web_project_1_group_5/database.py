@@ -163,6 +163,12 @@ def get_recent_nodes(subId):
 
             return cur.fetchall()
 
+# get random node
+def get_rand_node():
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""select * from nodes order by random() limit 1;""")
+            return cur.fetchall()
 
 # retrieve a user's notifications
 def get_notifs(subid):

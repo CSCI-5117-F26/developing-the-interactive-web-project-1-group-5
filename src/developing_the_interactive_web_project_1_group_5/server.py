@@ -91,8 +91,7 @@ def landing(page):
 
     categories = format_node_display(database.get_all_categories())
     landing_nodes = format_node_display(generate_node_pages(page=page))
-    all_nodes = format_node_display(fulltext.view())
-    random_node = random.choice(all_nodes)
+    random_node = format_node_display(database.get_rand_node())
 
     user = get_user_profile()
 
@@ -107,7 +106,7 @@ def landing(page):
             categories=categories,
             landing_nodes=landing_nodes,
             recent_nodes=recent_nodes,
-            random_node=random_node,
+            random_node=random_node[0],
             new_connected_nodes = new_connected_nodes,
             page=page,
             loggedin=check_signin(),

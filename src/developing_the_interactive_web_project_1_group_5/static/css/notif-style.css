@@ -10,7 +10,9 @@
   border: 0.2rem solid #eae8e2;
   border-radius: 8px;
 }
-
+/* .notif-box {
+  width: 80vw;
+} */
 .notif-content > div {
   box-sizing: border-box;
   padding: 0 0.5rem;
@@ -21,4 +23,16 @@
   flex: 0 0 auto;
   width: auto;
   white-space: nowrap;
+}
+
+.notif-cont-overlord {
+  display: flex;
+  flex-direction: row;
+}
+
+.notif-cont-super-overlord {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80vw;
 }

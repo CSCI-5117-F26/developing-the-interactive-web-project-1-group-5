@@ -9,14 +9,16 @@
 
 {% block body %}
 
-<div class="pure-g pure-u-1">
-    <div class="pure-u-1">
-        <h1>Notifications</h1>
+<div class="pure-g pure-u-1 notif-cont-super-overlord">
+
+
+    <div class=" notif-cont-overlord">
+        <div class="pure-u-1">
+            <h1>Notifications</h1>
+        </div>
     </div>
 
-    <div class="pure-u-1 pure-u-md-1-5"></div>
-
-    <div class="pure-u-1 pure-u-md-3-5 notif-box" ">
+    <div class="notif-box" ">
         {% if not notifs %}
         <div class=" pure-u-1">
         <h2>You have no notifications</h2>
@@ -25,11 +27,11 @@
 
     {% for notif in notifs %}
 
-            {% if dates[notif.notifid] %}
-                <div class="pure-u-1">
-                    <h2>{{ dates[notif.notifid] }}</h2>
-                </div>
-            {% endif %}
+    {% if dates[notif.notifid] %}
+    <div class="pure-u-1">
+        <h2>{{ dates[notif.notifid] }}</h2>
+    </div>
+    {% endif %}
 
     <div class="notif-content">
         <div class="pure-u-1-8 notif-pic">

@@ -12,12 +12,7 @@ dotenv.load_dotenv()
 
 # set up connection pool
 db_url = os.environ["DATABASE_URL"]
-pool = ConnectionPool(
-    db_url, 
-    open=False, 
-    min_size=4,
-    max_size=20,
-    kwargs={"row_factory": dict_row})
+pool = ConnectionPool(db_url, open=False, kwargs={"row_factory": dict_row})
 atexit.register(pool.close)
 
 is_gunicorn = "gunicorn" in os.environ.get("SERVER_SOFTWARE", "")
@@ -40,6 +35,17 @@ def get_all_nodes():
     with pool.connection() as conn:
         with conn.cursor() as cur:
             cur.execute("select * from nodes where category = false;")
+            return cur.fetchall()
+
+# get nodes sorted by number connections NOT
+def get_landing_nodes(offset):
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute('''select * from nodes
+                            where category = FALSE
+                            order by nodeid desc
+                            limit 8 offset %s;
+                    ''', (offset,))
             return cur.fetchall()
 
 
@@ -148,10 +154,12 @@ def get_recent_nodes(subId):
         with conn.cursor() as cur:
 
             cur.execute(
-                '''select N.*
-                    from nodes as N, recentNodes as R
-                    where N.nodeId = R.nodeId and R.subId = %s
-                    order by R.timestamp desc;''',
+                """select * 
+                            from nodes 
+                            where nodeId in (
+                                select nodeId 
+                                from recentNodes 
+                                where subId = %s);""",
                 (subId,),
             )
 
@@ -345,13 +353,9 @@ def add_to_recent_nodes(subId, nodeid):
                 (subId, nodeid),
             )
             exists = cur.fetchone()
+            print(exists)
 
-            if exists:
-                cur.execute(
-                    """delete from recentNodes where subid = %s and nodeId = %s;""",
-                    (subId, nodeid),
-                )
-            else:
+            if not exists:
                 num_history = 10
                 cur.execute(
                     """select count(subid) from recentNodes where subid = %s""",
@@ -372,12 +376,12 @@ def add_to_recent_nodes(subId, nodeid):
                         (subId, to_delete),
                     )
 
-            timestamp = datetime.datetime.now()
-            cur.execute(
-                """insert into recentNodes (subId, nodeId, timestamp)
-                            values (%s, %s, %s);""",
-                (subId, nodeid, timestamp),
-            )
+                timestamp = datetime.datetime.now()
+                cur.execute(
+                    """insert into recentNodes (subId, nodeId, timestamp)
+                                values (%s, %s, %s);""",
+                    (subId, nodeid, timestamp),
+                )
 
 
 # Putting an uploaded file into the images table. Returns imageId (or none)
@@ -526,6 +530,9 @@ def delete_notif(notifid):
             cur.execute("""delete from notifications where notifId = %s;""", (notifid,))
 
 
+# NOTE: Do we need this?
+def remove_from_recent():
+    return
 
 # CHECK EXISTENCE
 def connects(node1, node2):

@@ -289,7 +289,6 @@ nav {
   min-width: 200px;
   padding: 0.1rem;
   overflow: hidden;
-  /* border-radius: 2rem; */
   background-color: transparent;
   border: none !important;
 }
@@ -309,7 +308,6 @@ nav {
   color: var(--primary-color);
   overflow: hidden;
   background-color: var(--background-color);
-  /* border-radius: 1.5rem; */
 }
 
 .node-info {
@@ -751,7 +749,7 @@ nav {
 }
 
 .selected-node {
-  border: 1rem solid var(--accent-color);
+  border: 0.5rem solid var(--accent-color) !important;
   z-index: 100002;
 }
 
@@ -807,5 +805,20 @@ nav {
 
   .node-box-single {
     margin: 0rem;
+  }
+
+  .discover-panel {
+    margin: 0;
+  }
+
+  #full-profile {
+    margin: 0;
+  }
+
+  .image-section, .format-box {
+    margin: 0 2rem;
+  }
+  .l-box {
+    margin: 0;
   }
 }

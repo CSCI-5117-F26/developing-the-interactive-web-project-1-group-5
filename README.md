@@ -41,6 +41,67 @@ along with a very brief caption:**
 
 ![](https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif)
 
+### Landing
+
+> Non-account user only sees the "All Patches" and "Categories" tab.
+> <img width="959" height="482" alt="image" src="https://github.com/user-attachments/assets/f67274b3-822a-4a9e-9838-317c884fddd2" />
+
+> Account user sees all 4 tabs (here we are on "Categories" tab, scrolled down).
+> <img width="959" height="476" alt="image" src="https://github.com/user-attachments/assets/b0b1a339-a329-4317-81ad-604f28056d59" />
+
+> "Recently Viewed" tab, scrolled down. Shows the last couple of patches you visited.
+> <img width="959" height="469" alt="image" src="https://github.com/user-attachments/assets/cfef2c78-fdfb-4131-a38c-453edba99685" />
+
+
+> "New Connections" tab, scrolled to bottom. Shows patches that others have recently connected to your created or saved patches.
+> <img width="959" height="471" alt="image" src="https://github.com/user-attachments/assets/c70c50f1-6100-42bf-8888-e146259cc003" />
+
+### Search
+
+> Results when searching "flower".
+> <img width="959" height="471" alt="image" src="https://github.com/user-attachments/assets/c2cff8b1-7134-4b93-9f90-4134a96e96d5" />
+
+
+### View node/patch
+> View patch owned by yourself (has edit button).
+><img width="959" height="477" alt="image" src="https://github.com/user-attachments/assets/e7e70895-e5df-4319-a693-f28d56a7fb1d" />
+
+> Scroll down to view connections (owner has right to delete).
+><img width="959" height="478" alt="image" src="https://github.com/user-attachments/assets/d3017085-2092-44e6-934a-c789eed0bf1a" />
+
+> Saved unowned node.
+> <img width="959" height="475" alt="image" src="https://github.com/user-attachments/assets/fdd06ecf-cbf4-4ad8-9f35-a54a1cf8fc64" />
+
+
+### Connect node/patch (pop-up)
+
+### Edit node/patch
+> Edit patch (has delete, cancel, save).
+> <img width="959" height="472" alt="image" src="https://github.com/user-attachments/assets/94597701-7964-4852-b579-91b823bb96c0" />
+
+
+### Create node/patch
+> Fill in title, description, and img of patch form.
+> <img width="959" height="473" alt="image" src="https://github.com/user-attachments/assets/63afb59b-4ede-4917-bf61-85218d37b42a" />
+
+### Notifications
+> Notifications show up for any new/deleted connections to your created nodes. You can delete the notification or disconnect the connection straight from the notification page.
+> <img width="959" height="472" alt="image" src="https://github.com/user-attachments/assets/ae26ce5e-92ab-42be-8ea1-ae8556735cd9" />
+
+### Profile (saved / created nodes/patches)
+> Profile page, on saved patches tab.
+> <img width="959" height="473" alt="image" src="https://github.com/user-attachments/assets/eb64f684-394e-41ad-af20-9736cbba41e1" />
+
+> Profile page, on your created patches tab.
+> <img width="959" height="470" alt="image" src="https://github.com/user-attachments/assets/9ef9e180-ae2d-4fa6-bdca-28dec76e61ed" />
+
+> Edit profile page (cancel or save).
+> <img width="959" height="470" alt="image" src="https://github.com/user-attachments/assets/b0b97fab-248d-43a3-b1ef-3256cb76c717" />
+
+### Login
+> Screen if user attempts to save node without logging in.
+<img width="959" height="480" alt="image" src="https://github.com/user-attachments/assets/d9862082-78bc-49b8-bbef-92b4a6d10ec1" />
+
 
 ## Mock-up 
 

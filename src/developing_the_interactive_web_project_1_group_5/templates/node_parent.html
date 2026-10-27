@@ -78,7 +78,7 @@
                             <div class="node-info">
 
                                 {% if (connection.creator_id == sub_id) or (sub_id == node_owner_id) %}
-                            
+
                                 <div style="position:relative;"><span id="delete-node"
                                         onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</span>
                                 </div>
@@ -128,22 +128,25 @@
                     <label class="pure-u-1-4 tab-label" for="tab-one">Saved</label>
                     <div class="pure-g panel scroll-box" id="panel-one">
                         <div class="pure-g">
-                        {% for saved in saved_nodes%}
-                        <div class="pure-u-1-2 pure-u-md-1-4">
-                            <div class="node-box">
-                                <button class="pure-button node-card"
-                                    onclick='selectConnection(this, "{{saved.node_id}}")'>
-                                    {% if saved.image_id %}
-                                    <img class="pure-img connection-img"
-                                        src="{{ url_for('get_image', image_id=saved.image_id) }}" loading="lazy">
-                                    {% else %}
-                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png"
-                                        loading="lazy">
-                                    {% endif %} </button>
-                                <p class="center-text line-clamp">{{saved.node_title}}</p>
+                            {% for saved in saved_nodes%}
+                            <div class="pure-u-1-2 pure-u-md-1-4">
+                                <div class="node-box">
+                                    <button class="pure-button node-card"
+                                        onclick='selectConnection(this, "{{saved.node_id}}")'>
+                                        {% if saved.image_id %}
+                                        <img class="pure-img connection-img"
+                                            src="{{ url_for('get_image', image_id=saved.image_id) }}" loading="lazy">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png"
+                                            loading="lazy">
+                                        {% endif %} </button>
+                                    <div class="node-info">
+                                        <h2 class="center-text line-clamp">{{saved.node_title}}</h2>
+                                        <p class="center-text line-clamp">{{saved.node_description}}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        {% endfor %}
+                            {% endfor %}
                         </div>
                     </div>
 
@@ -151,25 +154,25 @@
                     <label class="pure-u-1-4 tab-label" for="tab-two">Recently Viewed</label>
                     <div class="pure-g panel scroll-box" id="panel-two">
                         <div class="pure-g">
-                        {% for recent in recent_nodes %}
-                        <div class="pure-u-1-2 pure-u-md-1-4">
-                            <div class="node-box">
-                                <button class="pure-button node-card"
-                                    onclick='selectConnection(this, "{{recent.node_id}}")'>
-                                    {% if recent.image_id %}
-                                    <img class="pure-img connection-img"
-                                        src="{{ url_for('get_image', image_id=recent.image_id) }}" loading="lazy">
-                                    {% else %}
-                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png"
-                                        loading="lazy">
-                                    {% endif %} </button>
-                                <div class="node-info">
-                                    <h2 class="center-text line-clamp">{{recent.node_title}}</h2>
-                                    <hp class="center-text line-clamp">{{recent.description}}</p>
+                            {% for recent in recent_nodes %}
+                            <div class="pure-u-1-2 pure-u-md-1-4">
+                                <div class="node-box">
+                                    <button class="pure-button node-card"
+                                        onclick='selectConnection(this, "{{recent.node_id}}")'>
+                                        {% if recent.image_id %}
+                                        <img class="pure-img connection-img"
+                                            src="{{ url_for('get_image', image_id=recent.image_id) }}" loading="lazy">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png"
+                                            loading="lazy">
+                                        {% endif %} </button>
+                                    <div class="node-info">
+                                        <h2 class="center-text line-clamp">{{recent.node_title}}</h2>
+                                        <p class="center-text line-clamp">{{recent.node_description}}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor %}
+                            {% endfor %}
                         </div>
                     </div>
 
@@ -192,7 +195,7 @@
                                         {% endif %} </button>
                                     <div class="node-info">
                                         <h2 class="center-text line-clamp">{{created.node_title}}</h2>
-                                        <hp class="center-text line-clamp">{{created.description}}</p>
+                                        <p class="center-text line-clamp">{{created.node_description}}</p>
                                     </div>
                                 </div>
                             </div>

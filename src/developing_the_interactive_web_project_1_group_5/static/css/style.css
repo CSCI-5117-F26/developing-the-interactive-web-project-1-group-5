@@ -8,6 +8,7 @@
   --accent-color: #e39e36;
   --accent-color2: #c37f2d;
   --warning-color: #c81e46;
+  --warning-dark-color: #94102e;
 }
 
 * {
@@ -259,7 +260,7 @@ nav {
 }
 
 #close-overlay {
-  color: grey;
+  color: var(--accent-color);
   background-color: var(--background-color);
 }
 
@@ -633,6 +634,12 @@ nav {
   border: none;
 }
 
+.pure-button-warning:hover {
+  background-color: var(--warning-dark-color);
+  color: var(--background-color);
+}
+
+
 #add-node {
   display: flex;
   position: relative;
@@ -820,5 +827,19 @@ nav {
   }
   .l-box {
     margin: 0;
+  }
+
+  .notif-content {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .button-container .profile-buttons {
+    margin: 0.5rem 0;
   }
 }

@@ -58,14 +58,14 @@
         </div>
         <div class="pure-u-1-8 disconnect-button">
             {% if not notif.deleted %}
-            <button class="pure-button"
+            <button class="pure-button profile-buttons"
                 onclick="deleteConnection({{notif.usernode}}, {{notif.connectingnode}})">Disconnect</button>
             {% endif %}
         </div>
         <div class="pure-u-1-8 notif-close">
             <form action="{{ url_for('delete_notif', notif_id= notif.notifid)}}" method="post">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="pure-button">X</button>
+                <button type="submit" class="pure-button pure-button-warning profile-buttons">X</button>
             </form>
         </div>
     </div>

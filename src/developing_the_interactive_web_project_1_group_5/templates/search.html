@@ -1,0 +1,34 @@
+{% extends "parent.html" %}
+
+{% block title %}Quilt{% endblock %}
+
+{% block body %}
+
+{% if show %}
+<div class="pure-g" style="width:100%; margin: 0 2rem;">
+    {% for node in show%}
+    <div class="pure-u-1-2 pure-u-md-1-4">
+        <div class="node-box">
+            <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                {% if node.image_id %}
+                <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=node.image_id) }}"
+                    loading="lazy">
+                {% else %}
+                <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
+                {% endif %}
+                <div class="node-info">
+                    <h2 class="line-clamp">{{node.node_title}}</h2>
+                    <p class="line-clamp">{{node.node_description}}</p>
+                </div>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-scene-panel">
+        <h1> No patches match your search.</h1>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

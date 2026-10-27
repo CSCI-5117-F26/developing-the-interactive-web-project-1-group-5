@@ -1,0 +1,52 @@
+{% extends "node_parent.html" %}
+
+{% block title %}Edit Node{% endblock %}
+{% block node_info %}
+
+<form class="pure-form pure-form-stacked" method="POST" action="{{ url_for('edit_node', node_id=node_id) }}"
+    enctype="multipart/form-data">
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="field">
+        <h1 class="non-style"> Edit Patch </h1>
+        <label for="picture">Upload Image</label>
+        <input id="picture" class="pure-button file-input" name="picture" type="file" accept="image/*">
+    </div>
+
+    <div class="field">
+        <label for="node_title">
+            <h2 class="non-style">Edit Title</h2>
+        </label>
+       
+        <input class="pure-u-1" type="text" id="node_title" name="node_title" value="{{node_title}}" placeholder="Title"
+            minLength="1" maxLength="90" required>
+    </div>
+
+    <div class="field">
+        <label for="node_description">
+            <h2>Edit Description <span id="char_count" class="p"></span></h2>
+        </label>
+        
+        <textarea class="pure-u-1" id="node_description" name="node_description" rows="5" style="width:100%;"
+            placeholder="Description" maxlength="240">{{node_description}}</textarea>
+    </div>
+
+    <div class="field">
+        <div class="button-container node-buttons">
+            <a href="{{url_for('delete_node', node_id=node_id)}}"
+                class="pure-button pure-button-warning profile-buttons ">
+                Delete
+            </a>
+            <a class="pure-button profile-buttons" href="{{ url_for('view_node', node_id=node_id) }}">
+                Cancel
+            </a>
+            <button type="submit" class="pure-button pure-button-primary profile-buttons">
+                Update
+            </button>
+        </div>
+    </div>
+
+</form>
+
+{% endblock %}

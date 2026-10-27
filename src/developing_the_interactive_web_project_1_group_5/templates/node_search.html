@@ -1,0 +1,25 @@
+{% for node in show %}
+<div class="pure-u-1-2 pure-u-md-1-4">
+    <div class="node-box">
+
+        <button class="pure-button node-card" onclick='selectConnection(this, "{{node.node_id}}")'>
+            {% if node.image_id %}
+            <img class="pure-img connection-img" src="{{ url_for('get_image', image_id=node.image_id) }}"
+                loading="lazy">
+            {% else %}
+            <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
+            {% endif %}
+
+            <div class="node-info">
+                <h2 class="center-text line-clamp">{{node.node_title}}</h2>
+                <p class="center-text line-clamp">{{node.node_description}}</h>
+            </div>
+        </button>
+    </div>
+
+</div>
+{% else %}
+<div class="empty-scene-panel">
+    <h1>No patches match your search!</h1>
+</div>
+{% endfor %}

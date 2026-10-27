@@ -1,0 +1,181 @@
+{% extends "parent.html" %}
+
+{% block title %}Quilt{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="../static/css/node.css">
+{% endblock %}
+{% block body %}
+
+
+{% if not loggedin %}
+<div id="landing-hero-section">
+    <div>
+        <h1> A <span>community-based</span> algorithm.</h1>
+        <h2> An internet tailored by people for people.</h2>
+        <a id="login-button" class="pure-button pure-button-primary landing-button" href="{{url_for('login')}}">Start
+            quilting!</a>
+    </div>
+</div>
+{% endif %}
+
+<div id="kickstart-section">
+    <div>
+        <h1 class="non-style"> Can't decide where to start?</h1>
+        <h2> We'll pick for you!</h2>
+    </div>
+    <div>
+        <form action="{{random_node.link}}" method="get" class="pure-form" id="randomize-btn-div">
+            <button type="submit" class="pure-button pure-button-primary landing-button">Surprise Me!</button>
+        </form>
+    </div>
+</div>
+
+<div class="pure-u-1 discover-panel">
+    <div class="profile-tabs">
+
+        <input class="radiotab" type="radio" name="tabs" id="tab-two" checked>
+        <label class="pure-u-1-4 tab-label" for="tab-two">All Patches</label>
+        <div class="panel" id="panel-two">
+            <div class="pure-g">
+                {% if landing_nodes %}
+                {% for node in landing_nodes%}
+                    {% if loop.last %}
+                    <div hx-get="/node-page/?page=2"
+                        hx-trigger="revealed"
+                        hx-swap="afterend"
+                        hx-target="this" class="pure-u-1-2 pure-u-md-1-4">
+                    {% else %}
+                    <div class="pure-u-1-2 pure-u-md-1-4">
+                    {% endif %}
+                        <div class="node-box">
+                            <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                                {% if node.image_id %}
+                                <img class="pure-img connection-img"
+                                    src="{{ url_for('get_image', image_id=node.image_id) }}">
+                                {% else %}
+                                <img class="pure-img connection-img" src="../static/img/temp_chungus.png">
+                                {% endif %}
+                                <div class="node-info">
+                                    <h2 class="line-clamp">{{node.node_title}}</h2>
+                                    <p class="line-clamp">{{node.node_description}}</p>
+                                </div>
+
+                            </button>
+                        </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="empty-scene-panel">
+                    <h1> Patches will show up here.</h1>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <input class="radiotab" type="radio" name="tabs" id="tab-four">
+        <label class="pure-u-1-4 tab-label" for="tab-four" {%if loggedin is not true%} hidden {%endif%}>New
+            Connections</label>
+        <div class="panel" id="panel-four">
+            {% if new_connected_nodes %}
+            <div class="pure-g">
+                {% for node in new_connected_nodes%}
+                <div class="pure-u-1-2 pure-u-md-1-4">
+                    <div class="node-box">
+                        <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                            {% if node.image_id %}
+                            <img class="pure-img connection-img"
+                                src="{{ url_for('get_image', image_id=node.image_id) }}" loading="lazy">
+                            {% else %}
+                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
+                            {% endif %}
+                            <div class="node-info">
+                                <h2 class="line-clamp">{{node.node_title}}</h2>
+                                <p class="line-clamp">{{node.node_description}}</p>
+                            </div>
+
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-scene-panel">
+                <h1> Patches others have connected to your saved and created will show up here.</h1>
+            </div>
+            {% endif %}
+            <div></div>
+        </div>
+
+        <input class="radiotab" type="radio" name="tabs" id="tab-one">
+        <label class="pure-u-1-4 tab-label" for="tab-one">Categories</label>
+        <div class="panel" id="panel-one">
+            {% if categories %}
+            <div class="pure-g">
+                {% for category in categories%}
+                <div class="pure-u-1-2 pure-u-md-1-4">
+                    <div class="node-box">
+                        <button class="pure-button node-card" onclick="window.location.href='{{category.link}}';">
+                            {% if category.image_id %}
+                            <img class="pure-img connection-img"
+                                src="{{ url_for('get_image', image_id=category.image_id) }}" loading="lazy">
+                            {% else %}
+                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
+                            {% endif %}
+                            <div class="node-info">
+                                <h2 class="center-text line-clamp">{{category.node_title}}</h2>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+            {% else %}
+            <div class="empty-scene-panel">
+                <h1> Categories will show up here.</h1>
+            </div>
+            {% endif %}
+        </div>
+
+        <input class="radiotab" type="radio" name="tabs" id="tab-three">
+        <label class="pure-u-1-4 tab-label" for="tab-three" {%if loggedin is not true%} hidden {%endif%}>Recently
+            Viewed</label>
+
+        <div class="panel" id="panel-three">
+            <div class="pure-g">
+                {% if recent_nodes %}
+                {% for node in recent_nodes%}
+                <div class="pure-u-1-2 pure-u-md-1-4">
+                    <div class="node-box">
+                        <button class="pure-button node-card" onclick="window.location.href='{{node.link}}';">
+                            {% if node.image_id %}
+                            <img class="pure-img connection-img"
+                                src="{{ url_for('get_image', image_id=node.image_id) }}" loading="lazy">
+                            {% else %}
+                            <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
+                            {% endif %}
+                            <div class="node-info">
+                                <h2 class="line-clamp">{{node.node_title}}</h2>
+                                <p class="line-clamp">{{node.node_description}}</p>
+                            </div>
+
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-scene-panel">
+                <h1> Recently viewed patches will show up here.</h1>
+            </div>
+            {% endif %}
+            <div class="pure-u-1-3" id="display-node">
+
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
+        integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
+        crossorigin="anonymous"></script>
+    {% endblock %}

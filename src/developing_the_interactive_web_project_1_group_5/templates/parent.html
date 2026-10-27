@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Quilt{% endblock %}</title>
+
+    <!-- Font & Icon -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Gaegu&family=LINE+Seed+JP&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined">
+
+
+    {% block head %}
+    {% endblock %}
+
+    <!-- PureCSS + CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/pure-min.css"
+        integrity="sha384-kj0X2NG2KHBie8Tq8fH1kxnyWM9XsXQpq7XdwbKmFKjwwaXGKBlB2Klu3VOltSFx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.1.0/build/grids-responsive-min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="pure-g">
+        <nav class="pure-u-1">
+            <div id="nav-container">
+                <div>
+                    <a id="home-link" href="{{url_for('landing')}}">
+                        <h1>Quilt</h1>
+                    </a>
+                </div>
+                <div id="search-container">
+                    <search>
+                        <form class="pure-form" action="{{url_for('search')}}" method="post">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <div class="input-group">
+                                <span class="material-symbols-outlined">
+                                    search
+                                </span>
+                                <input id="search" class="pure-input-1 input-field" type="search" id="search-bar"
+                                    name="search" placeholder="Search patch">
+                            </div>
+                        </form>
+                </div>
+                </search>
+                <div id="nav-links">
+                    {%if loggedin%}
+                    <a class="icon-link" aria-hidden="true" href="{{url_for('create_node')}}"><span
+                            class="material-symbols-outlined">
+                            add_box
+                        </span></a>
+                    <a class="icon-link" aria-hidden="true" href="/notifs"><span class="material-symbols-outlined">
+                            notifications
+                        </span></a>
+                    <a class="icon-link" aria-hidden="true" href="{{url_for('view_profile')}}">
+                        {% if user and user.profpicid %}
+                        <img class="corner-profile" src="{{ url_for('get_image', image_id=user.profpicid) }}"
+                            alt="ye pfp">
+                        {% else %}
+                        <img class="corner-profile" src="{{ url_for('static', filename ='img/temp_chungus.png') }}"
+                            alt="ye pfp">
+                        {% endif %}</i></a>
+                    {%else%}
+                    <a id="login-button" class="pure-button pure-button-primary profile-buttons"
+                        href="{{url_for('login')}}">Login</a>
+                    {%endif%}
+                </div>
+            </div>
+        </nav>
+        {%block overlay%}
+        {%endblock%}
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+
+</html>

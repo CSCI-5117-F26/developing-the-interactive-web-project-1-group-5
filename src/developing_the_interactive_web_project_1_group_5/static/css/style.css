@@ -34,12 +34,8 @@ h1 {
 h2 {
   font-size: 1rem;
   background-color: transparent;
-  font-size: 1rem;
-  background-color: transparent;
 }
 
-p,
-.p {
 p,
 .p {
   font-size: 0.8rem;
@@ -48,7 +44,6 @@ p,
 }
 
 #randomize-btn-div {
-  background-color: inherit;
   background-color: inherit;
 }
 
@@ -102,12 +97,6 @@ nav {
 .pure-form input[type="search"],
 .pure-form input[type="text"],
 .pure-form textarea {
-  box-shadow: none;
-  border: none;
-  background-color: var(--background-color);
-  border: 0.2rem dashed var(--sub-background-color);
-  padding: 1rem;
-  border-radius: 0.75rem;
   box-shadow: none;
   border: none;
   background-color: var(--background-color);
@@ -188,13 +177,6 @@ nav {
   justify-content: center;
   display: block;
   width: 100%;
-  padding: 5rem 3rem;
-  min-height: 50vh;
-  text-align: center;
-  align-content: center;
-  justify-content: center;
-  display: block;
-  width: 100%;
 }
 
 #landing-hero-section div {
@@ -230,8 +212,6 @@ nav {
   border: 0.2rem dashed var(--sub-background-color);
 }
 
-#kickstart-section div {
-  background-color: inherit;
 #kickstart-section div {
   background-color: inherit;
 }
@@ -312,15 +292,6 @@ nav {
   /* border-radius: 2rem; */
   background-color: transparent;
   border: none !important;
-  object-position: center;
-  width: 100%;
-  min-height: 220px;
-  min-width: 200px;
-  padding: 0.1rem;
-  overflow: hidden;
-  /* border-radius: 2rem; */
-  background-color: transparent;
-  border: none !important;
 }
 
 .connection-img:hover {
@@ -342,9 +313,6 @@ nav {
 }
 
 .node-info {
-  margin: 0;
-  text-align: left;
-  padding: 1rem 0.5rem;
   margin: 0;
   text-align: left;
   padding: 1rem 0.5rem;
@@ -372,18 +340,9 @@ nav {
   position: sticky;
   box-sizing: border-box;
   z-index: 900;
-  padding: 1rem;
-  position: sticky;
-  box-sizing: border-box;
-  z-index: 900;
 }
 
 .pfp {
-  max-width: 60%;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 1em auto;
-  aspect-ratio: 1 / 1;
   max-width: 60%;
   border-radius: 50%;
   object-fit: cover;
@@ -395,15 +354,9 @@ nav {
   background-color: var(--background-color);
   color: var(--accent-color);
   border: 0.1rem solid var(--accent-color);
-  background-color: var(--background-color);
-  color: var(--accent-color);
-  border: 0.1rem solid var(--accent-color);
 }
 
 .pure-button:hover {
-  text-decoration: none;
-  background-image: none;
-  color: var(--background-color);
   text-decoration: none;
   background-image: none;
   color: var(--background-color);
@@ -426,8 +379,6 @@ nav {
 .pure-button.pure-button-primary:hover {
   background-color: var(--accent-color2);
   color: var(--background-color);
-  background-color: var(--accent-color2);
-  color: var(--background-color);
 }
 
 .profile-buttons {
@@ -439,8 +390,6 @@ nav {
 }
 
 .profile-buttons:hover {
-  background-color: var(--light-accent);
-  color: var(--accent-color);
   background-color: var(--light-accent);
   color: var(--accent-color);
 }
@@ -565,11 +514,6 @@ nav {
   border-radius: 2rem;
   display: flex;
   height: auto;
-  background-color: var(--sub-background-color);
-  margin: 3rem 1rem;
-  border-radius: 2rem;
-  display: flex;
-  height: auto;
 }
 
 .img-section {
@@ -603,15 +547,9 @@ nav {
   border: 0.1rem solid var(--accent-color);
   border-radius: 0.75rem;
   padding: 0.75rem 2rem;
-  background-color: var(--background-color);
-  color: var(--accent-color);
-  border: 0.1rem solid var(--accent-color);
-  border-radius: 0.75rem;
-  padding: 0.75rem 2rem;
 }
 
-.pure-button::file-selector-button:hover {
-  background-color: var(--light-accent);
+
 .pure-button::file-selector-button:hover {
   background-color: var(--light-accent);
 }
@@ -632,13 +570,9 @@ nav {
 
 .file-input:hover {
   color: var(--secondary-text-color);
-  color: var(--secondary-text-color);
 }
 
 .user-pfp {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -646,18 +580,13 @@ nav {
 
 .user-pfp .corner-profile {
   padding: 0rem;
-  padding: 0rem;
 }
 
 .user-pfp p {
   padding-left: 1rem;
-  padding-left: 1rem;
 }
 
 .field {
-  margin: auto;
-  padding-bottom: 0.5rem;
-  width: 80%;
   margin: auto;
   padding-bottom: 0.5rem;
   width: 80%;
@@ -667,23 +596,14 @@ nav {
   display: flex;
   justify-content: right;
   padding: 2rem 0rem;
-  display: flex;
-  justify-content: right;
-  padding: 2rem 0rem;
 }
 
-.node-buttons a,
-.node-buttons button {
-  margin: 0.5rem;
 .node-buttons a,
 .node-buttons button {
   margin: 0.5rem;
 }
 
 .empty-scene-panel {
-  align-items: center;
-  text-align: center;
-  padding: 5rem;
   align-items: center;
   text-align: center;
   padding: 5rem;
@@ -697,12 +617,9 @@ nav {
 
 .img-section {
   width: 100%;
-  width: 100%;
 }
 
 #tempImg {
-  width: 100%;
-  height: 500px;
   width: 100%;
   height: 500px;
 }
@@ -713,9 +630,6 @@ nav {
 }
 
 .pure-button-warning {
-  background-color: var(--warning-color);
-  color: var(--background-color);
-  border: none;
   background-color: var(--warning-color);
   color: var(--background-color);
   border: none;
@@ -838,7 +752,7 @@ nav {
 }
 
 .selected-node {
-  box-shadow: 10px 10px;
+  box-shadow: 0rem 0.2rem var(--accent-color);
   border-style: solid;
   z-index: 100002;
 }

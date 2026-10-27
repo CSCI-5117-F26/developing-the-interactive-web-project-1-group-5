@@ -2,7 +2,6 @@
 
 {% block title %}Edit Node{% endblock %}
 {% block node_info %}
-<!-- TODO: none of this works yet -->
 
 <form class="pure-form pure-form-stacked" method="POST" action="{{ url_for('edit_node', node_id=node_id) }}"
     enctype="multipart/form-data">
@@ -19,7 +18,7 @@
         <label for="node_title">
             <h2 class="non-style">Edit Title</h2>
         </label>
-        <!-- Do we want input validation? Feels like there's a lot more options here -->
+       
         <input class="pure-u-1" type="text" id="node_title" name="node_title" value="{{node_title}}" placeholder="Title"
             minLength="1" maxLength="90" required>
     </div>
@@ -28,7 +27,7 @@
         <label for="node_description">
             <h2>Edit Description <span id="char_count" class="p"></span></h2>
         </label>
-        <!-- Maybe: add a char counter -->
+        
         <textarea class="pure-u-1" id="node_description" name="node_description" rows="5" style="width:100%;"
             placeholder="Description" maxlength="240">{{node_description}}</textarea>
     </div>

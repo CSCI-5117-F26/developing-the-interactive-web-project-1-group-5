@@ -78,7 +78,7 @@
                             <div class="node-info">
 
                                 {% if (connection.creator_id == sub_id) or (sub_id == node_owner_id) %}
-                                <!-- Allow close ONLY if user is curr node owner or creation of the connection -->
+                            
                                 <div style="position:relative;"><span id="delete-node"
                                         onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</span>
                                 </div>
@@ -92,7 +92,6 @@
                 </div>
                 {% endfor %}
 
-                <!-- prevent user from adding connection if they aren't logged in -->
                 {%if loggedin%}
                 <div class="pure-u-1-2 pure-u-md-1-4">
                     <div class="node-box">

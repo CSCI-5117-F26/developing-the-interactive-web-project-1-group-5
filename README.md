@@ -77,6 +77,12 @@ along with a very brief caption:**
 
 
 ### Connect node/patch (pop-up)
+> Add connection modal on open
+> <img width="959" height="467" alt="image" src="https://github.com/user-attachments/assets/b7bc5862-4a74-4f2a-bac9-47a4020e6fdb" />
+
+> Select some patches for connection
+> <img width="959" height="476" alt="image" src="https://github.com/user-attachments/assets/61ddb188-3bed-4c46-a9fb-b112017484cb" />
+
 
 ### Edit node/patch
 > Edit patch (has delete, cancel, save).

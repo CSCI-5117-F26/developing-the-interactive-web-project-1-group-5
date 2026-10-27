@@ -2,7 +2,7 @@
 
 {% block title %}Create Node{% endblock %}
 
-<!-- TODO: Allow file upload by clicking img - NOT DOING THIS FOR NOW -->
+
 {% block main_image %}
 <img class="pure-img node-img" id="nodeImg" src="../static/img/temp_chungus.png">
 {% endblock %}
@@ -12,6 +12,11 @@
     enctype="multipart/form-data">
     <div class="field">
         <h1 class="non-style"> Create Patch </h1>
+        <label for="picture">Upload Image</label>
+        <input id="picture" class="pure-button file-input" name="picture" type="file" accept="image/*" required>
+    </div>
+
+    <div class="field">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="node_title">
             <h2 class="non-style">Title</h2>
@@ -30,14 +35,9 @@
     </div>
 
     <div class="field">
-        <label for="picture">Upload Image</label>
-        <input id="picture" class="pure-button file-input" name="picture" type="file" accept="image/*">
-    </div>
-
-    <div class="field">
         <div class="node-buttons">
             <button type="submit" class="pure-button pure-button-primary profile-buttons">
-                Create Node
+                Create Patch
             </button>
         </div>
     </div>

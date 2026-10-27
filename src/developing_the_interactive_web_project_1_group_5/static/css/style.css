@@ -21,10 +21,6 @@
   background-color: transparent;
 }
 
-.page-margin {
-  margin: 0 2.5rem;
-}
-
 h1 {
   font-size: 1.5rem;
   background-color: transparent;
@@ -53,18 +49,18 @@ p,
 
 /* NAVIGATION BAR */
 nav {
-    padding: 1rem 0rem;
-    background-color: var(--background-color);
-    align-items: center;
-    /* box-shadow: 0rem 0.1rem var(--sub-background-color); */
-    z-index: 99999; 
-    position: sticky;
-    top: 0;
-    left: 0;
+  padding: 1rem 0rem;
+  background-color: var(--background-color);
+  align-items: center;
+  /* box-shadow: 0rem 0.1rem var(--sub-background-color); */
+  z-index: 99999;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 
 #nav-container {
-  margin: 0 2.5rem;
+  margin: 0 2rem;
   background-color: var(--background-color);
   display: flex;
   justify-content: space-between;
@@ -205,20 +201,21 @@ nav {
 }
 
 #kickstart-section {
+  margin: 1rem 2rem;
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 3rem;
+  padding: 1rem 2rem;
   border-radius: 1.5rem;
   z-index: 800;
   border: 0.2rem dashed var(--sub-background-color);
-  margin: 2rem 0;
 }
 
 #kickstart-section div {
   background-color: inherit;
 }
+
 .pure-button:hover {
   text-decoration: none;
   background-image: none;
@@ -310,9 +307,9 @@ nav {
   object-fit: cover;
   object-position: center;
   color: var(--primary-color);
-  /* border-radius: 2rem; */
   overflow: hidden;
   background-color: var(--background-color);
+  /* border-radius: 1.5rem; */
 }
 
 .node-info {
@@ -366,7 +363,7 @@ nav {
 }
 
 .sidebar-box {
-  margin: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -415,17 +412,23 @@ nav {
   margin-top: auto;
 }
 
+.discover-panel {
+  margin: 0 2rem;
+}
+
 .profile-tabs {
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
   z-index: 9999;
   width: 100%;
+
 }
 
 .radiotab {
   position: absolute;
   opacity: 0;
+  place-items: center;
 }
 
 .tab-label {
@@ -435,7 +438,9 @@ nav {
   cursor: pointer;
   padding: 1.25rem 0;
   text-align: center;
+  vertical-align: middle;
   z-index: 9999;
+  box-shadow: 0.1rem var(--sub-background-color);
 }
 
 .panel {
@@ -446,13 +451,20 @@ nav {
   padding-top: 0.1rem;
   padding-bottom: 5rem;
   background-color: transparent;
+  display: none;
+  width: 100%;
+  order: 99;
+  z-index: 0;
+  padding-top: 0.1rem;
+  padding-bottom: 5rem;
+  background-color: transparent;
 }
 
-.radiotab:checked + .tab-label {
-  box-shadow: 0rem 0.1rem var(--accent-color);
+.radiotab:checked+.tab-label {
+  box-shadow: 0rem 0.1rem var(--text-color);
 }
 
-.radiotab:checked + .tab-label + .panel {
+.radiotab:checked+.tab-label+.panel {
   display: block;
 }
 
@@ -489,12 +501,13 @@ nav {
 }
 
 .node-img {
-    border-radius: 1.5rem;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+  border-radius: 1.5rem;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 
 }
+
 .node-box-single {
   background-color: var(--sub-background-color);
   margin: 3rem 1rem;
@@ -506,10 +519,17 @@ nav {
 .img-section {
   display: block;
   margin: auto;
+  display: block;
+  margin: auto;
+}
+
+#addNode {
+  height: 100%;
 }
 
 .l-box {
   width: 100%;
+  margin: 0 2rem;
 }
 
 .format-box {
@@ -529,17 +549,23 @@ nav {
   padding: 0.75rem 2rem;
 }
 
+
 .pure-button::file-selector-button:hover {
   background-color: var(--light-accent);
 }
 
 .file-input {
-  margin: 0;
-  padding: 0.2rem 0;
+  margin: 0.5rem 0 0 0 !important;
+  padding: 0rem 0;
   border-radius: 0.75rem;
   border: var(--secondary-text-color);
   border-style: 0.2rem dashed var(--secondary-text-color);
   color: var(--secondary-text-color);
+  width: 100%;
+}
+
+.file-input :selected {
+  background-image: none;
 }
 
 .file-input:hover {
@@ -585,6 +611,7 @@ nav {
 
 .connection-section {
   box-shadow: 0rem -0.1rem var(--sub-background-color);
+  padding: 2rem 0;
   padding-bottom: 5rem;
 }
 
@@ -597,14 +624,190 @@ nav {
   height: 500px;
 }
 
+#full-profile {
+  width: 100%;
+  margin: 0 2rem;
+}
+
 .pure-button-warning {
   background-color: var(--warning-color);
   color: var(--background-color);
   border: none;
 }
 
-#profile-setup-overlay {
-  margin: 10rem;
-  padding: 4rem;
-  border-radius: 5%;
+#add-node {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
+#add-node-img {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+#add-node-icon {
+  display: flex;
+  font-size: 400%;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 10;
+}
+
+#add-node span {
+  font-size: 200%;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100000;
+  padding-top: 3rem;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: var(--background-color);
+  margin: auto;
+  border: none;
+  width: 90%;
+  height: 80vh;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.close {
+  color: var(--accent-color);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: right;
+  padding: 1rem;
+}
+
+.close:hover,
+.close:focus {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#delete-node {
+  /* background-color: rgba(0, 0, 0, 0.377); */
+  z-index: 2;
+  position: absolute;
+  right: 0.1em;
+  font-size: 300%;
+  color: var(--accent-color);
+  font-size: 28px;
+  font-weight: bold;
+  border: rgb(255, 0, 0, 0);
+  /* border-radius: 25%; */
+  padding: 0;
+
+}
+
+#delete-node:hover,
+#delete-node:focus {
+  color: var(--accent-color2);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Modal tab system, using landing page method */
+#connection-tabs input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has */
+#connection-tabs:has(#tab-one:checked) #panel-one,
+#connection-tabs:has(#tab-two:checked) #panel-two,
+#connection-tabs:has(#tab-three:checked) #panel-three,
+#connection-tabs:has(#tab-four:checked) #panel-four {
+  display: inline-block;
+  flex-direction: column;
+}
+
+#connection-tabs .scroll-box {
+  display: none;
+  overflow: auto;
+  height: 200px;
+  width: 100%;
+}
+
+.selected-node {
+  box-shadow: 0rem 0.2rem var(--accent-color);
+  border-style: solid;
+  z-index: 100002;
+}
+
+.add-connection-footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 100001;
+  background-color: var(--background-color);
+  padding: 2rem;
+  text-align: right;
+}
+
+@media screen and (max-width: 600px) {
+  #kickstart-section {
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  #kickstart-section div {
+    padding-bottom: 0.5rem;
+  }
+
+  #landing-hero-section h1 {
+    font-size: 3rem;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  .tab-label {
+    font-size: 0.8rem;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .format-box {
+    padding: 2rem 0rem;
+  }
+
+  .node-box-single {
+    margin: 0rem;
+  }
 }

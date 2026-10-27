@@ -1,7 +1,7 @@
 /* Referenced from https://www.w3schools.com/howto/howto_css_modals.asp example 1 */
 var modal = document.getElementById("connectNodeModal");
 
-var btn = document.getElementById("addNode");
+var btn = document.getElementById("add-node");
 
 var span = document.getElementById("close-modal");
 

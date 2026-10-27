@@ -6,6 +6,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
 
+
 {% block body %}
 <div class="l-box">
     <div class="pure-g">
@@ -62,8 +63,8 @@
         </div>
         {% if node_id %}
         <div class="pure-u-1 connection-section">
-            <h1>Connections</h1>
-            <div class="pure-g center-text">
+            <h1 class="non-style">Connections</h1>
+            <div class="pure-g">
                 {% for connection in connections %}
                 <div class="pure-u-1-2 pure-u-md-1-4">
                     <div class="node-box">
@@ -73,14 +74,15 @@
                                 src="{{ url_for('get_image', image_id=connection.image_id) }}" loading="lazy">
                             {% else %}
                             <img class="pure-img connection-img" src="../static/img/temp_chungus.png" loading="lazy">
-                            {% endif %} 
+                            {% endif %}
                             <div class="node-info">
 
-                            {% if (connection.creator_id == sub_id) or (sub_id == node_owner_id) %}
-                            <!-- Allow close ONLY if user is curr node owner or creation of the connection -->
-                            <div style="position:relative;"><span id="delete-node"
-                                onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</span></div>
-                            {% endif %}
+                                {% if (connection.creator_id == sub_id) or (sub_id == node_owner_id) %}
+                            
+                                <div style="position:relative;"><span id="delete-node"
+                                        onclick="deleteConnection({{node_id}}, {{connection.node_id}})">&times;</span>
+                                </div>
+                                {% endif %}
 
                                 <h2 class="line-clamp">{{connection.node_title}}</h2>
                                 <p class="line-clamp">{{connection.node_description}}</p>
@@ -90,13 +92,22 @@
                 </div>
                 {% endfor %}
 
-                <!-- prevent user from adding connection if they aren't logged in -->
                 {%if loggedin%}
                 <div class="pure-u-1-2 pure-u-md-1-4">
-                    <div class="node-box ">
-                        <button class="pure-button node-card" id="addNode" style="font-size: 150%;">
-                            <i class="fa-solid fa-circle-plus"></i>
-                            <p>Add</p>
+                    <div class="node-box">
+                        <button class="pure-button node-card">
+                            <div id="add-node">
+                                <div id="add-node-img"><img class="pure-img connection-img"
+                                        src="../static/img/temp_chungus.png" loading="lazy"></div>
+                                <div id="add-node-icon">
+                                    <span class="material-symbols-outlined">
+                                        add_circle
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="node-info">
+                                <h2>Add Connection</h2>
+                            </div>
                         </button>
                     </div>
                 </div>
@@ -112,106 +123,115 @@
         <div class="modal-content">
             <span class="close" id="close-modal">&times;</span>
             <div class="connection-tabs" id="connection-tabs">
-                <input type="radio" name="tabs" id="tab-one" checked>
-                <input type="radio" name="tabs" id="tab-two">
-                <input type="radio" name="tabs" id="tab-three">
-                <input type="radio" name="tabs" id="tab-four">
-
-
                 <div class="pure-g">
-                    <label class="pure-u-1-4 label" for="tab-one">Saved</label>
-                    <label class="pure-u-1-4 label" for="tab-two">Recently Viewed</label>
-                    <label class="pure-u-1-4 label" for="tab-three">Created</label>
-                    <label class="pure-u-1-4 label" for="tab-four">Search</label>
-                </div>
-
-                <div class="pure-g scroll-box" id="panel-one">
-                    <div class="pure-g">
+                    <input class="radiotab" type="radio" name="tabs" id="tab-one" checked>
+                    <label class="pure-u-1-4 tab-label" for="tab-one">Saved</label>
+                    <div class="pure-g panel scroll-box" id="panel-one">
+                        <div class="pure-g">
                         {% for saved in saved_nodes%}
                         <div class="pure-u-1-2 pure-u-md-1-4">
                             <div class="node-box">
-                                <button class="pure-button connection-img"
+                                <button class="pure-button node-card"
                                     onclick='selectConnection(this, "{{saved.node_id}}")'>
                                     {% if saved.image_id %}
-                                    <img class="pure-img modal-img"
+                                    <img class="pure-img connection-img"
                                         src="{{ url_for('get_image', image_id=saved.image_id) }}" loading="lazy">
                                     {% else %}
-                                    <img class="pure-img modal-img" src="../static/img/temp_chungus.png" loading="lazy">
+                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png"
+                                        loading="lazy">
                                     {% endif %} </button>
                                 <p class="center-text line-clamp">{{saved.node_title}}</p>
                             </div>
                         </div>
                         {% endfor %}
+                        </div>
                     </div>
-                </div>
 
-                <div class="pure-g scroll-box" id="panel-two">
-                    <div class="pure-g">
+                    <input class="radiotab" type="radio" name="tabs" id="tab-two">
+                    <label class="pure-u-1-4 tab-label" for="tab-two">Recently Viewed</label>
+                    <div class="pure-g panel scroll-box" id="panel-two">
+                        <div class="pure-g">
                         {% for recent in recent_nodes %}
                         <div class="pure-u-1-2 pure-u-md-1-4">
                             <div class="node-box">
-                                <button class="pure-button connection-img"
+                                <button class="pure-button node-card"
                                     onclick='selectConnection(this, "{{recent.node_id}}")'>
                                     {% if recent.image_id %}
-                                    <img class="pure-img modal-img"
+                                    <img class="pure-img connection-img"
                                         src="{{ url_for('get_image', image_id=recent.image_id) }}" loading="lazy">
                                     {% else %}
-                                    <img class="pure-img modal-img" src="../static/img/temp_chungus.png" loading="lazy">
+                                    <img class="pure-img connection-img" src="../static/img/temp_chungus.png"
+                                        loading="lazy">
                                     {% endif %} </button>
-                                <p class="center-text line-clamp">{{recent.node_title}}</p>
+                                <div class="node-info">
+                                    <h2 class="center-text line-clamp">{{recent.node_title}}</h2>
+                                    <hp class="center-text line-clamp">{{recent.description}}</p>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
-                    </div>
-                </div>
-
-                <div class="pure-g scroll-box" id="panel-three">
-                    <div class="pure-g">
-                        {% for created in created_nodes%}
-                        <div class="pure-u-1-2 pure-u-md-1-4">
-                            <div class="node-box">
-                                <button class="pure-button connection-img"
-                                    onclick='selectConnection(this, "{{created.node_id}}")'>
-                                    {% if created.image_id %}
-                                    <img class="pure-img modal-img"
-                                        src="{{ url_for('get_image', image_id=created.image_id) }}" loading="lazy">
-                                    {% else %}
-                                    <img class="pure-img modal-img" src="../static/img/temp_chungus.png" loading="lazy">
-                                    {% endif %} </button>
-                                <p class="center-text line-clamp">{{created.node_title}}</p>
-                            </div>
                         </div>
-                        {% endfor %}
                     </div>
-                </div>
 
-                <div class="pure-g scroll-box" id="panel-four">
-                    <div class="pure-g  node-search-container">
-                        <div id="search-container">
-                            <search>
-                                <form class="pure-form" id="div-search" hx-post="{{ url_for('search_node') }}"
-                                    hx-trigger="input changed from:#search" hx-target="#search-results"
-                                    hx-swap="innerHTML" hx-on="keydown[key=='Enter'] prevent">
-                                    <input type=" hidden" name="csrf_token" value="{{ csrf_token() }}" hidden />
-                                    <div class="input-group">
-                                        <span class="material-symbols-outlined">
-                                            search
-                                        </span>
-                                        <input id="search" class="pure-input-1 input-field" type="search" name="search"
-                                            placeholder="Search patch">
+                    <input class="radiotab" type="radio" name="tabs" id="tab-three">
+                    <label class="pure-u-1-4 tab-label" for="tab-three">Created</label>
+
+                    <div class="pure-g panel scroll-box" id="panel-three">
+                        <div class="pure-g">
+                            {% for created in created_nodes%}
+                            <div class="pure-u-1-2 pure-u-md-1-4">
+                                <div class="node-box">
+                                    <button class="pure-button node-card"
+                                        onclick='selectConnection(this, "{{created.node_id}}")'>
+                                        {% if created.image_id %}
+                                        <img class="pure-img connection-img"
+                                            src="{{ url_for('get_image', image_id=created.image_id) }}" loading="lazy">
+                                        {% else %}
+                                        <img class="pure-img connection-img" src="../static/img/temp_chungus.png"
+                                            loading="lazy">
+                                        {% endif %} </button>
+                                    <div class="node-info">
+                                        <h2 class="center-text line-clamp">{{created.node_title}}</h2>
+                                        <hp class="center-text line-clamp">{{created.description}}</p>
                                     </div>
-                                </form>
-                            </search>
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
-                        <div id="search-results"></div>
+                    </div>
 
+                    <input class="radiotab" type="radio" name="tabs" id="tab-four">
+                    <label class="pure-u-1-4 tab-label" for="tab-four">Search</label>
+                    <div class="pure-g panel scroll-box" id="panel-four">
+                        <div class="pure-g">
+                            <div class="node-search-container">
+                                <div id="search-container">
+                                    <search>
+                                        <form class="pure-form" id="div-search" hx-post="{{ url_for('search_node') }}"
+                                            hx-trigger="input changed from:#search" hx-target="#search-results"
+                                            hx-swap="innerHTML" hx-on="keydown[key=='Enter'] prevent">
+                                            <input type=" hidden" name="csrf_token" value="{{ csrf_token() }}" hidden />
+                                            <div class="input-group">
+                                                <span class="material-symbols-outlined">
+                                                    search
+                                                </span>
+                                                <input id="search" class="pure-input-1 input-field" type="search"
+                                                    name="search" placeholder="Search patch">
+                                            </div>
+                                        </form>
+                                    </search>
+                                </div>
+                                <div id="search-results"></div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="pure-g">
                 <div class="pure-u-1 add-connection-footer">
-                    <button class="pure-button" onclick="clearSelections()">Clear</button>
-                    <button class="pure-button pure-button-primary" id="add_selection"
+                    <button class="pure-button profile-buttons" onclick="clearSelections()">Clear</button>
+                    <button class="pure-button pure-button-primary profile-buttons" id="add_selection"
                         onclick="addSelections({{node_id}})">Add</button>
                 </div>
             </div>

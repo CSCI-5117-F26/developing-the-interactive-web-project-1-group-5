@@ -308,6 +308,7 @@ nav {
   color: var(--primary-color);
   overflow: hidden;
   background-color: var(--background-color);
+  /* border-radius: 1.5rem; */
 }
 
 .node-info {

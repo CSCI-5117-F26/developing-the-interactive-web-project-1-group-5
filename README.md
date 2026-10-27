@@ -70,7 +70,10 @@ along with a very brief caption:**
 ><img width="959" height="478" alt="image" src="https://github.com/user-attachments/assets/d3017085-2092-44e6-934a-c789eed0bf1a" />
 
 > Saved unowned node.
-> <img width="959" height="475" alt="image" src="https://github.com/user-attachments/assets/fdd06ecf-cbf4-4ad8-9f35-a54a1cf8fc64" />
+> <img width="959" height="479" alt="image" src="https://github.com/user-attachments/assets/27347386-eed1-48ab-8711-27db8d8a3b0a" />
+
+> Saved unowned node - view connections (can only delete connections if it connects to your own created node).
+> <img width="959" height="476" alt="image" src="https://github.com/user-attachments/assets/ca6d2bf5-07d1-4bc2-bc7a-ef78f693b426" />
 
 
 ### Connect node/patch (pop-up)

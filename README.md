@@ -96,7 +96,8 @@ along with a very brief caption:**
 > <img width="959" height="473" alt="image" src="https://github.com/user-attachments/assets/eb64f684-394e-41ad-af20-9736cbba41e1" />
 
 > Profile page, on your created patches tab.
-> <img width="959" height="470" alt="image" src="https://github.com/user-attachments/assets/9ef9e180-ae2d-4fa6-bdca-28dec76e61ed" />
+> <img width="955" height="473" alt="image" src="https://github.com/user-attachments/assets/60fda808-5756-4188-ad13-3cb97a879bde" />
+
 
 > Edit profile page (cancel or save).
 > <img width="959" height="470" alt="image" src="https://github.com/user-attachments/assets/b0b97fab-248d-43a3-b1ef-3256cb76c717" />
